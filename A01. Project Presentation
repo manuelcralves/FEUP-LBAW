@@ -1,0 +1,11 @@
+1.A1: StyleSwap
+
+The StyleSwap project is being developed targeted at individual users(clients) that wants to automatically manages the biddings deadlines and selects the winning bid, in this case, any item of the clothing collection.
+
+Our main goal with this project is the development of a web-based information system to support an online auction service, where different types of clothing are avaiable ...(!!!Sweats, jeans, need to complete!!!...)... .
+
+This application allows users to stop auctions, block users or delete contents according to the rest of the place items used for auction or just bid on the existing items.
+
+Users are separated into groups with different type of permissions. These groups include the administrators, who have full-acess and all privileges to consult, modify, insert or delete any information of the system.
+
+!!!(....Need to review....)!!!
