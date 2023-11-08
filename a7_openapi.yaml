@@ -430,13 +430,64 @@ paths:
       '200':
         description: 'Ok. Show search results.'
 
+/bid:
+    get: 
+      operationId: R301
+      summary: 'R301: Make bid API'
+      description: 'Makes bid and returns it results as JSON. Access: USR.'
+      tags:
+        - 'M03: Bids'
+      parameters:
+        - in: query
+          name: user
+          description: id of the user making the bid 
+          schema: 
+            type: string
+          required: true
+        - in: query
+          name: auction
+          description: auction the bid is for
+          schema: 
+            type: string
+          required: true
+        - in: query
+          name: bid
+          description: value of the bid
+          schema:
+            type: string
+          required: true
+      
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                item: 
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    auction:
+                      type: integer
+                    iduser:
+                      type: integer
+                    value:
+                      type: integer
+                example:
+                  - id: 1
+                    auction: 6
+                    user: 2
+                    value: 5000
+
   /auction/{id}:
     get:
-      operationId: R301
-      summary: 'R301: View individual auction'
+      operationId: R401
+      summary: 'R401: View individual auction'
       description: 'Show the individual page of an auction. Access: PUB'
       tags:
-        - 'M03: Auctions'
+        - 'M04: Auctions'
       parameters:
         - in: path
           name: id
@@ -450,11 +501,11 @@ paths:
 
   /auctions/{pageNr}:
       get:
-        operationId: R302
-        summary: 'R302: All auctions list'
+        operationId: R402
+        summary: 'R402: All auctions list'
         description: 'List of All Auctions by Page (sorted by auctions with the shortest time until closing first, 5 per page): PUB'
         tags:
-          - 'M03: Auctions'
+          - 'M04: Auctions'
         parameters:
           - in: path
             name: pageNr
@@ -468,11 +519,11 @@ paths:
 
   /profile/auctionCreate/{id}:
       get:
-        operationId: R303
-        summary: 'R303: Create Auction'
+        operationId: R403
+        summary: 'R403: Create Auction'
         description: 'Show the form to create an auction. Access: ACT'
         tags:
-          - 'M03: Auctions'
+          - 'M04: Auctions'
         parameters:
           - in: path
             name: id
@@ -486,11 +537,11 @@ paths:
 
   /auctionCreate:
       post:
-          operationId: R304
-          summary: 'R304: Create Auction Action'
+          operationId: R404
+          summary: 'R404: Create Auction Action'
           description: 'Processes the creation of an auction. Access: ACT'
           tags:
-            - 'M03: Auctions'
+            - 'M04: Auctions'
           requestBody:
             required: true
             content:
@@ -555,11 +606,11 @@ paths:
 
   /auctionEdit/{id}:
       get:
-        operationId: R305
-        summary: 'R305: Edit an Auction'
+        operationId: R405
+        summary: 'R405: Edit an Auction'
         description: 'Show the form to edit an auction. Access: ACT/OWN'
         tags:
-          - 'M03: Auctions'
+          - 'M04: Auctions'
         parameters:
           - in: path
             name: id
@@ -573,11 +624,11 @@ paths:
 
   /auctionEdit:
       post:
-          operationId: R306
-          summary: 'R306: Action of Edit an Auction'
+          operationId: R406
+          summary: 'R406: Action of Edit an Auction'
           description: 'Processes the edit of an auction. Access: ACT/OWN'
           tags:
-            - 'M03: Auctions'
+            - 'M04: Auctions'
           requestBody:
             required: true
             content:
@@ -613,11 +664,11 @@ paths:
 
   /auctionCancel:
       post:
-          operationId: R307
-          summary: 'R307: Cancel Auction Action'
+          operationId: R407
+          summary: 'R407: Cancel Auction Action'
           description: 'Canceling process of an auction. Access: ACT/OWN'
           tags:
-            - 'M03: Auctions'
+            - 'M04: Auctions'
           requestBody:
             required: true
             content:
@@ -646,11 +697,11 @@ paths:
 
   /search/auction:
       get:
-        operationId: R308
-        summary: 'R308: Search an auction with full text search (FTS)'
+        operationId: R408
+        summary: 'R408: Search an auction with full text search (FTS)'
         description: 'After a query, show the results of the search. Access: USR'
         tags:
-          - 'M03: Auctions'
+          - 'M04: Auctions'
 
         responses:
           '200':
@@ -658,63 +709,12 @@ paths:
 
   /search/auctionM:
       get:
-        operationId: R309
-        summary: 'R309: Search an auction with exact match'
+        operationId: R409
+        summary: 'R409: Search an auction with exact match'
         description: 'After a query, show the results. Access: USR'
         tags:
-          - 'M03: Auctions'
+          - 'M04: Auctions'
 
         responses:
           '200':
             description: 'Ok. Show exact match search results'
-
-  /bid:
-    get: 
-      operationId: R401
-      summary: 'R401: Make bid API'
-      description: 'Makes bid and returns it results as JSON. Access: USR.'
-      tags:
-        - 'M04: Bids'
-      parameters:
-        - in: query
-          name: user
-          description: id of the user making the bid 
-          schema: 
-            type: string
-          required: true
-        - in: query
-          name: auction
-          description: auction the bid is for
-          schema: 
-            type: string
-          required: true
-        - in: query
-          name: bid
-          description: value of the bid
-          schema:
-            type: string
-          required: true
-      
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                item: 
-                  type: object
-                  properties:
-                    id:
-                      type: integer
-                    auction:
-                      type: integer
-                    iduser:
-                      type: integer
-                    value:
-                      type: integer
-                example:
-                  - id: 1
-                    auction: 6
-                    user: 2
-                    value: 5000
