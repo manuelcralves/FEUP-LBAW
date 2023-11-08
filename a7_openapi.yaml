@@ -430,56 +430,56 @@ paths:
       '200':
         description: 'Ok. Show search results.'
 
-/bid:
-    get: 
-      operationId: R301
-      summary: 'R301: Make bid API'
-      description: 'Makes bid and returns it results as JSON. Access: USR.'
-      tags:
-        - 'M03: Bids'
-      parameters:
-        - in: query
-          name: user
-          description: id of the user making the bid 
-          schema: 
-            type: string
-          required: true
-        - in: query
-          name: auction
-          description: auction the bid is for
-          schema: 
-            type: string
-          required: true
-        - in: query
-          name: bid
-          description: value of the bid
-          schema:
-            type: string
-          required: true
-      
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                item: 
+  /bid:
+      get: 
+        operationId: R301
+        summary: 'R301: Make bid API'
+        description: 'Makes bid and returns it results as JSON. Access: USR.'
+        tags:
+          - 'M03: Bids'
+        parameters:
+          - in: query
+            name: user
+            description: id of the user making the bid 
+            schema: 
+              type: string
+            required: true
+          - in: query
+            name: auction
+            description: auction the bid is for
+            schema: 
+              type: string
+            required: true
+          - in: query
+            name: bid
+            description: value of the bid
+            schema:
+              type: string
+            required: true
+        
+        responses:
+          '200':
+            description: Success
+            content:
+              application/json:
+                schema:
                   type: object
-                  properties:
-                    id:
-                      type: integer
-                    auction:
-                      type: integer
-                    iduser:
-                      type: integer
-                    value:
-                      type: integer
-                example:
-                  - id: 1
-                    auction: 6
-                    user: 2
-                    value: 5000
+                  item: 
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      auction:
+                        type: integer
+                      iduser:
+                        type: integer
+                      value:
+                        type: integer
+                  example:
+                    - id: 1
+                      auction: 6
+                      user: 2
+                      value: 5000
 
   /auction/{id}:
     get:
