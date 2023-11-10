@@ -76,7 +76,6 @@ paths:
                   description: 'Failed to authenticate user, going back to login page.'
                   value: '/login'
 
-
   /logout:
     post: 
       operationId: R103
@@ -95,7 +94,6 @@ paths:
                 302Success: 
                   description: 'Successful logout. Redirect to login form.'
                   value: '/login'
-
 
   /register:
     get:
@@ -158,7 +156,7 @@ paths:
     get:
       operationId: R106
       summary: 'R106: View user profile'
-      description: 'Show the user profile. Access: OWN, ADM'
+      description: 'Show the user profile. Access: USR, OWN, ADM'
       tags: 
         - 'M01: Authentication and User Profile'
       parameters:
@@ -174,7 +172,7 @@ paths:
         '403':
           description: 'Unauthorized'  
 
-  /profile/edit/{id}:
+  /profile/{id}/edit:
     get:
       operationId: R107
       summary: 'R107: View edit user profile form'
@@ -197,7 +195,7 @@ paths:
     post:
       operationId: R108
       summary: 'R108: Edit user profile action'
-      description: 'Processes the edit of a user profile. Access: OWN'
+      description: 'Processes the edit of a user profile. Access: OWN, ADM'
       tags: 
         - 'M01: Authentication and User Profile'
 
@@ -235,14 +233,14 @@ paths:
                   value: '/profile/{id}'
                 302Failure:
                   description: 'Failed to update profile, redirecting to edit form.'
-                  value: '/profile/edit/{id}'
+                  value: '/profile/{id}/edit'
         '403':
           description: 'Forbidden. User not authorized to edit this profile.'
         '404':
           description: 'Not Found. No profile found with the given ID.'
 
 
-  /profile/balance/{id}:
+  /profile/{id}/balance:
     get:
       operationId: R109
       summary: 'R109: Add funds form'
@@ -297,7 +295,7 @@ paths:
                   value: '/profile/{id}'
                 302Failure: 
                   description: 'Failed to add funds, redirecting to add funds form.'
-                  value: '/profile/balance/{id}'
+                  value: '/profile/{id}/balance'
         '400':
           description: 'Bad request. Incorrect or insufficient data provided.'
         '403':
@@ -305,7 +303,7 @@ paths:
         '404':
           description: 'Not Found. No user found with the given ID.'
 
-  /profile/picture/{id}:
+  /profile/{id}/picture:
     get:
       operationId: R111
       summary: 'R111: Upload profile picture form'
@@ -360,7 +358,7 @@ paths:
                   value: '/profile/{id}'
                 302Failure: 
                   description: 'Failed to upload, redirecting to upload form.'
-                  value: '/profile/picture/{id}'
+                  value: '/profile/{id}/picture'
         '400':
           description: 'Bad request. Incorrect or insufficient data provided.'
         '403':
@@ -368,7 +366,7 @@ paths:
         '404':
           description: 'Not Found. No user found with the given ID.'
 
-  /profile/auctions/{id}/{pageNr}:
+  /profile/{id}/auctions/{pageNr}:
     get:
       operationId: R113
       summary: 'R113: User´s auctions list'
@@ -391,11 +389,11 @@ paths:
         '200':
           description: 'Ok. Show user´s auctions list'            
 
-  /profile/bids/{id}/{pageNr}:
+  /profile/{id}/bids/{pageNr}:
     get:
       operationId: R114
       summary: 'R114: User´s bids list'
-      description: 'Show the list of an user´s bids. Access: USR, ADM'
+      description: 'Show the list of an user´s bids. Access: OWN, ADM'
       tags: 
         - 'M01: Authentication and User Profile'
       parameters:
@@ -514,7 +512,7 @@ paths:
                 user: 2
                 value: 5000
 
-  /auction/{id}:
+  /auction/{auctionId}:
     get:
       operationId: R401
       summary: 'R401: View individual auction'
@@ -523,7 +521,7 @@ paths:
         - 'M04: Auctions'
       parameters:
         - in: path
-          name: id
+          name: auctionId
           schema:
             type: integer
           required: true
@@ -561,7 +559,6 @@ paths:
         '200':
           description: 'Ok. Show auction create form'
 
-  /auctions:
     post:
       operationId: R404
       summary: 'R404: Create Auction'
@@ -625,9 +622,9 @@ paths:
                   value: '/auction/{id}'
                 302Failure:
                   description: 'Creation failed. Redirect to home.'
-                  value: '/' 
+                  value: '/home'
 
-  /auctionEdit/{id}:
+  /auction/{auctionId}/edit:
     get:
       operationId: R405
       summary: 'R405: Edit an Auction'
@@ -636,14 +633,14 @@ paths:
         - 'M04: Auctions'
       parameters:
         - in: path
-          name: id
+          name: auctionId
           schema:
             type: integer
           required: true
       responses:
         '200':
           description: 'Success. Show edit form of the auction.'
-          
+
     post:
       operationId: R406
       summary: 'R406: Action of Edit an Auction'
@@ -682,10 +679,10 @@ paths:
                   description: 'Success. Forwarding to edited auction page.'
                   value: '/auction/{id}'
                 302Failure:
-                  description: 'Fail. Forwarding to home.'
-                  value: '/'
+                  description: 'Fail. Return to edit auction page.'
+                  value: '/auction/{auctionId}/edit'
 
-  /auctionCancel/{id}:
+  /auction/{auctionId}/cancel:
     post:
       operationId: R407
       summary: 'R407: Cancel Auction'
@@ -694,7 +691,7 @@ paths:
         - 'M04: Auctions'
       parameters:
         - in: path
-          name: id
+          name: auctionId
           schema:
             type: integer
           required: true
@@ -708,16 +705,16 @@ paths:
               examples:
                 302Success:
                   description: 'Success on the cancellation. Forwarding to home.'
-                  value: '/'
+                  value: '/auction/{auctionId}/'
                 302Failure:
                   description: 'Failed to cancel the auction. Forwarding to home.'
-                  value: '/' 
+                  value: '/auction/{auctionId}/'
 
   /search/auctions/fts:
     get:
       operationId: R408
       summary: 'R408: Search Auction with Full Text Search'
-      description: 'After a query, show the results of the search. Access: USR'
+      description: 'After a query, show the results of the search. Access: USR, ADM'
       tags:
         - 'M04: Auctions'
       parameters:
@@ -734,7 +731,7 @@ paths:
     get:
       operationId: R409
       summary: 'R409: Search Auction with Exact Match'
-      description: 'After a query, show the results. Access: USR'
+      description: 'After a query, show the results. Access: USR, ADM'
       tags:
         - 'M04: Auctions'
       parameters:
