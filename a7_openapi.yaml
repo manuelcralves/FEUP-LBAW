@@ -9,6 +9,10 @@ servers:
 - url: https://lbaw23152.lbaw.fe.up.pt
   description: Production Server 
 
+externalDocs:
+ description: Find more info here.
+ url: https://git.fe.up.pt/lbaw/lbaw2324/lbaw23152/-/wikis/home
+
 tags:
   - name: 'M01: Authentication and User Profile'
   - name: 'M02: User Administration/ Static Pages'
@@ -67,7 +71,7 @@ paths:
               examples:
                 302Success: 
                   description: 'Successful authentication: Redirecting to home page.'
-                  value: '/'
+                  value: '/home'
                 302Error:
                   description: 'Failed to authenticate user, going back to login page.'
                   value: '/login'
@@ -107,7 +111,7 @@ paths:
     post:
       operationId: R105
       summary: 'R105: Register Action'
-      description: 'Proccesses the new user registration form submission. Access: PUB'
+      description: 'Processes the new user registration form submission. Access: PUB'
       tags: 
         - 'M01: Authentication and User Profile'
 
@@ -116,18 +120,18 @@ paths:
         content:
           application/x-www-form-urlencoded:
             schema:
-            type: object
-            properties:
-              username:
-                type: string
-              first_name:
-                type: string
-              last_name:
-                type: string
-              email: 
-                type: string
-              password:
-                type: string
+              type: object
+              properties:
+                username:
+                  type: string
+                first_name:
+                  type: string
+                last_name:
+                  type: string
+                email: 
+                  type: string
+                password:
+                  type: string
               required:
                 - username
                 - first_name
@@ -144,17 +148,17 @@ paths:
                 type: string
               examples:
                 302Success:
-                  description: 'Successful authentication. Redirect to main page'
+                  description: 'Successful registration. Redirect to main page.'
                   value: '/home'
                 302Failure: 
-                  description: 'Failed authentication, Redirect to login form.'
-                  value: '/login'    
+                  description: 'Failed registration, redirect to register form.'
+                  value: '/register' 
 
   /profile/{id}:
     get:
       operationId: R106
       summary: 'R106: View user profile'
-      description: 'Show the user profile. Access: USR'
+      description: 'Show the user profile. Access: OWN, ADM'
       tags: 
         - 'M01: Authentication and User Profile'
       parameters:
@@ -167,12 +171,14 @@ paths:
       responses:
         '200':
           description: 'Ok. Show profile UI'
+        '403':
+          description: 'Unauthorized'  
 
   /profile/edit/{id}:
     get:
       operationId: R107
       summary: 'R107: View edit user profile form'
-      description: 'Show the user profile. Access: OWN'
+      description: 'Show the user profile. Access: OWN, ADM'
       tags: 
         - 'M01: Authentication and User Profile'
       parameters:
@@ -185,8 +191,9 @@ paths:
       responses:
         '200':
           description: 'Ok. Show edit profile form'
+        '403':
+          description: 'Unauthorized'
 
-  /edit:
     post:
       operationId: R108
       summary: 'R108: Edit user profile action'
@@ -217,18 +224,23 @@ paths:
 
       responses:
         '302':
-          description: 'Redirect after processing the new user profile information.'
+          description: 'Redirect after processing the user profile update.'
           headers:
             Location:
               schema:
                 type: string
               examples:
                 302Success:
-                  description: 'Successful change. Redirect to user profile page'
+                  description: 'Successful profile update. Redirecting to user profile page.'
                   value: '/profile/{id}'
-                302Failure: 
-                  description: 'Failed change, Redirect to home.'
-                  value: '/home'
+                302Failure:
+                  description: 'Failed to update profile, redirecting to edit form.'
+                  value: '/profile/edit/{id}'
+        '403':
+          description: 'Forbidden. User not authorized to edit this profile.'
+        '404':
+          description: 'Not Found. No profile found with the given ID.'
+
 
   /profile/balance/{id}:
     get:
@@ -248,14 +260,18 @@ paths:
         '200': 
           description: 'Ok. Show add funds form'
 
-  /balance:
     post:
       operationId: R110
       summary: 'R110: Add funds action'
       description: 'Processes the addition of funds to a user. Access: OWN'
       tags: 
         - 'M01: Authentication and User Profile'
-
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
       requestBody:
         required: true
         content:
@@ -264,27 +280,30 @@ paths:
               type: object
               properties:
                 funds:
-                  type: string 
-                user: 
-                  type: string
-                required:
-                  - funds
-                  - user
-      
+                  type: number
+              required:
+                - funds
+
       responses:
         '302':
-          description: 'Redirect after processing the new user funds'
+          description: 'Redirect after processing the addition of funds.'
           headers:
             Location:
               schema:
                 type: string
               examples:
                 302Success:
-                  description: 'Successful change. Redirect to user profile page'
+                  description: 'Successful addition of funds. Redirecting to user profile page.'
                   value: '/profile/{id}'
                 302Failure: 
-                  description: 'Failed change, Redirect to home.'
-                  value: '/home'
+                  description: 'Failed to add funds, redirecting to add funds form.'
+                  value: '/profile/balance/{id}'
+        '400':
+          description: 'Bad request. Incorrect or insufficient data provided.'
+        '403':
+          description: 'Forbidden. User not authorized to add funds to this profile.'
+        '404':
+          description: 'Not Found. No user found with the given ID.'
 
   /profile/picture/{id}:
     get:
@@ -304,14 +323,18 @@ paths:
         '200':
           description: 'Ok. Show profile picture form'     
               
-  /picture:
     post:
-      perationId: R112
+      operationId: R112
       summary: 'R112: Upload profile picture action'
-      description: 'Processes the upload user profile picture. Access: OWN'
+      description: 'Processes the upload of a user profile picture. Access: OWN'
       tags: 
         - 'M01: Authentication and User Profile'
-
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
       requestBody:
         required: true
         content:
@@ -320,33 +343,36 @@ paths:
               type: object
               properties:
                 picture:
-                  type: string #url
-                user:
                   type: string
               required:
                 - picture
-                - user
 
-        resposes:
-          '302':
-            description: 'Redirect after processing the upload of a user`s picture.'
-            headers:
-              Location:
-                schema:
-                  type: string
-                examples:
+      responses:
+        '302':
+          description: 'Redirect after processing the upload of a user`s picture.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
                 302Success:
-                  description: 'Successful change. Redirect to user profile page'
+                  description: 'Successful upload. Redirecting to user profile page.'
                   value: '/profile/{id}'
                 302Failure: 
-                  description: 'Failed change, Redirect to home.'
-                  value: '/home'
+                  description: 'Failed to upload, redirecting to upload form.'
+                  value: '/profile/picture/{id}'
+        '400':
+          description: 'Bad request. Incorrect or insufficient data provided.'
+        '403':
+          description: 'Forbidden. User not authorized to upload picture for this profile.'
+        '404':
+          description: 'Not Found. No user found with the given ID.'
 
   /profile/auctions/{id}/{pageNr}:
     get:
-      perationId: R113
+      operationId: R113
       summary: 'R113: User´s auctions list'
-      description: 'Show the list of an user´s auctions. Access: USR'
+      description: 'Show the list of an user´s auctions. Access: USR, ADM'
       tags: 
         - 'M01: Authentication and User Profile'
       parameters:
@@ -369,7 +395,7 @@ paths:
     get:
       operationId: R114
       summary: 'R114: User´s bids list'
-      description: 'Show the list of an user´s bids. Access: USR'
+      description: 'Show the list of an user´s bids. Access: USR, ADM'
       tags: 
         - 'M01: Authentication and User Profile'
       parameters:
@@ -388,11 +414,11 @@ paths:
         '200':
           description: 'Ok. Show user´s bids list'
 
-  /users/{pageNR}:
+  /users/{pageNr}:
     get:
       operationId: R115
-      summary: 'R115: User´s bids list'
-      description: 'Show the list of users by page. Access: USR'
+      summary: 'R115: Users list by page'
+      description: 'Show the list of users by page. Access: USR, ADM'
       tags: 
         - 'M01: Authentication and User Profile'
       parameters:
@@ -410,76 +436,83 @@ paths:
     get:
       operationId: R116
       summary: 'R116: Search for a user'
-      description: 'Show the search results of a user search by a query "q". Access: USR'
+      description: 'Show the search results of a user search by a query "q". Access: USR, ADM'
       tags: 
         - 'M01: Authentication and User Profile'
-      
-      resposnses:
+      parameters:
+        - in: query
+          name: q
+          schema:
+            type: string
+          required: true
+
+      responses:
         '200':
           description: 'Ok. Show search results of users list.'
 
   /search:
     get: 
-    operationId: R117
-    summary: 'R117: Main search page'
-    description: 'Show the main search page. Access: USR'
-    tags: 
-      - 'M01: Authentication and User Profile'
-    
-    responses:
-      '200':
-        description: 'Ok. Show search results.'
+      operationId: R117
+      summary: 'R117: Main search page'
+      description: 'Show the main search page for various entities (users, auctions, bids, etc.). Access: USR, ADM'
+      tags: 
+        - 'M01: Authentication and User Profile'
+      parameters:
+        - in: query
+          name: q
+          schema:
+            type: string
+          required: false
 
-  /bid:
-      get: 
-        operationId: R301
-        summary: 'R301: Make bid API'
-        description: 'Makes bid and returns it results as JSON. Access: USR.'
-        tags:
-          - 'M03: Bids'
-        parameters:
-          - in: query
-            name: user
-            description: id of the user making the bid 
-            schema: 
-              type: string
-            required: true
-          - in: query
-            name: auction
-            description: auction the bid is for
-            schema: 
-              type: string
-            required: true
-          - in: query
-            name: bid
-            description: value of the bid
+      responses:
+        '200':
+          description: 'Ok. Show search results.'
+
+  /auction/{auctionId}/bid:
+    post: 
+      operationId: R301
+      summary: 'R301: Make bid'
+      description: 'Makes a bid on a specified auction and returns the result as JSON. Access: USR.'
+      tags:
+        - 'M03: Bids'
+      parameters:
+        - in: path
+          name: auctionId
+          schema:
+            type: integer
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
             schema:
-              type: string
-            required: true
-        
-        responses:
-          '200':
-            description: Success
-            content:
-              application/json:
-                schema:
-                  type: object
-                  item: 
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                      auction:
-                        type: integer
-                      iduser:
-                        type: integer
-                      value:
-                        type: integer
-                  example:
-                    - id: 1
-                      auction: 6
-                      user: 2
-                      value: 5000
+              type: object
+              properties:
+                bid:
+                  type: number
+                  description: 'Value of the bid'
+
+      responses:
+        '200':
+          description: 'Success'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  auction:
+                    type: integer
+                  user:
+                    type: integer
+                  value:
+                    type: number
+              example:
+                id: 1
+                auction: 6
+                user: 2
+                value: 5000
 
   /auction/{id}:
     get:
@@ -503,7 +536,7 @@ paths:
       get:
         operationId: R402
         summary: 'R402: All auctions list'
-        description: 'List of All Auctions by Page (sorted by auctions with the shortest time until closing first, 5 per page): PUB'
+        description: 'List of All Auctions by Page (sorted by auctions with the shortest time until closing first, 5 per page): Access PUB'
         tags:
           - 'M04: Auctions'
         parameters:
@@ -517,204 +550,199 @@ paths:
           '200':
             description: 'Ok. Show users auctions list by page' 
 
-  /profile/auctionCreate/{id}:
-      get:
-        operationId: R403
-        summary: 'R403: Create Auction'
-        description: 'Show the form to create an auction. Access: ACT'
-        tags:
-          - 'M04: Auctions'
-        parameters:
-          - in: path
-            name: id
-            schema:
-              type: integer
-            required: true
-
-        responses:
-          '200':
-            description: 'Ok. Show auction create form' 
-
   /auctionCreate:
-      post:
-          operationId: R404
-          summary: 'R404: Create Auction Action'
-          description: 'Processes the creation of an auction. Access: ACT'
-          tags:
-            - 'M04: Auctions'
-          requestBody:
-            required: true
-            content:
-              application/x-www-form-urlencoded:
-                schema:
-                  type: object
-                  properties:
-                    title:
-                      type: string
-                    description:
-                      type: string
-                    name:
-                      type: string
-                    category:
-                      type: string
-                    brand:
-                      type: string
-                    color:
-                      type: string
-                    condition:
-                      type: string
-                    picture:
-                      type: object #image
-                    starting_price:
-                      type: string
-                    current_price:
-                      type: string
-                    end_date:
-                      type: string
-                    status:
-                      type: string
-                    user:
-                      type: string
-                  required:
-                    - title
-                    - description
-                    - name
-                    - category
-                    - status
-                    - color
-                    - condition
-                    - picture
-                    - starting_price
-                    - end_date
-                    - user
-                
-          responses:
-            '302':
-              description: 'Forwarding after completing the auction creation process.'
-              headers:
-                Location:
-                  schema:
-                    type: string
-                  examples:
-                    302Success:
-                      description: 'Successful creation. Redirect to created auction page.'
-                      value: '/auction/{id}'
-                    302Failure:
-                      description: 'Creation failed. Redirect to home.'
-                      value: '/' 
+    get:
+      operationId: R403
+      summary: 'R403: Create Auction Form'
+      description: 'Show the form to create an auction. Access: ACT'
+      tags:
+        - 'M04: Auctions'
+      responses:
+        '200':
+          description: 'Ok. Show auction create form'
 
+  /auctions:
+    post:
+      operationId: R404
+      summary: 'R404: Create Auction'
+      description: 'Processes the creation of an auction. Access: ACT'
+      tags:
+        - 'M04: Auctions'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                name:
+                  type: string
+                category:
+                  type: string
+                brand:
+                  type: string
+                color:
+                  type: string
+                condition:
+                  type: string
+                picture:
+                  type: string
+                starting_price:
+                  type: string
+                end_date:
+                  type: string
+                status:
+                  type: string
+                user:
+                  type: string
+              required:
+                - title
+                - description
+                - name
+                - category
+                - status
+                - color
+                - condition
+                - picture
+                - starting_price
+                - end_date
+                - user
+
+      responses:
+        '302':
+          description: 'Forwarding after completing the auction creation process.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful creation. Redirect to created auction page.'
+                  value: '/auction/{id}'
+                302Failure:
+                  description: 'Creation failed. Redirect to home.'
+                  value: '/' 
 
   /auctionEdit/{id}:
-      get:
-        operationId: R405
-        summary: 'R405: Edit an Auction'
-        description: 'Show the form to edit an auction. Access: ACT/OWN'
-        tags:
-          - 'M04: Auctions'
-        parameters:
-          - in: path
-            name: id
+    get:
+      operationId: R405
+      summary: 'R405: Edit an Auction'
+      description: 'Show the form to edit an auction. Access: ACT/OWN'
+      tags:
+        - 'M04: Auctions'
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: 'Success. Show edit form of the auction.'
+          
+    post:
+      operationId: R406
+      summary: 'R406: Action of Edit an Auction'
+      description: 'Processes the edit of an auction. Access: ACT/OWN'
+      tags:
+        - 'M04: Auctions'
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
             schema:
-              type: integer
-            required: true
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+              required:
+                - title
+                - description
+      responses:
+        '302':
+          description: 'Forwarding upon completing the modification of an auction.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Success. Forwarding to edited auction page.'
+                  value: '/auction/{id}'
+                302Failure:
+                  description: 'Fail. Forwarding to home.'
+                  value: '/'
 
-        responses:
-          '200':
-            description: 'Success. Show edit form of the auction.'
+  /auctionCancel/{id}:
+    post:
+      operationId: R407
+      summary: 'R407: Cancel Auction'
+      description: 'Canceling process of an auction. Access: ACT/OWN'
+      tags:
+        - 'M04: Auctions'
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '302':
+          description: 'Forwarding after processing the cancellation of an auction.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Success on the cancellation. Forwarding to home.'
+                  value: '/'
+                302Failure:
+                  description: 'Failed to cancel the auction. Forwarding to home.'
+                  value: '/' 
 
-  /auctionEdit:
-      post:
-          operationId: R406
-          summary: 'R406: Action of Edit an Auction'
-          description: 'Processes the edit of an auction. Access: ACT/OWN'
-          tags:
-            - 'M04: Auctions'
-          requestBody:
-            required: true
-            content:
-              application/x-www-form-urlencoded:
-                schema:
-                  type: object
-                  properties:
-                    title:
-                      type: string
-                    description:
-                      type: string
-                    auction:
-                      type: string
-                  required:
-                    - title
-                    - description
-                    - auction
-    
-          responses:
-            '302':
-              description: 'Forwarding upon completing the modification of an auction.'
-              headers:
-                Location:
-                  schema:
-                    type: string
-                  examples:
-                    302Success:
-                      description: 'Success. Forwarding to edited auction page.'
-                      value: '/auction/{id}'
-                    302Failure:
-                      description: 'Fail. Forwarding to home.'
-                      value: '/'
+  /search/auctions/fts:
+    get:
+      operationId: R408
+      summary: 'R408: Search Auction with Full Text Search'
+      description: 'After a query, show the results of the search. Access: USR'
+      tags:
+        - 'M04: Auctions'
+      parameters:
+        - in: query
+          name: q
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: 'Ok. Show the FTS results'
 
-  /auctionCancel:
-      post:
-          operationId: R407
-          summary: 'R407: Cancel Auction Action'
-          description: 'Canceling process of an auction. Access: ACT/OWN'
-          tags:
-            - 'M04: Auctions'
-          requestBody:
-            required: true
-            content:
-              application/x-www-form-urlencoded:
-                schema:
-                  type: object
-                  properties:
-                    auction:
-                      type: string
-                  required:
-                    - auction
-    
-          responses:
-            '302':
-              description: 'Forwarding after processing the cancelation of an auction.'
-              headers:
-                Location:
-                  schema:
-                    type: string
-                  examples:
-                    302Success:
-                      description: 'Success on the cancelation. Forwarding to home.'
-                    302Failure:
-                      description: 'Failed to cancel the auction. Forwarding to home.'
-                      value: '/' 
-
-  /search/auction:
-      get:
-        operationId: R408
-        summary: 'R408: Search an auction with full text search (FTS)'
-        description: 'After a query, show the results of the search. Access: USR'
-        tags:
-          - 'M04: Auctions'
-
-        responses:
-          '200':
-            description: 'Ok. Show the FTS results'
-
-  /search/auctionM:
-      get:
-        operationId: R409
-        summary: 'R409: Search an auction with exact match'
-        description: 'After a query, show the results. Access: USR'
-        tags:
-          - 'M04: Auctions'
-
-        responses:
-          '200':
-            description: 'Ok. Show exact match search results'
+  /search/auctions/exact:
+    get:
+      operationId: R409
+      summary: 'R409: Search Auction with Exact Match'
+      description: 'After a query, show the results. Access: USR'
+      tags:
+        - 'M04: Auctions'
+      parameters:
+        - in: query
+          name: q
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: 'Ok. Show exact match search results'
