@@ -8,4 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Address extends Model
 {
     use HasFactory;
+
+    protected $table = 'address';
+
+    public $timestamps = false;
+
+    protected $fillable = [
+        'street', 
+        'postal_code', 
+        'city', 
+        'country', 
+        'user' // Foreign Key for the AuthenticatedUser model
+    ];
 }

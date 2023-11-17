@@ -8,4 +8,21 @@ use Illuminate\Database\Eloquent\Model;
 class Review extends Model
 {
     use HasFactory;
+
+    protected $table = 'review';
+    public $timestamps = false;
+
+    protected $fillable = [
+        'rating',
+        'title',
+        'description',
+        'date',
+        'reviewer', // Foreign key for AuthenticatedUser
+        'reviewed', // Foreign key for AuthenticatedUser
+        'auction'   // Foreign key for Auction
+    ];
+
+    protected $casts = [
+        'date' => 'datetime'
+    ];
 }
