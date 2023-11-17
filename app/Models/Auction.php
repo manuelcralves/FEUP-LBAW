@@ -30,4 +30,29 @@ class Auction extends Model
         'current_price' => 'float',
         'status' => 'string' 
     ];
+
+    public function item() {
+        return $this->hasOne(Item::class, 'item');
+    }
+
+    public function review() {
+        return $this->hasOne(Review::class);
+    }
+
+    public function bids() {
+        return $this->hasMany(Bid::class);
+    }
+
+    public function report_auctions() {
+        return $this->hasMany(ReportAuction::class);
+    }
+
+    public function authenticated_user() {
+        return $this->belongsTo(AuthenticatedUser::class, 'owner');
+    }
+
+    public function followers() {
+        return $this->belongsToMany(AuthenticatedUser::class, 'following', 'auction', 'user')
+                    ->withPivot('notifications', 'start_date');
+    }   
 }

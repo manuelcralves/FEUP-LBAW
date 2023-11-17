@@ -22,4 +22,12 @@ class ReportAuction extends Model
     protected $casts = [
         'creation_date' => 'datetime'
     ];
+
+    public function auction() {
+        return $this->belongsTo(Auction::class, 'auction');  
+    }
+
+    public function authenticated_user() {
+        return $this->belongsTo(AuthenticatedUser::class, 'user');  
+    }
 }

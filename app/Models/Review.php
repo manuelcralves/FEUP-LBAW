@@ -25,4 +25,16 @@ class Review extends Model
     protected $casts = [
         'date' => 'datetime'
     ];
+
+    public function auction() {
+        return $this->belongsTo(Auction::class, 'auction');
+    }
+
+    public function reviewer() {
+        return $this->belongsTo(AuthenticatedUser::class, 'reviewer');
+    }
+
+    public function reviewed() {
+        return $this->belongsTo(AuthenticatedUser::class, 'reviewed');
+    }
 }

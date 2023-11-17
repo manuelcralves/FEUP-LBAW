@@ -20,4 +20,8 @@ class Address extends Model
         'country', 
         'user' // Foreign Key for the AuthenticatedUser model
     ];
+
+    public function authenticated_user() {
+        return $this->belongsTo(AuthenticatedUser::class, 'user');
+    }
 }

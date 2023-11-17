@@ -25,4 +25,8 @@ class Item extends Model
     protected $casts = [
         'condition' => 'string'
     ];
+
+    public function auction() {
+        return $this->belongsTo(Auction::class, 'item'); 
+    }
 }

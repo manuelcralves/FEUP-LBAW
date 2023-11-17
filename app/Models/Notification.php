@@ -26,4 +26,8 @@ class Notification extends Model
         'type' => 'string', 
         'creation_date' => 'datetime'
     ];
+
+    public function authenticated_users() {
+        return $this->belongsToMany(AuthenticatedUser::class, 'user');
+    }
 }

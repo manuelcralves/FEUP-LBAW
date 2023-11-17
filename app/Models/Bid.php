@@ -24,4 +24,12 @@ class Bid extends Model
         'value' => 'float',
         'creation_date' => 'datetime'
     ];
+
+    public function authenticated_user() {
+        return $this->belongsTo(AuthenticatedUser::class, 'user');
+    }
+
+    public function auction() {
+        return $this->belongsTo(Auction::class, 'auction');
+    }
 }

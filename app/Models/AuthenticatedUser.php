@@ -34,4 +34,43 @@ class AuthenticatedUser extends Model
         'balance' => 'float', 
         'is_blocked' => 'boolean'
     ];
+
+    
+    public function addresses() {
+        return $this->hasMany(Address::class);
+    }
+    
+    public function bids() {
+        return $this->hasMany(Bid::class);
+    }
+
+    public function transactions() {
+        return $this->hasMany(Transaction::class);
+    }
+
+    public function reviews_written() {
+        return $this->hasMany(Review::class, 'reviewer');
+    }
+    
+    public function reviews_received() {
+        return $this->hasMany(Review::class, 'reviewed');
+    }
+    
+
+    public function notifications() {
+        return $this->belongsToMany(Notification::class);
+    }
+
+    public function report_auctions() {
+        return $this->hasMany(ReportAuction::class);
+    }
+
+    public function auctions() {
+        return $this->hasMany(Auction::class);
+    }
+
+    public function following_auctions() {
+        return $this->belongsToMany(Auction::class, 'following', 'user', 'auction')
+                    ->withPivot('notifications', 'start_date');
+    }
 }

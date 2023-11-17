@@ -24,4 +24,8 @@ class Transaction extends Model
         'value' => 'float', 
         'transaction_date' => 'datetime'
     ];
+
+    public function authenticated_user() {
+        return $this->belongsTo(AuthenticatedUser::class, 'user');
+    }
 }
