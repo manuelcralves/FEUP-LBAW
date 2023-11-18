@@ -12,7 +12,8 @@ class FollowingController extends Controller
      */
     public function index()
     {
-        //
+        $followings = Following::all();
+        return view('followings.index', compact('followings'));
     }
 
     /**
@@ -20,7 +21,7 @@ class FollowingController extends Controller
      */
     public function create()
     {
-        //
+        return view('followings.create');
     }
 
     /**
@@ -28,7 +29,14 @@ class FollowingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            // Add validation rules for following fields
+        ]);
+
+        Following::create($validatedData);
+
+        return redirect()->route('followings.index')
+            ->with('success', 'Following created successfully');
     }
 
     /**
@@ -36,7 +44,7 @@ class FollowingController extends Controller
      */
     public function show(Following $following)
     {
-        //
+        return view('followings.show', compact('following'));
     }
 
     /**
@@ -44,7 +52,7 @@ class FollowingController extends Controller
      */
     public function edit(Following $following)
     {
-        //
+        return view('followings.edit', compact('following'));
     }
 
     /**
@@ -52,7 +60,14 @@ class FollowingController extends Controller
      */
     public function update(Request $request, Following $following)
     {
-        //
+        $validatedData = $request->validate([
+            // Add validation rules for following fields
+        ]);
+
+        $following->update($validatedData);
+
+        return redirect()->route('followings.index')
+            ->with('success', 'Following updated successfully');
     }
 
     /**
@@ -60,6 +75,9 @@ class FollowingController extends Controller
      */
     public function destroy(Following $following)
     {
-        //
+        $following->delete();
+
+        return redirect()->route('followings.index')
+            ->with('success', 'Following deleted successfully');
     }
 }
