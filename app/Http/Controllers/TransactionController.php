@@ -12,7 +12,8 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        //
+        $transactions = Transaction::all();
+        return view('transactions.index', compact('transactions'));
     }
 
     /**
@@ -20,7 +21,7 @@ class TransactionController extends Controller
      */
     public function create()
     {
-        //
+        return view('transactions.create');
     }
 
     /**
@@ -28,7 +29,14 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            // Add validation rules for transaction fields
+        ]);
+
+        Transaction::create($validatedData);
+
+        return redirect()->route('transactions.index')
+            ->with('success', 'Transaction created successfully');
     }
 
     /**
@@ -36,7 +44,7 @@ class TransactionController extends Controller
      */
     public function show(Transaction $transaction)
     {
-        //
+        return view('transactions.show', compact('transaction'));
     }
 
     /**
@@ -44,7 +52,7 @@ class TransactionController extends Controller
      */
     public function edit(Transaction $transaction)
     {
-        //
+        return view('transactions.edit', compact('transaction'));
     }
 
     /**
@@ -52,7 +60,14 @@ class TransactionController extends Controller
      */
     public function update(Request $request, Transaction $transaction)
     {
-        //
+        $validatedData = $request->validate([
+            // Add validation rules for transaction fields
+        ]);
+
+        $transaction->update($validatedData);
+
+        return redirect()->route('transactions.index')
+            ->with('success', 'Transaction updated successfully');
     }
 
     /**
@@ -60,6 +75,9 @@ class TransactionController extends Controller
      */
     public function destroy(Transaction $transaction)
     {
-        //
+        $transaction->delete();
+
+        return redirect()->route('transactions.index')
+            ->with('success', 'Transaction deleted successfully');
     }
 }
