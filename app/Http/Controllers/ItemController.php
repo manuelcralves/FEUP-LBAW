@@ -12,7 +12,8 @@ class ItemController extends Controller
      */
     public function index()
     {
-        //
+        $items = Item::all();
+        return view('items.index', compact('items'));
     }
 
     /**
@@ -20,7 +21,7 @@ class ItemController extends Controller
      */
     public function create()
     {
-        //
+        return view('items.create');
     }
 
     /**
@@ -28,7 +29,14 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            // Add validation rules for item fields
+        ]);
+
+        Item::create($validatedData);
+
+        return redirect()->route('items.index')
+            ->with('success', 'Item created successfully');
     }
 
     /**
@@ -36,7 +44,7 @@ class ItemController extends Controller
      */
     public function show(Item $item)
     {
-        //
+        return view('items.show', compact('item'));
     }
 
     /**
@@ -44,7 +52,7 @@ class ItemController extends Controller
      */
     public function edit(Item $item)
     {
-        //
+        return view('items.edit', compact('item'));
     }
 
     /**
@@ -52,7 +60,14 @@ class ItemController extends Controller
      */
     public function update(Request $request, Item $item)
     {
-        //
+        $validatedData = $request->validate([
+            // Add validation rules for item fields
+        ]);
+
+        $item->update($validatedData);
+
+        return redirect()->route('items.index')
+            ->with('success', 'Item updated successfully');
     }
 
     /**
@@ -60,6 +75,9 @@ class ItemController extends Controller
      */
     public function destroy(Item $item)
     {
-        //
+        $item->delete();
+
+        return redirect()->route('items.index')
+            ->with('success', 'Item deleted successfully');
     }
 }
