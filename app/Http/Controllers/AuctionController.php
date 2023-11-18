@@ -12,7 +12,8 @@ class AuctionController extends Controller
      */
     public function index()
     {
-        //
+        $auctions = Auction::all();
+        return view('auctions.index', compact('auctions'));
     }
 
     /**
@@ -20,7 +21,7 @@ class AuctionController extends Controller
      */
     public function create()
     {
-        //
+        return view('auctions.create');
     }
 
     /**
@@ -28,7 +29,14 @@ class AuctionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            // Add validation rules for auction fields
+        ]);
+
+        Auction::create($validatedData);
+
+        return redirect()->route('auctions.index')
+            ->with('success', 'Auction created successfully');
     }
 
     /**
@@ -36,7 +44,7 @@ class AuctionController extends Controller
      */
     public function show(Auction $auction)
     {
-        //
+        return view('auctions.show', compact('auction'));
     }
 
     /**
@@ -44,7 +52,7 @@ class AuctionController extends Controller
      */
     public function edit(Auction $auction)
     {
-        //
+        return view('auctions.edit', compact('auction'));
     }
 
     /**
@@ -52,7 +60,14 @@ class AuctionController extends Controller
      */
     public function update(Request $request, Auction $auction)
     {
-        //
+        $validatedData = $request->validate([
+            // Add validation rules for auction fields
+        ]);
+
+        $auction->update($validatedData);
+
+        return redirect()->route('auctions.index')
+            ->with('success', 'Auction updated successfully');
     }
 
     /**
@@ -60,6 +75,9 @@ class AuctionController extends Controller
      */
     public function destroy(Auction $auction)
     {
-        //
+        $auction->delete();
+
+        return redirect()->route('auctions.index')
+            ->with('success', 'Auction deleted successfully');
     }
 }
