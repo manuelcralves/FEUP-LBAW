@@ -16,8 +16,8 @@ class Bid extends Model
     protected $fillable = [
         'value', 
         'creation_date', 
-        'user',  // Foreign Key for the AuthenticatedUser model
-        'auction' // Foreign Key for the Auction model
+        'user_id',  // Foreign Key for the AuthenticatedUser model
+        'auction_id' // Foreign Key for the Auction model
     ];
 
     protected $casts = [
@@ -25,11 +25,11 @@ class Bid extends Model
         'creation_date' => 'datetime'
     ];
 
-    public function authenticated_user() {
-        return $this->belongsTo(AuthenticatedUser::class, 'user');
+    public function authenticatedUser() {
+        return $this->belongsTo(AuthenticatedUser::class, 'user_id');
     }
 
     public function auction() {
-        return $this->belongsTo(Auction::class, 'auction');
+        return $this->belongsTo(Auction::class, 'auction_id');
     }
 }

@@ -12,13 +12,13 @@ class Following extends Pivot
 
     protected $table = 'following';
     public $timestamps = false;
-    public $incrementing = true;
+    public $incrementing = false;
 
     protected $fillable = [
-        'auction', // Foreign key for Auction
+        'auction_id', // Foreign key for Auction
         'notifications',
         'start_date',
-        'user' // Foreign key for AuthenticatedUser
+        'user_id' // Foreign key for AuthenticatedUser
     ];
 
     protected $casts = [

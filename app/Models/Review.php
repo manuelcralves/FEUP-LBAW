@@ -17,24 +17,25 @@ class Review extends Model
         'title',
         'description',
         'date',
-        'reviewer', // Foreign key for AuthenticatedUser
-        'reviewed', // Foreign key for AuthenticatedUser
-        'auction'   // Foreign key for Auction
+        'reviewer_id', // Foreign key for AuthenticatedUser
+        'reviewed_id', // Foreign key for AuthenticatedUser
+        'auction_id'   // Foreign key for Auction
     ];
 
     protected $casts = [
+        'rating' => 'int',
         'date' => 'datetime'
     ];
 
     public function auction() {
-        return $this->belongsTo(Auction::class, 'auction');
+        return $this->belongsTo(Auction::class, 'auction_id');
     }
 
     public function reviewer() {
-        return $this->belongsTo(AuthenticatedUser::class, 'reviewer');
+        return $this->belongsTo(AuthenticatedUser::class, 'reviewer_id');
     }
 
     public function reviewed() {
-        return $this->belongsTo(AuthenticatedUser::class, 'reviewed');
+        return $this->belongsTo(AuthenticatedUser::class, 'reviewed_id');
     }
 }

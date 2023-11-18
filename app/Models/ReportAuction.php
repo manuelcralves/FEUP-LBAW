@@ -15,8 +15,8 @@ class ReportAuction extends Model
     protected $fillable = [
         'reason',
         'creation_date',
-        'user', // Foreign key for AuthenticatedUser
-        'auction' // Foreign key for Auction
+        'user_id', // Foreign key for AuthenticatedUser
+        'auction_id' // Foreign key for Auction
     ];
 
     protected $casts = [
@@ -24,10 +24,10 @@ class ReportAuction extends Model
     ];
 
     public function auction() {
-        return $this->belongsTo(Auction::class, 'auction');  
+        return $this->belongsTo(Auction::class, 'auction_id');  
     }
 
-    public function authenticated_user() {
-        return $this->belongsTo(AuthenticatedUser::class, 'user');  
+    public function authenticatedUser() {
+        return $this->belongsTo(AuthenticatedUser::class, 'user_id');  
     }
 }

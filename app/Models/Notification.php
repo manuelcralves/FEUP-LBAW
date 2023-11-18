@@ -18,7 +18,7 @@ class Notification extends Model
         'type', 
         'creation_date', 
         'read', 
-        'user' // Foreign Key for the AuthenticatedUser model
+        'user_id' // Foreign Key for the AuthenticatedUser model
     ];
 
     protected $casts = [
@@ -27,7 +27,7 @@ class Notification extends Model
         'creation_date' => 'datetime'
     ];
 
-    public function authenticated_users() {
-        return $this->belongsToMany(AuthenticatedUser::class, 'user');
+    public function authenticatedUsers() {
+        return $this->belongsToMany(AuthenticatedUser::class, 'notification_user', 'notification_id', 'user_id');
     }
 }

@@ -48,29 +48,28 @@ class AuthenticatedUser extends Model
         return $this->hasMany(Transaction::class);
     }
 
-    public function reviews_written() {
-        return $this->hasMany(Review::class, 'reviewer');
+    public function reviewsWritten() {
+        return $this->hasMany(Review::class, 'reviewer_id');
     }
     
-    public function reviews_received() {
-        return $this->hasMany(Review::class, 'reviewed');
+    public function reviewsReceived() {
+        return $this->hasMany(Review::class, 'reviewed_id');
     }
-    
 
     public function notifications() {
-        return $this->belongsToMany(Notification::class);
+        return $this->belongsToMany(Notification::class, 'notification_user', 'user_id', 'notification_id');
     }
 
-    public function report_auctions() {
+    public function reportAuctions() {
         return $this->hasMany(ReportAuction::class);
     }
 
     public function auctions() {
-        return $this->hasMany(Auction::class);
+        return $this->hasMany(Auction::class, 'owner_id');
     }
 
-    public function following_auctions() {
-        return $this->belongsToMany(Auction::class, 'following', 'user', 'auction')
+    public function followingAuctions() {
+        return $this->belongsToMany(Auction::class, 'following', 'user_id', 'auction_id')
                     ->withPivot('notifications', 'start_date');
     }
 }
