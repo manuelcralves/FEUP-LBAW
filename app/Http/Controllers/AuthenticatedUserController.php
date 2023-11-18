@@ -12,7 +12,8 @@ class AuthenticatedUserController extends Controller
      */
     public function index()
     {
-        //
+        $authenticatedUsers = AuthenticatedUser::all();
+        return view('authenticated_users.index', compact('authenticatedUsers'));
     }
 
     /**
@@ -20,7 +21,7 @@ class AuthenticatedUserController extends Controller
      */
     public function create()
     {
-        //
+        return view('authenticated_users.create');
     }
 
     /**
@@ -28,7 +29,19 @@ class AuthenticatedUserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'username' => 'required|unique:authenticated_users',
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'email' => 'required|email|unique:authenticated_users',
+            'password' => 'required',
+            // Add validation rules for other fields
+        ]);
+
+        AuthenticatedUser::create($validatedData);
+
+        return redirect()->route('authenticated_users.index')
+            ->with('success', 'Authenticated user created successfully');
     }
 
     /**
@@ -36,7 +49,7 @@ class AuthenticatedUserController extends Controller
      */
     public function show(AuthenticatedUser $authenticatedUser)
     {
-        //
+        return view('authenticated_users.show', compact('authenticatedUser'));
     }
 
     /**
@@ -44,7 +57,7 @@ class AuthenticatedUserController extends Controller
      */
     public function edit(AuthenticatedUser $authenticatedUser)
     {
-        //
+        return view('authenticated_users.edit', compact('authenticatedUser'));
     }
 
     /**
@@ -52,7 +65,18 @@ class AuthenticatedUserController extends Controller
      */
     public function update(Request $request, AuthenticatedUser $authenticatedUser)
     {
-        //
+        $validatedData = $request->validate([
+            'username' => 'required|unique:authenticated_users,username,' . $authenticatedUser->id,
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'email' => 'required|email|unique:authenticated_users,email,' . $authenticatedUser->id,
+            // Add validation rules for other fields
+        ]);
+
+        $authenticatedUser->update($validatedData);
+
+        return redirect()->route('authenticated_users.index')
+            ->with('success', 'Authenticated user updated successfully');
     }
 
     /**
@@ -60,6 +84,9 @@ class AuthenticatedUserController extends Controller
      */
     public function destroy(AuthenticatedUser $authenticatedUser)
     {
-        //
+        $authenticatedUser->delete();
+
+        return redirect()->route('authenticated_users.index')
+            ->with('success', 'Authenticated user deleted successfully');
     }
 }
