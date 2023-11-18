@@ -12,7 +12,8 @@ class BidController extends Controller
      */
     public function index()
     {
-        //
+        $bids = Bid::all();
+        return view('bids.index', compact('bids'));
     }
 
     /**
@@ -20,7 +21,7 @@ class BidController extends Controller
      */
     public function create()
     {
-        //
+        return view('bids.create');
     }
 
     /**
@@ -28,7 +29,14 @@ class BidController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            // Add validation rules for bid fields
+        ]);
+
+        Bid::create($validatedData);
+
+        return redirect()->route('bids.index')
+            ->with('success', 'Bid created successfully');
     }
 
     /**
@@ -36,7 +44,7 @@ class BidController extends Controller
      */
     public function show(Bid $bid)
     {
-        //
+        return view('bids.show', compact('bid'));
     }
 
     /**
@@ -44,7 +52,7 @@ class BidController extends Controller
      */
     public function edit(Bid $bid)
     {
-        //
+        return view('bids.edit', compact('bid'));
     }
 
     /**
@@ -52,7 +60,14 @@ class BidController extends Controller
      */
     public function update(Request $request, Bid $bid)
     {
-        //
+        $validatedData = $request->validate([
+            // Add validation rules for bid fields
+        ]);
+
+        $bid->update($validatedData);
+
+        return redirect()->route('bids.index')
+            ->with('success', 'Bid updated successfully');
     }
 
     /**
@@ -60,6 +75,9 @@ class BidController extends Controller
      */
     public function destroy(Bid $bid)
     {
-        //
+        $bid->delete();
+
+        return redirect()->route('bids.index')
+            ->with('success', 'Bid deleted successfully');
     }
 }
