@@ -12,7 +12,8 @@ class AddressController extends Controller
      */
     public function index()
     {
-        //
+        $addresses = Address::all();
+        return view('addresses.index', compact('addresses'));
     }
 
     /**
@@ -20,7 +21,7 @@ class AddressController extends Controller
      */
     public function create()
     {
-        //
+        return view('addresses.create');
     }
 
     /**
@@ -28,7 +29,18 @@ class AddressController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'street' => 'required',
+            'city' => 'required',
+            'state' => 'required',
+            'zip_code' => 'required',
+            // Add validation rules for other fields
+        ]);
+
+        Address::create($validatedData);
+
+        return redirect()->route('addresses.index')
+            ->with('success', 'Address created successfully');
     }
 
     /**
@@ -36,7 +48,7 @@ class AddressController extends Controller
      */
     public function show(Address $address)
     {
-        //
+        return view('addresses.show', compact('address'));
     }
 
     /**
@@ -44,7 +56,7 @@ class AddressController extends Controller
      */
     public function edit(Address $address)
     {
-        //
+        return view('addresses.edit', compact('address'));
     }
 
     /**
@@ -52,7 +64,18 @@ class AddressController extends Controller
      */
     public function update(Request $request, Address $address)
     {
-        //
+        $validatedData = $request->validate([
+            'street' => 'required',
+            'city' => 'required',
+            'state' => 'required',
+            'zip_code' => 'required',
+            // Add validation rules for other fields
+        ]);
+
+        $address->update($validatedData);
+
+        return redirect()->route('addresses.index')
+            ->with('success', 'Address updated successfully');
     }
 
     /**
@@ -60,6 +83,9 @@ class AddressController extends Controller
      */
     public function destroy(Address $address)
     {
-        //
+        $address->delete();
+
+        return redirect()->route('addresses.index')
+            ->with('success', 'Address deleted successfully');
     }
 }
