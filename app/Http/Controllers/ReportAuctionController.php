@@ -12,7 +12,8 @@ class ReportAuctionController extends Controller
      */
     public function index()
     {
-        //
+        $reportAuctions = ReportAuction::all();
+        return view('report_auctions.index', compact('reportAuctions'));
     }
 
     /**
@@ -20,7 +21,7 @@ class ReportAuctionController extends Controller
      */
     public function create()
     {
-        //
+        return view('report_auctions.create');
     }
 
     /**
@@ -28,7 +29,14 @@ class ReportAuctionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            // Add validation rules for report_auction fields
+        ]);
+
+        ReportAuction::create($validatedData);
+
+        return redirect()->route('report_auctions.index')
+            ->with('success', 'ReportAuction created successfully');
     }
 
     /**
@@ -36,7 +44,7 @@ class ReportAuctionController extends Controller
      */
     public function show(ReportAuction $reportAuction)
     {
-        //
+        return view('report_auctions.show', compact('reportAuction'));
     }
 
     /**
@@ -44,7 +52,7 @@ class ReportAuctionController extends Controller
      */
     public function edit(ReportAuction $reportAuction)
     {
-        //
+        return view('report_auctions.edit', compact('reportAuction'));
     }
 
     /**
@@ -52,7 +60,14 @@ class ReportAuctionController extends Controller
      */
     public function update(Request $request, ReportAuction $reportAuction)
     {
-        //
+        $validatedData = $request->validate([
+            // Add validation rules for report_auction fields
+        ]);
+
+        $reportAuction->update($validatedData);
+
+        return redirect()->route('report_auctions.index')
+            ->with('success', 'ReportAuction updated successfully');
     }
 
     /**
@@ -60,6 +75,9 @@ class ReportAuctionController extends Controller
      */
     public function destroy(ReportAuction $reportAuction)
     {
-        //
+        $reportAuction->delete();
+
+        return redirect()->route('report_auctions.index')
+            ->with('success', 'ReportAuction deleted successfully');
     }
 }
