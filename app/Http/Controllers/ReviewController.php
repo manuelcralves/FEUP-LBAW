@@ -12,7 +12,8 @@ class ReviewController extends Controller
      */
     public function index()
     {
-        //
+        $reviews = Review::all();
+        return view('reviews.index', compact('reviews'));
     }
 
     /**
@@ -20,7 +21,7 @@ class ReviewController extends Controller
      */
     public function create()
     {
-        //
+        return view('reviews.create');
     }
 
     /**
@@ -28,7 +29,14 @@ class ReviewController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            // Add validation rules for review fields
+        ]);
+
+        Review::create($validatedData);
+
+        return redirect()->route('reviews.index')
+            ->with('success', 'Review created successfully');
     }
 
     /**
@@ -36,7 +44,7 @@ class ReviewController extends Controller
      */
     public function show(Review $review)
     {
-        //
+        return view('reviews.show', compact('review'));
     }
 
     /**
@@ -44,7 +52,7 @@ class ReviewController extends Controller
      */
     public function edit(Review $review)
     {
-        //
+        return view('reviews.edit', compact('review'));
     }
 
     /**
@@ -52,7 +60,14 @@ class ReviewController extends Controller
      */
     public function update(Request $request, Review $review)
     {
-        //
+        $validatedData = $request->validate([
+            // Add validation rules for review fields
+        ]);
+
+        $review->update($validatedData);
+
+        return redirect()->route('reviews.index')
+            ->with('success', 'Review updated successfully');
     }
 
     /**
@@ -60,6 +75,9 @@ class ReviewController extends Controller
      */
     public function destroy(Review $review)
     {
-        //
+        $review->delete();
+
+        return redirect()->route('reviews.index')
+            ->with('success', 'Review deleted successfully');
     }
 }
