@@ -30,7 +30,16 @@ class AuctionController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            // Add validation rules for auction fields
+            'title' => 'required',
+            'description' => 'required',
+            'start_date' => 'nullable|date',
+            'end_date' => 'required|date',
+            'starting_price' => 'required|numeric',
+            'current_price' => 'required|numeric',
+            'status' => 'required|in:ACTIVE,CLOSED',
+            'owner' => 'nullable|exists:authenticated_user,id',
+            'item' => 'nullable|exists:item,id',
+            // Add validation rules for other fields
         ]);
 
         Auction::create($validatedData);
@@ -61,7 +70,16 @@ class AuctionController extends Controller
     public function update(Request $request, Auction $auction)
     {
         $validatedData = $request->validate([
-            // Add validation rules for auction fields
+            'title' => 'required',
+            'description' => 'required',
+            'start_date' => 'nullable|date',
+            'end_date' => 'required|date',
+            'starting_price' => 'required|numeric',
+            'current_price' => 'required|numeric',
+            'status' => 'required|in:ACTIVE,CLOSED',
+            'owner' => 'nullable|exists:authenticated_user,id',
+            'item' => 'nullable|exists:item,id',
+            // Add validation rules for other fields
         ]);
 
         $auction->update($validatedData);
