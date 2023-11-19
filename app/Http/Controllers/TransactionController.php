@@ -30,7 +30,10 @@ class TransactionController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            // Add validation rules for transaction fields
+            'value' => 'required|numeric',
+            'transaction_date' => 'required|date',
+            'description' => 'nullable',
+            // Add validation rules for other fields
         ]);
 
         Transaction::create($validatedData);
@@ -61,7 +64,10 @@ class TransactionController extends Controller
     public function update(Request $request, Transaction $transaction)
     {
         $validatedData = $request->validate([
-            // Add validation rules for transaction fields
+            'value' => 'required|numeric',
+            'transaction_date' => 'required|date',
+            'description' => 'nullable',
+            // Add validation rules for other fields
         ]);
 
         $transaction->update($validatedData);
