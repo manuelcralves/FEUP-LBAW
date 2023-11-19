@@ -30,7 +30,10 @@ class ReviewController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            // Add validation rules for review fields
+            'rating' => 'required|integer|between:1,5',
+            'title' => 'required',
+            'description' => 'required',
+            // Add validation rules for other fields
         ]);
 
         Review::create($validatedData);
@@ -61,7 +64,10 @@ class ReviewController extends Controller
     public function update(Request $request, Review $review)
     {
         $validatedData = $request->validate([
-            // Add validation rules for review fields
+            'rating' => 'required|integer|between:1,5',
+            'title' => 'required',
+            'description' => 'required',
+            // Add validation rules for other fields
         ]);
 
         $review->update($validatedData);
