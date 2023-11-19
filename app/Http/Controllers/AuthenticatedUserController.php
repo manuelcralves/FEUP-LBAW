@@ -35,6 +35,11 @@ class AuthenticatedUserController extends Controller
             'last_name' => 'required',
             'email' => 'required|email|unique:authenticated_users',
             'password' => 'required',
+            'rating' => 'numeric|nullable',
+            'picture' => 'string|nullable',
+            'balance' => 'numeric|nullable',
+            'is_blocked' => 'boolean',
+            'role' => 'required|in:USER,ADMIN', // Assuming ROLES is an enum with values USER and ADMIN
             // Add validation rules for other fields
         ]);
 
@@ -70,6 +75,11 @@ class AuthenticatedUserController extends Controller
             'first_name' => 'required',
             'last_name' => 'required',
             'email' => 'required|email|unique:authenticated_users,email,' . $authenticatedUser->id,
+            'rating' => 'numeric|nullable',
+            'picture' => 'string|nullable',
+            'balance' => 'numeric|nullable',
+            'is_blocked' => 'boolean',
+            'role' => 'required|in:USER,ADMIN',
             // Add validation rules for other fields
         ]);
 
