@@ -13,8 +13,8 @@ class AuthenticatedUserController extends Controller
      */
     public function index()
     {
-        //
-    }
+        return view('pages.home');
+    }    
 
     /**
      * Show the form for creating a new resource.
