@@ -30,7 +30,13 @@ class ItemController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            // Add validation rules for item fields
+            'name' => 'required',
+            'category' => 'nullable',
+            'brand' => 'nullable',
+            'color' => 'nullable',
+            'picture' => 'required',
+            'condition' => 'required|in:NEW,USED',
+            // Add validation rules for other fields
         ]);
 
         Item::create($validatedData);
@@ -61,7 +67,13 @@ class ItemController extends Controller
     public function update(Request $request, Item $item)
     {
         $validatedData = $request->validate([
-            // Add validation rules for item fields
+            'name' => 'required',
+            'category' => 'nullable',
+            'brand' => 'nullable',
+            'color' => 'nullable',
+            'picture' => 'required',
+            'condition' => 'required|in:NEW,USED',
+            // Add validation rules for other fields
         ]);
 
         $item->update($validatedData);
