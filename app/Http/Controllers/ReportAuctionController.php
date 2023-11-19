@@ -30,7 +30,8 @@ class ReportAuctionController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            // Add validation rules for report_auction fields
+            'reason' => 'required',
+            // Add validation rules for other fields
         ]);
 
         ReportAuction::create($validatedData);
@@ -61,7 +62,8 @@ class ReportAuctionController extends Controller
     public function update(Request $request, ReportAuction $reportAuction)
     {
         $validatedData = $request->validate([
-            // Add validation rules for report_auction fields
+            'reason' => 'required',
+            // If needed, validation rules for other fields
         ]);
 
         $reportAuction->update($validatedData);
