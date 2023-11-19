@@ -30,7 +30,11 @@ class FollowingController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            // Add validation rules for following fields
+            'auction' => 'required|exists:auction,id',
+            'notifications' => 'nullable|boolean',
+            'start_date' => 'nullable|date',
+            'user' => 'required|exists:authenticated_user,id',
+            // Add validation rules for other fields
         ]);
 
         Following::create($validatedData);
@@ -61,7 +65,11 @@ class FollowingController extends Controller
     public function update(Request $request, Following $following)
     {
         $validatedData = $request->validate([
-            // Add validation rules for following fields
+            'auction' => 'required|exists:auction,id',
+            'notifications' => 'nullable|boolean',
+            'start_date' => 'nullable|date',
+            'user' => 'required|exists:authenticated_user,id',
+            // Add validation rules for other fields
         ]);
 
         $following->update($validatedData);
