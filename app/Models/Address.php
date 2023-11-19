@@ -18,10 +18,10 @@ class Address extends Model
         'postal_code', 
         'city', 
         'country', 
-        'user_id' // Foreign Key for the AuthenticatedUser model
+        'user' // Foreign Key for the AuthenticatedUser model
     ];
 
     public function authenticatedUser() {
-        return $this->belongsTo(AuthenticatedUser::class, 'user_id');
+        return $this->belongsTo(AuthenticatedUser::class, 'user');
     }
 }

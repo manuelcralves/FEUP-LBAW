@@ -27,6 +27,6 @@ class Item extends Model
     ];
 
     public function auction() {
-        return $this->belongsTo(Auction::class); 
+        return $this->belongsTo(Auction::class, 'item'); 
     }
 }

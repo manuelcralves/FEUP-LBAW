@@ -40,39 +40,39 @@ class AuthenticatedUser extends Authenticatable
 
     
     public function addresses() {
-        return $this->hasMany(Address::class);
+        return $this->hasMany(Address::class, 'user');
     }
     
     public function bids() {
-        return $this->hasMany(Bid::class);
+        return $this->hasMany(Bid::class, 'user');
     }
 
     public function transactions() {
-        return $this->hasMany(Transaction::class);
+        return $this->hasMany(Transaction::class, 'user');
     }
 
     public function reviewsWritten() {
-        return $this->hasMany(Review::class, 'reviewer_id');
+        return $this->hasMany(Review::class, 'reviewer');
     }
     
     public function reviewsReceived() {
-        return $this->hasMany(Review::class, 'reviewed_id');
+        return $this->hasMany(Review::class, 'reviewed');
     }
 
     public function notifications() {
-        return $this->belongsToMany(Notification::class, 'notification_user', 'user_id', 'notification_id');
+        return $this->belongsToMany(Notification::class, 'notification_user', 'user', 'notification');
     }
 
     public function reportAuctions() {
-        return $this->hasMany(ReportAuction::class);
+        return $this->hasMany(ReportAuction::class, 'user');
     }
 
     public function auctions() {
-        return $this->hasMany(Auction::class, 'owner_id');
+        return $this->hasMany(Auction::class, 'owner');
     }
 
     public function followingAuctions() {
-        return $this->belongsToMany(Auction::class, 'following', 'user_id', 'auction_id')
+        return $this->belongsToMany(Auction::class, 'following', 'user', 'auction')
                     ->withPivot('notifications', 'start_date');
     }
 }

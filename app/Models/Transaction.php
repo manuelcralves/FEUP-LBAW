@@ -17,7 +17,7 @@ class Transaction extends Model
         'value', 
         'transaction_date', 
         'description', 
-        'user_id' // Foreign Key for the AuthenticatedUser model
+        'user' // Foreign Key for the AuthenticatedUser model
     ];
 
     protected $casts = [
@@ -26,6 +26,6 @@ class Transaction extends Model
     ];
 
     public function authenticatedUser() {
-        return $this->belongsTo(AuthenticatedUser::class, 'user_id');
+        return $this->belongsTo(AuthenticatedUser::class, 'user');
     }
 }

@@ -21,8 +21,8 @@ class Auction extends Model
         'starting_price', 
         'current_price', 
         'status', 
-        'owner_id', // Foreign Key for the AuthenticatedUser model
-        'item_id'   // Foreign Key for the Item model
+        'owner', // Foreign Key for the AuthenticatedUser model
+        'item'   // Foreign Key for the Item model
     ];
 
     protected $casts = [
@@ -32,27 +32,27 @@ class Auction extends Model
     ];
 
     public function item() {
-        return $this->hasOne(Item::class, 'item_id');
+        return $this->hasOne(Item::class, 'item');
     }
 
     public function review() {
-        return $this->hasOne(Review::class);
+        return $this->hasOne(Review::class, 'auction');
     }
 
     public function bids() {
-        return $this->hasMany(Bid::class);
+        return $this->hasMany(Bid::class, 'auction');
     }
 
     public function reportAuctions() {
-        return $this->hasMany(ReportAuction::class);
+        return $this->hasMany(ReportAuction::class, 'auction');
     }
 
     public function authenticatedUser() {
-        return $this->belongsTo(AuthenticatedUser::class, 'owner_id');
+        return $this->belongsTo(AuthenticatedUser::class, 'owner');
     }
 
     public function followers() {
-        return $this->belongsToMany(AuthenticatedUser::class, 'following', 'auction_id', 'user_id')
+        return $this->belongsToMany(AuthenticatedUser::class, 'following', 'auction', 'user')
                     ->withPivot('notifications', 'start_date');
     }   
 }

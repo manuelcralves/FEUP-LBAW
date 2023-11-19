@@ -17,9 +17,9 @@ class Review extends Model
         'title',
         'description',
         'date',
-        'reviewer_id', // Foreign key for AuthenticatedUser
-        'reviewed_id', // Foreign key for AuthenticatedUser
-        'auction_id'   // Foreign key for Auction
+        'reviewer', // Foreign key for AuthenticatedUser
+        'reviewed', // Foreign key for AuthenticatedUser
+        'auction'   // Foreign key for Auction
     ];
 
     protected $casts = [
@@ -28,14 +28,14 @@ class Review extends Model
     ];
 
     public function auction() {
-        return $this->belongsTo(Auction::class, 'auction_id');
+        return $this->belongsTo(Auction::class, 'auction');
     }
 
     public function reviewer() {
-        return $this->belongsTo(AuthenticatedUser::class, 'reviewer_id');
+        return $this->belongsTo(AuthenticatedUser::class, 'reviewer');
     }
 
     public function reviewed() {
-        return $this->belongsTo(AuthenticatedUser::class, 'reviewed_id');
+        return $this->belongsTo(AuthenticatedUser::class, 'reviewed');
     }
 }
