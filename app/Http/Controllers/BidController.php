@@ -30,7 +30,11 @@ class BidController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            // Add validation rules for bid fields
+            'value' => 'required|numeric',
+            'creation_date' => 'nullable|date',
+            'user' => 'nullable|exists:authenticated_user,id',
+            'auction' => 'nullable|exists:auction,id',
+            // Add validation rules for other fields
         ]);
 
         Bid::create($validatedData);
@@ -61,7 +65,11 @@ class BidController extends Controller
     public function update(Request $request, Bid $bid)
     {
         $validatedData = $request->validate([
-            // Add validation rules for bid fields
+            'value' => 'required|numeric',
+            'creation_date' => 'nullable|date',
+            'user' => 'nullable|exists:authenticated_user,id',
+            'auction' => 'nullable|exists:auction,id',
+            // Add validation rules for other fields
         ]);
 
         $bid->update($validatedData);
