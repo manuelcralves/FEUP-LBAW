@@ -30,7 +30,10 @@ class NotificationController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            // Add validation rules for notification fields
+            'message' => 'required',
+            'type' => 'required|in:INFO,WARNING,ERROR',
+            'read' => 'boolean',
+            // Add validation rules for other fields
         ]);
 
         Notification::create($validatedData);
@@ -61,7 +64,10 @@ class NotificationController extends Controller
     public function update(Request $request, Notification $notification)
     {
         $validatedData = $request->validate([
-            // Add validation rules for notification fields
+            'message' => 'required',
+            'type' => 'required|in:INFO,WARNING,ERROR',
+            'read' => 'boolean',
+            // Add validation rules for other fields
         ]);
 
         $notification->update($validatedData);
