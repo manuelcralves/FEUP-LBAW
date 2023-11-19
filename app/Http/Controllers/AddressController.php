@@ -31,9 +31,10 @@ class AddressController extends Controller
     {
         $validatedData = $request->validate([
             'street' => 'required',
+            'postal_code' => 'required',
             'city' => 'required',
-            'state' => 'required',
-            'zip_code' => 'required',
+            'country' => 'required',
+            'user' => 'nullable|exists:authenticated_user,id',
             // Add validation rules for other fields
         ]);
 
@@ -66,9 +67,10 @@ class AddressController extends Controller
     {
         $validatedData = $request->validate([
             'street' => 'required',
+            'postal_code' => 'required',
             'city' => 'required',
-            'state' => 'required',
-            'zip_code' => 'required',
+            'country' => 'required',
+            'user' => 'nullable|exists:authenticated_user,id',
             // Add validation rules for other fields
         ]);
 
