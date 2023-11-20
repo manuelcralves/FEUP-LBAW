@@ -119,6 +119,35 @@ class AuthenticatedUserController extends Controller
         return redirect()->route('show', ['id' => $id])->with('success', 'Profile updated successfully');
     }
 
+    public function balance($id)
+    {
+        $user = AuthenticatedUser::find($id);
+    
+        if (!$user) {
+            return abort(404);
+        }
+    
+        return view('pages.balance', compact('user'));
+    }
+    
+    public function addFunds(Request $request, $id)
+    {
+        $user = AuthenticatedUser::find($id);
+    
+        if (!$user) {
+            return abort(404);
+        }
+    
+        $request->validate([
+            'amount' => 'required|numeric|min:1',
+        ]);
+    
+        $user->balance += $request->input('amount');
+        $user->save();
+    
+        return redirect()->route('show', ['id' => $id])->with('success', 'Funds added successfully');
+    }
+
     /**
      * Remove the specified resource from storage.
      */

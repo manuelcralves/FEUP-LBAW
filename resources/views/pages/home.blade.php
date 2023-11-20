@@ -9,6 +9,7 @@
         <p><strong>Email:</strong> {{ Auth::user()->email }}</p>
         <p><strong>First Name:</strong> {{ Auth::user()->first_name }}</p>
         <p><strong>Last Name:</strong> {{ Auth::user()->last_name }}</p>
+        <p><strong>Balance:</strong> {{ Auth::user()->balance }}€</p>
     @else
         <p>User is not logged in.</p>
     @endif
