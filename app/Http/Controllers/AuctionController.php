@@ -10,10 +10,19 @@ class AuctionController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($pageNr = 1)
     {
-        //
-    }
+        $perPage = 5; // Number of auctions per page
+    
+        // Create a custom paginator with the desired URL structure
+        $auctions = Auction::paginate($perPage, ['*'], 'page', $pageNr);
+    
+        // Set the path for the paginator to use the named route
+        $auctions->withPath(route('auction.index', ['pageNr' => $pageNr]));
+    
+        return view('pages.auctions', compact('auctions'));
+    }    
+    
 
     /**
      * Show the form for creating a new resource.
@@ -34,9 +43,14 @@ class AuctionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Auction $auction)
+    public function show($id)
     {
-        //
+        $auction = Auction::findOrFail($id);
+    
+        // Load the associated item
+        $item = $auction->item;
+    
+        return view('pages.showauction', compact('auction', 'item'));
     }
 
     /**
