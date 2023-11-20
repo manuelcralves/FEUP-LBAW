@@ -59,5 +59,10 @@ Route::controller(RegisterController::class)->group(function () {
     Route::post('/register', 'register');
 });
 
-Route::get('/profile/{id}', 'App\Http\Controllers\ProfileController@show')->name('profile.show');
+Route::controller(AuthenticatedUserController::class)->group(function () {
+    Route::get('/profile/{id}', 'show')->name('show');
+    Route::get('/profile/{id}/edit', 'edit')->name('edit');
+    Route::post('/profile/{id}/edit', 'update')->name('update');
+});
+
 

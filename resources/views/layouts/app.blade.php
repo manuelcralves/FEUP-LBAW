@@ -25,7 +25,7 @@
             <header>
                 <h1><a href="{{ url('/home') }}">Thingy!</a></h1>
                 @if (Auth::check())
-                    <a href="{{ route('profile.show', ['id' => Auth::user()->id]) }}">View Profile</a>
+                    <a href="{{ route('show', ['id' => Auth::user()->id]) }}">View Profile</a>
                     <a class="button" href="{{ url('/logout') }}"> Logout </a> <span>{{ Auth::user()->name }}</span>
                 @endif
             </header>

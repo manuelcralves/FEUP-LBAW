@@ -13,6 +13,8 @@
                 <p>Country: {{ $address->country }}</p>
             </div>
         @endforeach
+
+        <a href="{{ route('edit', ['id' => Auth::user()->id]) }}" class="button">Edit Profile</a>
     @else
         <p>User is not logged in.</p>
     @endif
