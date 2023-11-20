@@ -3,10 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bid;
+use App\Models\Auction;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class BidController extends Controller
 {
+    public function myBids($id, $pageNr)
+    {
+        // Retrieve the authenticated user
+        $user = Auth::user();
+    
+        if (!$user) {
+            return abort(403);
+        }
+    
+        // Retrieve all bids with associated auctions
+        $bids = Bid::with('auctions')->get();
+    
+        return view('pages.my_bids', compact('bids'));
+    }    
+
     /**
      * Display a listing of the resource.
      */

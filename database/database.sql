@@ -877,3 +877,7 @@ VALUES
 ('Wool Hat', 'One Size', NOW() + INTERVAL '7 days', 45.00, 45.00, 9, 8),
 ('Sunglasses', 'One Size', NOW() + INTERVAL '7 days', 50.00, 50.00, 10, 9),
 ('Watch', 'One Size', NOW() + INTERVAL '7 days', 55.00, 55.00, 3, 10);
+
+INSERT INTO bid (value, "user", "auction", creation_date)
+VALUES 
+(30.00, 3, 4, NOW() + INTERVAL '1 hour');

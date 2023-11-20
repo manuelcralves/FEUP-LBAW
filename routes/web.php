@@ -2,11 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\CardController;
-use App\Http\Controllers\ItemController;
 use App\Http\Controllers\AuthenticatedUserController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AuctionController;
+use App\Http\Controllers\BidController;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -46,6 +44,7 @@ Route::controller(AuthenticatedUserController::class)->group(function () {
     Route::get('/profile/{id}/balance', [AuthenticatedUserController::class, 'balance'])->name('balance');
     Route::post('/profile/{id}/balance', [AuthenticatedUserController::class, 'addFunds'])->name('addFunds');
     Route::get('users/{pageNr}', 'all')->name('show.users');
+    Route::get('/auctionCreate', 'showCreateAuction')-> name('showCreateAuction');
 });
 
 
@@ -55,4 +54,6 @@ Route::controller(AuctionController::class)->group(function () {
     Route::get('/auction/{id}', [AuctionController::class, 'show'])->name('auction.show');
 });
 
-
+Route::controller(BidController::class)->group(function() {
+    Route::get('/profile/{id}/bids/{pageNr}', 'myBids')->name('myBids');
+});
