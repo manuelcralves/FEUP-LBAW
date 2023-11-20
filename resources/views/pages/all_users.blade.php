@@ -31,7 +31,7 @@
 
         <div class="pagination">
             @if ($users->currentPage() > 1)
-                <a href="{{ route('show.users', ['pageNr' => $users->currentPage() - 1]) }}" class="prev">Previous</a>
+                <a href="{{ route('show.users', ['pageNr' => $users->currentPage() - 1]) }}?query={{ $query }}" class="prev">Previous</a>
             @endif
 
             @for ($i = 1; $i <= $users->lastPage(); $i++)
@@ -39,7 +39,7 @@
             @endfor
 
             @if ($users->currentPage() < $users->lastPage())
-                <a href="{{ route('show.users', ['pageNr' => $users->currentPage() + 1]) }}" class="next">Next</a>
+            <a href="{{ route('show.users', ['pageNr' => $users->currentPage() + 1]) }}?query={{ $query }}" class="next">Next</a>
             @endif
         </div>
     @endif
