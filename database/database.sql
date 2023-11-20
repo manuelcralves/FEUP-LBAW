@@ -867,13 +867,13 @@ INSERT INTO item (name, category, brand, color, picture, condition) VALUES
 -- Create auctions for the 10 items and associate each with a user
 INSERT INTO auction (title, description, end_date, starting_price, current_price, "owner", "item")
 VALUES
-('Auction 1', 'Description for Auction 1', NOW() + INTERVAL '7 days', 10.00, 10.00, 2, 1),
-('Auction 2', 'Description for Auction 2', NOW() + INTERVAL '7 days', 15.00, 15.00, 3, 2),
-('Auction 3', 'Description for Auction 3', NOW() + INTERVAL '7 days', 20.00, 20.00, 4, 3),
-('Auction 4', 'Description for Auction 4', NOW() + INTERVAL '7 days', 25.00, 25.00, 2, 4),
-('Auction 5', 'Description for Auction 5', NOW() + INTERVAL '7 days', 30.00, 30.00, 6, 5),
-('Auction 6', 'Description for Auction 6', NOW() + INTERVAL '7 days', 35.00, 35.00, 7, 6),
-('Auction 7', 'Description for Auction 7', NOW() + INTERVAL '7 days', 40.00, 40.00, 8, 7),
-('Auction 8', 'Description for Auction 8', NOW() + INTERVAL '7 days', 45.00, 45.00, 9, 8),
-('Auction 9', 'Description for Auction 9', NOW() + INTERVAL '7 days', 50.00, 50.00, 10, 9),
-('Auction 10', 'Description for Auction 10', NOW() + INTERVAL '7 days', 55.00, 55.00, 3, 10);
+('Floral Tee', 'Size M', NOW() + INTERVAL '7 days', 10.00, 10.00, 2, 1),
+('Cotton Socks', 'Size L', NOW() + INTERVAL '7 days', 15.00, 15.00, 3, 2),
+('Denim Jacket', 'Size XL', NOW() + INTERVAL '7 days', 20.00, 20.00, 4, 3),
+('Silk Scarf', 'One Size', NOW() + INTERVAL '7 days', 25.00, 25.00, 2, 4),
+('Leather Belt', 'Size 32', NOW() + INTERVAL '7 days', 30.00, 30.00, 6, 5),
+('Running Shoes', 'Size 9', NOW() + INTERVAL '7 days', 35.00, 35.00, 7, 6),
+('Winter Gloves', 'Size S', NOW() + INTERVAL '7 days', 40.00, 40.00, 8, 7),
+('Wool Hat', 'One Size', NOW() + INTERVAL '7 days', 45.00, 45.00, 9, 8),
+('Sunglasses', 'One Size', NOW() + INTERVAL '7 days', 50.00, 50.00, 10, 9),
+('Watch', 'One Size', NOW() + INTERVAL '7 days', 55.00, 55.00, 3, 10);

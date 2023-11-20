@@ -12,17 +12,26 @@ class AuctionController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index($pageNr = 1)
+    public function index(Request $request, $pageNr = 1)
     {
         $perPage = 5; // Number of auctions per page
+        $query = $request->input('query'); // Get the search query from the request
     
-        // Create a custom paginator with the desired URL structure
-        $auctions = Auction::paginate($perPage, ['*'], 'page', $pageNr);
+        // Initialize a query builder for auctions
+        $auctionsQuery = Auction::query();
     
-        // Set the path for the paginator to use the named route
-        $auctions->withPath(route('auction.index', ['pageNr' => $pageNr]));
+        // If a search query is provided, filter auctions based on the search criteria
+        if ($query) {
+            $auctionsQuery->whereRaw("tsvectors @@ to_tsquery('english', ?)", [$query]);
+        }
     
-        return view('pages.auctions', compact('auctions'));
+        // Paginate the results
+        $auctions = $auctionsQuery->paginate($perPage, ['*'], 'page', $pageNr);
+    
+        // Set the path for the paginator to use the named route with query parameter
+        $auctions->appends(['query' => $query])->links();
+    
+        return view('pages.auctions', compact('auctions', 'query'));
     }    
 
     public function showOwnedAuctions($id, $pageNr)
