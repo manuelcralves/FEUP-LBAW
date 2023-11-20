@@ -4,11 +4,27 @@
 <form method="POST" action="{{ route('register') }}">
     {{ csrf_field() }}
 
-    <label for="name">Name</label>
-    <input id="name" type="text" name="name" value="{{ old('name') }}" required autofocus>
-    @if ($errors->has('name'))
+    <label for="username">Username</label>
+    <input id="username" type="text" name="username" value="{{ old('username') }}" required autofocus>
+    @if ($errors->has('username'))
       <span class="error">
-          {{ $errors->first('name') }}
+          {{ $errors->first('username') }}
+      </span>
+    @endif
+
+    <label for="first_name">First Name</label>
+    <input id="first_name" type="text" name="first_name" value="{{ old('first_name') }}" required>
+    @if ($errors->has('first_name'))
+      <span class="error">
+          {{ $errors->first('first_name') }}
+      </span>
+    @endif
+
+    <label for="last_name">Last Name</label>
+    <input id="last_name" type="text" name="last_name" value="{{ old('last_name') }}" required>
+    @if ($errors->has('last_name'))
+      <span class="error">
+          {{ $errors->first('last_name') }}
       </span>
     @endif
 

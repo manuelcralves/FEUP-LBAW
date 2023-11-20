@@ -826,41 +826,41 @@ CREATE TRIGGER prevent_admin_create_auction_trigger
     EXECUTE FUNCTION prevent_admin_create_auction();
 
 -- users
-INSERT INTO authenticated_user (id, username, first_name, last_name, email, password, role, balance) VALUES
-(1, 'sarah_m', 'Sarah', 'Mitchell', 'sarahm@example.com', 'password', 'ADMIN', 50),
-(2, 'michael_j', 'Michael', 'Johnson', 'michaelj@example.com', 'password', 'USER', 50),
-(3, 'linda_w', 'Linda', 'Williams', 'lindaw@example.com', 'password', 'USER', 50),
-(4, 'james_b', 'James', 'Brown', 'jamesb@example.com', 'password', 'USER', 50),
-(5, 'patricia_k', 'Patricia', 'King', 'patriciak@example.com', 'password', 'ADMIN', 50),
-(6, 'david_l', 'David', 'Lee', 'davidl@example.com', 'password', 'USER', 50),
-(7, 'susan_g', 'Susan', 'Garcia', 'susang@example.com', 'password', 'USER', 50),
-(8, 'robert_a', 'Robert', 'Adams', 'roberta@example.com', 'password', 'USER', 50),
-(9, 'karen_t', 'Karen', 'Taylor', 'karent@example.com', 'password', 'USER', 50),
-(10, 'brian_h', 'Brian', 'Hernandez', 'brianh@example.com', 'password', 'USER', 50);
+INSERT INTO authenticated_user (username, first_name, last_name, email, password, role, balance) VALUES
+('sarah_m', 'Sarah', 'Mitchell', 'sarahm@example.com', '$2y$10$A08dPuR/FTe6jvAJ4g1UJuZgxaC.NA7RSBRa/MkdC59UNQyv3/zQK', 'ADMIN', 50),
+('michael_j', 'Michael', 'Johnson', 'michaelj@example.com', '$2y$10$A08dPuR/FTe6jvAJ4g1UJuZgxaC.NA7RSBRa/MkdC59UNQyv3/zQK', 'USER', 50),
+('linda_w', 'Linda', 'Williams', 'lindaw@example.com', '$2y$10$A08dPuR/FTe6jvAJ4g1UJuZgxaC.NA7RSBRa/MkdC59UNQyv3/zQK', 'USER', 50),
+('james_b', 'James', 'Brown', 'jamesb@example.com', '$2y$10$A08dPuR/FTe6jvAJ4g1UJuZgxaC.NA7RSBRa/MkdC59UNQyv3/zQK', 'USER', 50),
+('patricia_k', 'Patricia', 'King', 'patriciak@example.com', '$2y$10$A08dPuR/FTe6jvAJ4g1UJuZgxaC.NA7RSBRa/MkdC59UNQyv3/zQK', 'ADMIN', 50),
+('david_l', 'David', 'Lee', 'davidl@example.com', '$2y$10$A08dPuR/FTe6jvAJ4g1UJuZgxaC.NA7RSBRa/MkdC59UNQyv3/zQK', 'USER', 50),
+('susan_g', 'Susan', 'Garcia', 'susang@example.com', '$2y$10$A08dPuR/FTe6jvAJ4g1UJuZgxaC.NA7RSBRa/MkdC59UNQyv3/zQK', 'USER', 50),
+('robert_a', 'Robert', 'Adams', 'roberta@example.com', '$2y$10$A08dPuR/FTe6jvAJ4g1UJuZgxaC.NA7RSBRa/MkdC59UNQyv3/zQK', 'USER', 50),
+('karen_t', 'Karen', 'Taylor', 'karent@example.com', '$2y$10$A08dPuR/FTe6jvAJ4g1UJuZgxaC.NA7RSBRa/MkdC59UNQyv3/zQK', 'USER', 50),
+('brian_h', 'Brian', 'Hernandez', 'brianh@example.com', '$2y$10$A08dPuR/FTe6jvAJ4g1UJuZgxaC.NA7RSBRa/MkdC59UNQyv3/zQK', 'USER', 50);
 
 -- addresses
-INSERT INTO address (id, street, postal_code, city, country, "user") VALUES
-(1, '123 Main St', '10001', 'New York', 'USA', 1),
-(2, '456 Elm St', '20002', 'Washington', 'USA', 2),
-(3, '789 Oak St', '30003', 'Atlanta', 'USA', 3),
-(4, '101 Maple St', '40004', 'Chicago', 'USA', 4),
-(5, '102 Pine St', '50005', 'Denver', 'USA', 5),
-(6, '103 Birch St', '60006', 'Los Angeles', 'USA', 6),
-(7, '104 Cedar St', '70007', 'San Francisco', 'USA', 7),
-(8, '105 Redwood St', '80008', 'Seattle', 'USA', 8),
-(9, '106 Spruce St', '90009', 'Miami', 'USA', 9),
-(10, '107 Aspen St', '10010', 'Boston', 'USA', 10);
+INSERT INTO address (street, postal_code, city, country, "user") VALUES
+('123 Main St', '10001', 'New York', 'USA', 1),
+('456 Elm St', '20002', 'Washington', 'USA', 2),
+('789 Oak St', '30003', 'Atlanta', 'USA', 3),
+('101 Maple St', '40004', 'Chicago', 'USA', 4),
+('102 Pine St', '50005', 'Denver', 'USA', 5),
+('103 Birch St', '60006', 'Los Angeles', 'USA', 6),
+('104 Cedar St', '70007', 'San Francisco', 'USA', 7),
+('105 Redwood St', '80008', 'Seattle', 'USA', 8),
+('106 Spruce St', '90009', 'Miami', 'USA', 9),
+('107 Aspen St', '10010', 'Boston', 'USA', 10);
 
 -- items
-INSERT INTO item (id, name, category, brand, color, picture, condition) VALUES
-(1, 'Floral Tee', 'T-Shirt', 'Brand1', 'White', 'floral_tee.jpg', 'NEW'),
-(2, 'Cotton Socks', 'Socks', 'Brand2', 'Black', 'cotton_socks.jpg', 'NEW'),
-(3, 'Denim Jacket', 'Jacket', 'Brand3', 'Blue', 'denim_jacket.jpg', 'LIKE NEW'),
-(4, 'Silk Scarf', 'Scarf', 'Brand4', 'Red', 'silk_scarf.jpg', 'NEW'),
-(5, 'Leather Belt', 'Belt', 'Brand5', 'Brown', 'leather_belt.jpg', 'GOOD'),
-(6, 'Running Shoes', 'Shoes', 'Brand1', 'Grey', 'running_shoes.jpg', 'EXCELLENT'),
-(7, 'Winter Gloves', 'Gloves', 'Brand2', 'Black', 'winter_gloves.jpg', 'NEW'),
-(8, 'Wool Hat', 'Hat', 'Brand3', 'Beige', 'wool_hat.jpg', 'LIKE NEW'),
-(9, 'Sunglasses', 'Sunglasses', 'Brand4', 'Black', 'sunglasses.jpg', 'NEW'),
-(10, 'Watch', 'Watch', 'Brand5', 'Silver', 'watch.jpg', 'GOOD');
+INSERT INTO item (name, category, brand, color, picture, condition) VALUES
+('Floral Tee', 'T-Shirt', 'Brand1', 'White', 'floral_tee.jpg', 'NEW'),
+('Cotton Socks', 'Socks', 'Brand2', 'Black', 'cotton_socks.jpg', 'NEW'),
+('Denim Jacket', 'Jacket', 'Brand3', 'Blue', 'denim_jacket.jpg', 'LIKE NEW'),
+('Silk Scarf', 'Scarf', 'Brand4', 'Red', 'silk_scarf.jpg', 'NEW'),
+('Leather Belt', 'Belt', 'Brand5', 'Brown', 'leather_belt.jpg', 'GOOD'),
+('Running Shoes', 'Shoes', 'Brand1', 'Grey', 'running_shoes.jpg', 'EXCELLENT'),
+('Winter Gloves', 'Gloves', 'Brand2', 'Black', 'winter_gloves.jpg', 'NEW'),
+('Wool Hat', 'Hat', 'Brand3', 'Beige', 'wool_hat.jpg', 'LIKE NEW'),
+('Sunglasses', 'Sunglasses', 'Brand4', 'Black', 'sunglasses.jpg', 'NEW'),
+('Watch', 'Watch', 'Brand5', 'Silver', 'watch.jpg', 'GOOD');
 

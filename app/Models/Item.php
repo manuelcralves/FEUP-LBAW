@@ -5,21 +5,28 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-// Added to define Eloquent relationships.
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-
 class Item extends Model
 {
     use HasFactory;
 
-    // Don't add create and update timestamps in database.
-    public $timestamps  = false;
+    protected $table = 'item';
 
-    /**
-     * Get the card where the item is included.
-     */
-    public function card(): BelongsTo
-    {
-        return $this->belongsTo(Card::class);
+    public $timestamps = false;
+
+    protected $fillable = [
+        'name', 
+        'category', 
+        'brand', 
+        'color', 
+        'picture', 
+        'condition'
+    ];
+
+    protected $casts = [
+        'condition' => 'string'
+    ];
+
+    public function auction() {
+        return $this->belongsTo(Auction::class, 'item'); 
     }
 }
