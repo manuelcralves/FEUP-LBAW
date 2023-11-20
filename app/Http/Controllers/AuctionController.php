@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Auction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\AuthenticatedUser;
 
 class AuctionController extends Controller
 {
@@ -22,7 +24,29 @@ class AuctionController extends Controller
     
         return view('pages.auctions', compact('auctions'));
     }    
+
+    public function showOwnedAuctions($id, $pageNr)
+    {
+        // Retrieve the authenticated user
+        $user = Auth::user();
     
+        if (!$user) {
+            return abort(403);
+        }
+    
+        // Retrieve the user by the provided $id
+        $targetUser = AuthenticatedUser::find($id);
+    
+        if (!$targetUser) {
+            return abort(404);
+        }
+    
+        // Retrieve the auctions where the authenticated user is the owner
+        $ownedAuctions = $targetUser->auctions()->paginate(5);
+    
+        return view('pages.owned_auctions', compact('ownedAuctions'));
+    }
+
 
     /**
      * Show the form for creating a new resource.

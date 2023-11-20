@@ -50,7 +50,7 @@ Route::controller(AuthenticatedUserController::class)->group(function () {
 
 Route::controller(AuctionController::class)->group(function () {
     Route::get('/auctions/{pageNr}', [AuctionController::class, 'index'])->name('auction.index');
-
+    Route::get('/profile/{id}/auctions/{pageNr}', [AuctionController::class,'showOwnedAuctions'])->name('owned.auctions');
     Route::get('/auction/{id}', [AuctionController::class, 'show'])->name('auction.show');
 });
 
