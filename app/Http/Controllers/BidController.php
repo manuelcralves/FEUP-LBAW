@@ -18,10 +18,20 @@ class BidController extends Controller
             return abort(403);
         }
     
-        // Retrieve all bids with associated auctions
-        $bids = Bid::with('auctions')->get();
+        // Define the number of bids to display per page
+        $perPage = 5;
     
-        return view('pages.my_bids', compact('bids'));
+        // Calculate the offset based on the page number
+        $offset = ($pageNr - 1) * $perPage;
+    
+        // Retrieve bids with associated auctions and paginate them
+        $bids = Bid::with('auctions')
+            ->where('user', $user->id) // Replace 'user_id_column_name' with the actual column name
+            ->orderBy('creation_date', 'desc') // Order by most recent
+            ->paginate($perPage, ['*'], 'page', $pageNr); // Paginate with the specified per page limit and page number
+    
+        // Pass the $id variable and the current page number to the view
+        return view('pages.my_bids', compact('bids', 'id', 'pageNr'));
     }    
 
     /**

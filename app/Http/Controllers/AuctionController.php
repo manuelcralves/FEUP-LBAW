@@ -50,12 +50,19 @@ class AuctionController extends Controller
             return abort(404);
         }
     
-        // Retrieve the auctions where the authenticated user is the owner
-        $ownedAuctions = $targetUser->auctions()->paginate(5);
+        // Define the number of auctions to display per page
+        $perPage = 5;
     
-        return view('pages.owned_auctions', compact('ownedAuctions'));
-    }
-
+        // Calculate the offset based on the page number
+        $offset = ($pageNr - 1) * $perPage;
+    
+        // Retrieve the auctions where the authenticated user is the owner and paginate them
+        $ownedAuctions = $targetUser->auctions()
+            ->orderBy('start_date', 'desc') 
+            ->paginate($perPage, ['*'], 'page', $pageNr); // Paginate with the specified per page limit and page number
+    
+        return view('pages.owned_auctions', compact('ownedAuctions', 'id', 'pageNr'));
+    }    
 
     /**
      * Show the form for creating a new resource.
