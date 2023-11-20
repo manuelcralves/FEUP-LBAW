@@ -65,6 +65,16 @@ class AuthenticatedUserController extends Controller
         return view('pages.profile', compact('user'));
     }    
 
+    public function all($pageNr)
+    {
+        $perPage = 5; // Number of users per page
+    
+        // Retrieve and paginate all users
+        $users = AuthenticatedUser::paginate($perPage, ['*'], 'page', $pageNr);
+    
+        return view('pages.all_users', compact('users'));
+    }    
+
     /**
      * Show the form for editing the specified resource.
      */
