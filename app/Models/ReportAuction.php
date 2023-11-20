@@ -15,15 +15,13 @@ class ReportAuction extends Model
     protected $fillable = [
         'reason',
         'creation_date',
-        'user', // Foreign key for AuthenticatedUser
-        'auction' // Foreign key for Auction
     ];
 
     protected $casts = [
         'creation_date' => 'datetime'
     ];
 
-    public function auction() {
+    public function auctions() {
         return $this->belongsTo(Auction::class, 'auction');  
     }
 

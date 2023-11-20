@@ -16,8 +16,6 @@ class Bid extends Model
     protected $fillable = [
         'value', 
         'creation_date',
-        'user',  // Foreign Key for the AuthenticatedUser model
-        'auction' // Foreign Key for the Auction model
     ];
 
     protected $casts = [

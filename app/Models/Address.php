@@ -17,8 +17,7 @@ class Address extends Model
         'street', 
         'postal_code', 
         'city', 
-        'country', 
-        'user' // Foreign Key for the AuthenticatedUser model
+        'country'
     ];
 
     public function authenticatedUser() {
