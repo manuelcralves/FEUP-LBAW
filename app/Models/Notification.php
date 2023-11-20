@@ -17,8 +17,7 @@ class Notification extends Model
         'message', 
         'type', 
         'creation_date', 
-        'read', 
-        'user' // Foreign Key for the AuthenticatedUser model
+        'read'
     ];
 
     protected $casts = [

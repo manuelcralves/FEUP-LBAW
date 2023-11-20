@@ -20,9 +20,7 @@ class Auction extends Model
         'end_date', 
         'starting_price', 
         'current_price', 
-        'status', 
-        'owner', // Foreign Key for the AuthenticatedUser model
-        'item'   // Foreign Key for the Item model
+        'status'
     ];
 
     protected $casts = [
@@ -31,7 +29,7 @@ class Auction extends Model
         'status' => 'string' 
     ];
 
-    public function item() {
+    public function items() {
         return $this->hasOne(Item::class, 'item');
     }
 

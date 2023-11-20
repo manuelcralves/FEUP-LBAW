@@ -16,10 +16,7 @@ class Review extends Model
         'rating',
         'title',
         'description',
-        'date',
-        'reviewer', // Foreign key for AuthenticatedUser
-        'reviewed', // Foreign key for AuthenticatedUser
-        'auction'   // Foreign key for Auction
+        'date'
     ];
 
     protected $casts = [
@@ -27,15 +24,15 @@ class Review extends Model
         'date' => 'datetime'
     ];
 
-    public function auction() {
+    public function auctions() {
         return $this->belongsTo(Auction::class, 'auction');
     }
 
-    public function reviewer() {
+    public function reviewers() {
         return $this->belongsTo(AuthenticatedUser::class, 'reviewer');
     }
 
-    public function reviewed() {
+    public function revieweds() {
         return $this->belongsTo(AuthenticatedUser::class, 'reviewed');
     }
 }
