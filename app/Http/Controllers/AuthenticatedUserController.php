@@ -65,14 +65,19 @@ class AuthenticatedUserController extends Controller
         return view('pages.profile', compact('user'));
     }    
 
-    public function all($pageNr)
+    public function all(Request $request, $pageNr)
     {
         $perPage = 5; // Number of users per page
+        $query = $request->input('query'); // Get the search query from the request
     
-        // Retrieve and paginate all users
-        $users = AuthenticatedUser::paginate($perPage, ['*'], 'page', $pageNr);
+        // Query users based on the search criteria
+        $users = AuthenticatedUser::where('username', 'LIKE', "%$query%")
+            ->orWhere('first_name', 'LIKE', "%$query%")
+            ->orWhere('last_name', 'LIKE', "%$query%")
+            ->orWhere('email', 'LIKE', "%$query%")
+            ->paginate($perPage, ['*'], 'page', $pageNr);
     
-        return view('pages.all_users', compact('users'));
+        return view('pages.all_users', compact('users', 'query'));
     }    
 
     /**
