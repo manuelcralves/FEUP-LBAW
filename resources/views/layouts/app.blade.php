@@ -25,7 +25,7 @@
             <header>
                 <h1><a href="{{ url('/home') }}">Thingy!</a></h1>
                 @if (Auth::check())
-                    <a href="{{ route('show', ['id' => Auth::user()->id]) }}">View Profile</a>
+                    <a class="button" href="{{ route('show', ['id' => Auth::user()->id]) }}">View Profile</a>
                     <a class="button" href="{{ url('/logout') }}">Logout</a>
                     <span>{{ Auth::user()->name }}</span>
                     <a class="button" href="{{ route('auction.index', ['pageNr' => 1]) }}">Auctions</a>

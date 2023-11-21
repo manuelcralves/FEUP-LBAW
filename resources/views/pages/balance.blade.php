@@ -9,7 +9,7 @@
         @csrf
 
         <label for="amount">Amount to Add:</label>
-        <input id="amount" type="number" step="0.01" name="amount" min="0.01" required>
+        <input id="amount" type="number" step="0.5" name="amount" min="1" required>
         @error('amount')
         <span class="error">{{ $message }}</span>
         @enderror

@@ -87,11 +87,16 @@ class AuctionController extends Controller
     {
         $auction = Auction::findOrFail($id);
     
-        // Load the associated item
+        // Order the bids by value in descending order for this auction
+        $auction->load(['bids' => function ($query) {
+            $query->orderBy('value', 'desc');
+        }]);
+    
+        // Load the associated item (if necessary)
         $item = $auction->item;
     
         return view('pages.showauction', compact('auction', 'item'));
-    }
+    }    
 
     /**
      * Show the form for editing the specified resource.
