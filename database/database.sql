@@ -63,7 +63,7 @@ CREATE TABLE item (
     category TEXT,
     brand TEXT,
     color TEXT,
-    picture TEXT NOT NULL,
+    picture TEXT,
     condition ITEM_CONDITION NOT NULL
 );
 

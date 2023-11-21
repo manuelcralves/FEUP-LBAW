@@ -45,6 +45,9 @@ Route::controller(AuthenticatedUserController::class)->group(function () {
     Route::post('/profile/{id}/edit', 'update')->name('update');
     Route::get('/profile/{id}/balance', [AuthenticatedUserController::class, 'balance'])->name('balance');
     Route::post('/profile/{id}/balance', [AuthenticatedUserController::class, 'addFunds'])->name('addFunds');
+    Route::get('/auctionCreate', [AuthenticatedUserController::class,'showCreateAuction'])-> name('showCreateAuction');
+    Route::post('/auctionCreate', [AuthenticatedUserController::class,'createAuction'])-> name('createAuction');
+
 });
 
 

@@ -14,8 +14,10 @@
                 <br>
                 <strong>Title:</strong> {{ $auction->title }}<br>
                 <strong>Description:</strong> {{ $auction->description }}<br>
+                <strong>Starting Price:</strong> {{ $auction->starting_price}}<br>
                 <strong>Current Price:</strong> {{ $auction->current_price }}<br>
                 <strong>Status:</strong> {{ $auction->status }}<br>
+                <strong>End Date:</strong> {{ $auction->end_date}}<br>
             </li>
         @endforeach
     </ul>

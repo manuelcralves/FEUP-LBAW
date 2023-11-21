@@ -16,6 +16,7 @@
 
         <a href="{{ route('edit', ['id' => Auth::user()->id]) }}" class="button">Edit Profile</a>
         <a href="{{ route('balance', ['id' => Auth::user()->id]) }}" class="button">Add Funds</a>
+        <a href="{{ route('showCreateAuction', ['id' => Auth::user()->id]) }}" class="button">Create Auction</a>
     @else
         <p>User is not logged in.</p>
     @endif

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\AuthenticatedUser;
+use App\Models\Auction;
+use App\Models\Item;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -155,4 +157,83 @@ class AuthenticatedUserController extends Controller
     {
         //
     }
+
+    public function showCreateAuction(){
+        $user = auth()->user();
+        if (!$user){
+            return abort(404);
+        }
+        return view('pages.createAuction', compact('user'));
+    }
+
+    public function createAuction(Request $request)
+{
+
+    $request->validate([
+        'name' => 'required|string',
+        'category' => 'required|string',
+        'brand' => 'required|string',
+        'color' => 'required|string',
+        'condition' => 'required|string', // Adjust validation based on your requirements
+        'title' => 'required|string',
+        'description' => 'required|string',
+        'start_date' => 'required|date',
+        'end_date' => 'required|date',
+        'starting_price' => 'required|numeric',
+        'current_price' => 'required|numeric',
+        'status' => 'required|string'
+    ]);
+    //create item 
+    $item = new Item();
+    $item->name = $request->input('name');
+    $item->category  = $request->input('category');
+    $item->brand = $request->input('brand');
+    $item->color = $request->input('color');
+    $item->condition = $request->input('condition');
+    $item->save();
+    //create auction
+
+    $auction = new Auction();
+    $auction->title = $request->input('title');
+    $auction->description = $request->input('description');
+    $auction->start_date = $request->input('start_date');
+    $auction->end_date =$request->input('end_date');
+    $auction->starting_price = $request->input('starting_price');
+    $auction->current_price = $request->input('current_price');
+    $auction->status = $request->input('status');
+    $auction->owner = $user->id;
+    //$auction->item = $item->id;
+    
+    $auction->item()->associate($item);
+    $auction->save();
+
+
+
+    /*
+    $request->validate([
+        'title' => 'required|string|max:20',
+        'description' => 'required|string|max:255',
+        'starting_price' => 'required|numeric',
+        'category' => 'required|string|max:20',
+        'end_date' => 'required|date',
+        'item_id' => 'required|exists:items,id', // Ensure the item_id exists in the items table
+    ]);
+
+    // Create the auction
+    $auction = Auction::create([
+        'title' => $request->title,
+        'description' => $request->description,
+        'starting_price' => $request->starting_price,
+        'category' => $request->category,
+        'end_date' => $request->end_date,
+        'owner' => $user, // Assuming you associate the auction with the authenticated user
+    ]);
+
+    // Associate the item with the auction
+    $item = Item::find($request->item_id);
+    $auction->item()->associate($item);
+    $auction->save();*/
+
+    return redirect()->route('auction.index')->withSuccess('You have successfully created an auction!');
+}
 }
