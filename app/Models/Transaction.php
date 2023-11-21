@@ -17,7 +17,6 @@ class Transaction extends Model
         'value', 
         'transaction_date', 
         'description', 
-        'user' // Foreign Key for the AuthenticatedUser model
     ];
 
     protected $casts = [

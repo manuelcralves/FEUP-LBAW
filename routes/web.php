@@ -2,10 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\CardController;
-use App\Http\Controllers\ItemController;
 use App\Http\Controllers\AuthenticatedUserController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AuctionController;
 use App\Http\Controllers\BidController;
 
@@ -46,15 +43,19 @@ Route::controller(AuthenticatedUserController::class)->group(function () {
     Route::post('/profile/{id}/edit', 'update')->name('update');
     Route::get('/profile/{id}/balance', [AuthenticatedUserController::class, 'balance'])->name('balance');
     Route::post('/profile/{id}/balance', [AuthenticatedUserController::class, 'addFunds'])->name('addFunds');
+    Route::get('users/{pageNr}', 'all')->name('show.users');
+    Route::get('/auctionCreate', 'showCreateAuction')-> name('showCreateAuction');
 });
 
 
 Route::controller(AuctionController::class)->group(function () {
     Route::get('/auctions/{pageNr}', [AuctionController::class, 'index'])->name('auction.index');
-    
     Route::get('/auction/{id}', [AuctionController::class, 'show'])->name('auction.show');
 });
 
 Route::controller(BidController::class)->group(function () {
     Route::post('/auction/{id}/bid','placeBid')->name('place.bid');
+    Route::get('/profile/{id}/auctions/{pageNr}', [AuctionController::class,'showOwnedAuctions'])->name('owned.auctions');
+    Route::get('/auction/{id}', [AuctionController::class, 'show'])->name('auction.show');
+    Route::get('/profile/{id}/bids/{pageNr}', 'myBids')->name('myBids');
 });

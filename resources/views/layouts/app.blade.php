@@ -29,6 +29,7 @@
                     <a class="button" href="{{ url('/logout') }}">Logout</a>
                     <span>{{ Auth::user()->name }}</span>
                     <a class="button" href="{{ route('auction.index', ['pageNr' => 1]) }}">Auctions</a>
+                    <a class="button" href="{{ route('show.users', ['pageNr' => 1]) }}">Users</a>
                 @endif
             </header>
             <section id="content">
