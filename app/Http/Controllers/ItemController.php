@@ -40,7 +40,8 @@ class ItemController extends Controller
             'color' => 'nullable',
             'picture' => 'required',
             'condition' => 'required|in:NEW,USED',
-        
+        ]);
+                
         $input = $request->all();
 
         $item = $this->itemRepository->create($input);
@@ -49,7 +50,7 @@ class ItemController extends Controller
 
         return redirect(route('items.index'));
 
-        ]);
+
 
         Item::create($validatedData);
 
