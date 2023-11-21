@@ -10,10 +10,14 @@ class AuthenticatedUserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $authenticatedUsers = AuthenticatedUser::all();
-        return view('authenticated_users.index', compact('authenticatedUsers'));
+        return view('authenticated_users.show')->with('authenticated_users', Auth::AuthenticatedUser());
+        $this->AuthenticatedUserRepository->pushCriteria(new RequestCriteria($request));
+        $authenticatedUsers = $this->AuthenticatedUserRepository->all();
+
+        return view('authenticated_users.index')
+        with -> ('authenticated_users', $authenticatedUsers);
     }
 
     /**
@@ -39,8 +43,7 @@ class AuthenticatedUserController extends Controller
             'picture' => 'string|nullable',
             'balance' => 'numeric|nullable',
             'is_blocked' => 'boolean',
-            'role' => 'required|in:USER,ADMIN', // Assuming ROLES is an enum with values USER and ADMIN
-            // Add validation rules for other fields
+            'role' => 'required|in:USER,ADMIN',
         ]);
 
         AuthenticatedUser::create($validatedData);
@@ -54,7 +57,15 @@ class AuthenticatedUserController extends Controller
      */
     public function show(AuthenticatedUser $authenticatedUser)
     {
-        return view('authenticated_users.show', compact('authenticatedUser'));
+        $authenticatedUser = $this->AuthenticatedUserRepository->findWithoutFail($id);
+
+        if (empty($item)) {
+            Flash::error('Authenticated user not found');
+
+            return redirect(route('authenticated_users.index'));
+        }
+
+        return view('authenticated_users.show')->with('authenticated_users', $authenticatedUser);
     }
 
     /**
@@ -62,7 +73,15 @@ class AuthenticatedUserController extends Controller
      */
     public function edit(AuthenticatedUser $authenticatedUser)
     {
-        return view('authenticated_users.edit', compact('authenticatedUser'));
+        $authenticatedUser = $this->AuthenticatedUserRepository->findWithoutFail($authenticatedUser);
+
+        if (empty($authenticatedUser)) {
+            Flash::error('Authenticated user not found');
+
+            return redirect(route('authenticated_users.index'));
+        }
+
+        return view('authenticated_users.edit')->with('authenticated_users', $authenticatedUser);
     }
 
     /**
@@ -80,7 +99,6 @@ class AuthenticatedUserController extends Controller
             'balance' => 'numeric|nullable',
             'is_blocked' => 'boolean',
             'role' => 'required|in:USER,ADMIN',
-            // Add validation rules for other fields
         ]);
 
         $authenticatedUser->update($validatedData);
@@ -94,9 +112,19 @@ class AuthenticatedUserController extends Controller
      */
     public function destroy(AuthenticatedUser $authenticatedUser)
     {
-        $authenticatedUser->delete();
+        $authenticatedUser = $this->AuthenticatedUserRepository->findWithoutFail($authenticatedUser);
 
-        return redirect()->route('authenticated_users.index')
-            ->with('success', 'Authenticated user deleted successfully');
+        if (empty($authenticatedUser)) {
+            Flash::error('User not found');
+
+            return redirect(route('authenticated_users.index'));
+        }
+
+        $this->userRepository->delete($id);
+
+        Flash::success('User deleted successfully.');
+
+        return redirect(route('authenticated_users.index'));
+
     }
 }
