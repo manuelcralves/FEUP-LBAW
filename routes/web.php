@@ -7,6 +7,7 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\AuthenticatedUserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AuctionController;
+use App\Http\Controllers\BidController;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -50,8 +51,10 @@ Route::controller(AuthenticatedUserController::class)->group(function () {
 
 Route::controller(AuctionController::class)->group(function () {
     Route::get('/auctions/{pageNr}', [AuctionController::class, 'index'])->name('auction.index');
-
+    
     Route::get('/auction/{id}', [AuctionController::class, 'show'])->name('auction.show');
 });
 
-
+Route::controller(BidController::class)->group(function () {
+    Route::post('/makebid','update')->name('makebid');
+});

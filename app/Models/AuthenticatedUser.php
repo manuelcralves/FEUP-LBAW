@@ -75,4 +75,6 @@ class AuthenticatedUser extends Authenticatable
         return $this->belongsToMany(Auction::class, 'following', 'user', 'auction')
                     ->withPivot('notifications', 'start_date');
     }
+
+    
 }
