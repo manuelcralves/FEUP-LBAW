@@ -12,8 +12,12 @@ class ItemController extends Controller
      */
     public function index()
     {
-        $items = Item::all();
-        return view('items.index', compact('items'));
+        $this->itemRepository->pushCriteria(new RequestCriteria($request));
+        $items = $this->itemRepository->all();
+
+        return view('items.index')
+            ->with('items', $items);
+
     }
 
     /**
@@ -36,7 +40,15 @@ class ItemController extends Controller
             'color' => 'nullable',
             'picture' => 'required',
             'condition' => 'required|in:NEW,USED',
-            // Add validation rules for other fields
+        
+        $input = $request->all();
+
+        $item = $this->itemRepository->create($input);
+
+        Flash::success('Item saved successfully.');
+
+        return redirect(route('items.index'));
+
         ]);
 
         Item::create($validatedData);
@@ -50,7 +62,17 @@ class ItemController extends Controller
      */
     public function show(Item $item)
     {
-        return view('items.show', compact('item'));
+        $item = $this->itemRepository->findWithoutFail($id);
+
+        if (empty($item)) {
+            Flash::error('Item not found');
+
+            return redirect(route('items.index'));
+        }
+
+        return view('items.show')->with('item', $item);
+    }
+
     }
 
     /**
@@ -58,7 +80,16 @@ class ItemController extends Controller
      */
     public function edit(Item $item)
     {
-        return view('items.edit', compact('item'));
+        $item = $this->itemRepository->findWithoutFail($id);
+
+        if (empty($item)) {
+            Flash::error('Item not found');
+
+            return redirect(route('items.index'));
+        }
+
+        return view('items.edit')->with('item', $item);
+
     }
 
     /**
@@ -78,8 +109,10 @@ class ItemController extends Controller
 
         $item->update($validatedData);
 
-        return redirect()->route('items.index')
-            ->with('success', 'Item updated successfully');
+        Flash::success('Item updated successfully.');
+
+        return redirect(route('items.index'));
+
     }
 
     /**
@@ -87,9 +120,19 @@ class ItemController extends Controller
      */
     public function destroy(Item $item)
     {
-        $item->delete();
+        $item = $this->itemRepository->findWithoutFail($id);
 
-        return redirect()->route('items.index')
-            ->with('success', 'Item deleted successfully');
+        if (empty($item)) {
+            Flash::error('Item not found');
+
+            return redirect(route('items.index'));
+        }
+
+        $this->itemRepository->delete($id);
+
+        Flash::success('Item deleted successfully.');
+
+        return redirect(route('items.index'));
+
     }
 }
