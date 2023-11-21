@@ -28,7 +28,6 @@
         <thead>
             <tr>
                 <th>Place</th>
-                <th>Id</th>
                 <th>Rating</th>
                 <th>Username</th>
                 <th>Bid Amount</th>
@@ -39,7 +38,6 @@
             @forelse ($auction->bids as $bid)
                 <tr>
                     <td>{{ $loop->iteration }}</td>
-                    <td>{{ $bid->id }}</td>
                     <td>{{ $bid->authenticatedUser->rating ?? '(No rating yet)' }}</td>
                     <td>{{ $bid->authenticatedUser->username }}</td>
                     <td>{{ $bid->value }}</td>

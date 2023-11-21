@@ -875,23 +875,9 @@ VALUES
 ('Running Shoes', 'Size 9', NOW() + INTERVAL '7 days', 35.00, 35.00, 7, 6),
 ('Winter Gloves', 'Size S', NOW() + INTERVAL '7 days', 40.00, 40.00, 8, 7),
 ('Wool Hat', 'One Size', NOW() + INTERVAL '7 days', 45.00, 45.00, 9, 8),
-('Sunglasses', 'One Size', NOW() + INTERVAL '7 days', 50.00, 50.00, 10, 9),
-('Watch', 'One Size', NOW() + INTERVAL '7 days', 55.00, 55.00, 3, 10),
-('Watch1', 'One Size', NOW() + INTERVAL '7 days', 55.00, 55.00, 3, 2),
-('Watch2', 'One Size', NOW() + INTERVAL '7 days', 55.00, 55.00, 3, 3),
-('Watch3', 'One Size', NOW() + INTERVAL '7 days', 55.00, 55.00, 3, 4),
-('Watch4', 'One Size', NOW() + INTERVAL '7 days', 55.00, 55.00, 3, 5),
-('Watch5', 'One Size', NOW() + INTERVAL '7 days', 55.00, 55.00, 3, 6),
-('Watch6', 'One Size', NOW() + INTERVAL '7 days', 55.00, 55.00, 3, 7),
-('Watch7', 'One Size', NOW() + INTERVAL '7 days', 55.00, 55.00, 3, 8);
+('Sunglasses', 'One Size', NOW() + INTERVAL '7 days', 50.00, 50.00, 10, 9);
 
 INSERT INTO bid (value, "user", "auction", creation_date)
 VALUES 
 (30.00, 3, 4, NOW() + INTERVAL '1 hour'),
-(35.00, 3, 5, NOW() + INTERVAL '2 hours'),
-(40.00, 3, 6, NOW() + INTERVAL '3 hours'),
-(45.00, 3, 7, NOW() + INTERVAL '4 hours'),
-(50.00, 3, 8, NOW() + INTERVAL '5 hours'),
-(55.00, 3, 9, NOW() + INTERVAL '6 hours'),
-(65.00, 3, 1, NOW() + INTERVAL '8 hours'),
-(75.00, 3, 3, NOW() + INTERVAL '10 hours');
+(35.00, 3, 5, NOW() + INTERVAL '2 hours');
