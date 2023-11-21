@@ -56,5 +56,5 @@ Route::controller(AuctionController::class)->group(function () {
 });
 
 Route::controller(BidController::class)->group(function () {
-    Route::post('/makebid','update')->name('makebid');
+    Route::post('/auction/{id}/bid','placeBid')->name('place.bid');
 });

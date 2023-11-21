@@ -28,7 +28,9 @@ class Auction extends Model
     protected $casts = [
         'starting_price' => 'float',
         'current_price' => 'float',
-        'status' => 'string' 
+        'status' => 'string',
+        'start_date' => 'datetime', 
+        'end_date' => 'datetime' 
     ];
 
     public function item() {
