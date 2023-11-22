@@ -46,6 +46,7 @@ Route::controller(AuthenticatedUserController::class)->group(function () {
     Route::post('/profile/{id}/promote', 'promoteToAdmin')->name('promote.admin');
     Route::get('users/{pageNr}', 'all')->name('show.users');
     Route::get('/auctionCreate', 'showCreateAuction')-> name('showCreateAuction');
+    Route::get('/search', 'searchResults')->name('search.results');
 });
 
 

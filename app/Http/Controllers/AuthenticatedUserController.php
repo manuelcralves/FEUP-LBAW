@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Policies\AuthenticatedUserPolicy;
+use App\Http\Controllers\Controller;
+use App\Models\Auction;
 
 class AuthenticatedUserController extends Controller
 {
@@ -86,6 +88,39 @@ class AuthenticatedUserController extends Controller
         $this->authorize('viewProfile', $user);
     
         return view('pages.profile', compact('user'));
+    }
+
+    public function searchResults(Request $request)
+    {
+        $perPage = 5;
+        $query = $request->input('query');
+
+        // Query users based on the search criteria if a query is provided
+        $usersQuery = AuthenticatedUser::query();
+        
+        if ($query) {
+            $usersQuery->where('username', 'LIKE', '%' . $query . '%')
+            ->orWhere('first_name', 'LIKE', '%' . $query . '%')
+            ->orWhere('last_name', 'LIKE', '%' . $query . '%')
+            ->orWhere('email', 'LIKE', '%' . $query . '%');
+        }
+
+        // Query auctions based on the search criteria if a query is provided
+        $auctionsQuery = Auction::query();
+
+        if ($query) {
+            $auctionsQuery->whereRaw("tsvectors @@ to_tsquery('english', ?)", [$query]);
+        }
+
+        // Add a condition to filter auctions with 'status' as "ACTIVE"
+        $auctionsQuery->where('status', 'ACTIVE');
+
+        // Paginate the results for both users and auctions
+        $users = $usersQuery->paginate($perPage, ['*'], 'users_page');
+        $auctions = $auctionsQuery->paginate($perPage, ['*'], 'auctions_page');
+
+        // Return the search results view
+        return view('pages.search_results', compact('users', 'auctions', 'query'));
     }
       
 
