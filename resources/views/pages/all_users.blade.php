@@ -8,7 +8,7 @@
     <form method="GET" action="{{ route('show.users', ['pageNr' => 1]) }}">
         <input type="text" name="query" placeholder="Search users..." value="{{ $query }}">
         <button type="submit">Search</button>
-    </form>
+    </form> 
 
     @if ($users->isEmpty())
         <p>No users found.</p>
