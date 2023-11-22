@@ -6,6 +6,7 @@ use App\Models\AuthenticatedUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use App\Policies\AuthenticatedUserPolicy;
 
 class AuthenticatedUserController extends Controller
 {
@@ -76,16 +77,17 @@ class AuthenticatedUserController extends Controller
      */
     public function show($id)
     {
-        // Retrieve the user whose profile you want to display
         $user = AuthenticatedUser::find($id);
     
         if (!$user) {
-            return abort(404); // Display a 404 error if the user is not found
+            return abort(404);
         }
     
-        // Pass the user data to the profile view
+        $this->authorize('viewProfile', $user);
+    
         return view('pages.profile', compact('user'));
-    }    
+    }
+      
 
     public function all(Request $request, $pageNr)
     {

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\AuthenticatedUser;
 use App\Models\Item;
+use App\Policies\AuctionPolicy;
 
 class AuctionController extends Controller
 {
@@ -177,6 +178,9 @@ class AuctionController extends Controller
     {
         $auction = Auction::findOrFail($id);
     
+        // Use the authorize method to check if the user is authorized to view the auction
+        $this->authorize('viewAuction', $auction);
+    
         // Order the bids by value in descending order for this auction
         $auction->load(['bids' => function ($query) {
             $query->orderBy('value', 'desc');
@@ -186,7 +190,7 @@ class AuctionController extends Controller
         $item = $auction->item;
     
         return view('pages.showauction', compact('auction', 'item'));
-    }    
+    }
 
     public function cancel($id)
     {
