@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AuthenticatedUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class AuthenticatedUserController extends Controller
 {
@@ -48,17 +49,38 @@ class AuthenticatedUserController extends Controller
         return redirect()->route('login')->with('success', 'User created successfully');
     }
 
+    public function promoteToAdmin($id)
+    {
+        // Retrieve the user based on the $id parameter
+        $user = AuthenticatedUser::find($id);
+    
+        if (!$user) {
+            // Handle the case where the user is not found (e.g., show an error message)
+            return abort(404);
+        }
+    
+        // Check if the authenticated user has permission to promote users to ADMIN
+        if (Auth::user()->role === 'ADMIN' && Auth::user()->id != $user->id) {
+            $user->role = 'ADMIN';
+            $user->save();
+    
+            return back()->with('success', 'User promoted to ADMIN successfully');
+        } else {
+            // Handle the case where the authenticated user doesn't have permission
+            return abort(403); // Return a 403 Forbidden response
+        }
+    }    
 
     /**
      * Display the specified resource.
      */
-    public function show(AuthenticatedUser $authenticatedUser)
+    public function show($id)
     {
-        // Retrieve the authenticated user from the session
-        $user = auth()->user();
+        // Retrieve the user whose profile you want to display
+        $user = AuthenticatedUser::find($id);
     
         if (!$user) {
-            return abort(403);
+            return abort(404); // Display a 404 error if the user is not found
         }
     
         // Pass the user data to the profile view
