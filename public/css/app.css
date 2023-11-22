@@ -221,7 +221,7 @@ main > header span {
      border-color: #125e12; /* Dark green border color on focus */
    }
 
-   #search-form {
+#search-form {
     text-align: center; /* Center the form */
     margin: 0 auto; /* Center the form horizontally */
     max-width: 300px; /* Limit the form's width */
@@ -233,23 +233,11 @@ main > header span {
     border: 1px solid #ccc; /* Add a border for input field */
     border-radius: 5px; /* Add rounded corners */
     font-size: 16px; /* Set font size */
+    outline: none; /* Remove the input focus outline */
+    box-shadow: 0 0 5px rgba(0, 128, 0, 0.5); /* Add a green box shadow on focus */
 }
 
-#search-form button {
-    display: inline-block; /* Display the button inline */
-    padding: 10px 20px; /* Add padding to the button */
-    background-color: #007bff; /* Set button background color */
-    color: #fff; /* Set button text color */
-    border: none; /* Remove button border */
-    border-radius: 5px; /* Add rounded corners */
-    cursor: pointer; /* Change cursor to pointer on hover */
-    font-size: 16px; /* Set font size */
+#search-form input[type="text"]:focus {
+    border-color: #008000; /* Change border color on focus */
 }
 
-#search-form button:hover {
-    background-color: #0056b3; /* Darken button color on hover */
-}
-
-
-   
-  
