@@ -55,5 +55,6 @@
 
 
         <button type="submit">Create Auction</button>
+        <a class="button" href="{{ url('/home') }}">Cancel</a>
     </form>
 @endsection

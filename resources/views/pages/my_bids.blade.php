@@ -33,4 +33,5 @@
             <a href="{{ route('myBids', ['id' => $id, 'pageNr' => $bids->currentPage() + 1]) }}" class="next">Next</a>
         @endif
     </div>
+    <a href="{{ route('show', ['id' => Auth::user()->id]) }}" class="button">Back to profile</a>
 @endsection

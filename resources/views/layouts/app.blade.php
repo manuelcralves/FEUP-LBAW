@@ -23,14 +23,20 @@
     <body>
         <main>
             <header>
-                <h1><a href="{{ url('/home') }}">Thingy!</a></h1>
-                @if (Auth::check())
-                    <a class="button" href="{{ route('show', ['id' => Auth::user()->id]) }}">View Profile</a>
+                <h1><a href="{{ url('/home') }}">StyleSwap!</a></h1>
+                @if (!Auth::check())
+                <a class="button" href="{{ url('/login') }}">Login</a>
+                <a class="button" href="{{ route('auction.index', ['pageNr' => 1]) }}">Auctions</a>
+                <a class="button" href="{{ route('show.users', ['pageNr' => 1]) }}">Users</a>
+                <a class="button" href="{{ route('register', ['pageNr' => 1]) }}">Register</a>
+                @elseif(Auth::check())
+                    <a class="button" href="{{ route('show', ['id' => Auth::user()->id]) }}">My Profile</a>
+                    <a class="button" href="{{ route('auction.index', ['pageNr' => 1]) }}">Auctions</a>
+                    <a class="button" href="{{ route('show.users', ['pageNr' => 1]) }}">Users</a>
                     <a class="button" href="{{ url('/logout') }}">Logout</a>
                     <span>{{ Auth::user()->name }}</span>
                     <a class="button" href="{{ route('auction.create') }}">Create Auction</a>
-                    <a class="button" href="{{ route('auction.index', ['pageNr' => 1]) }}">Auctions</a>
-                    <a class="button" href="{{ route('show.users', ['pageNr' => 1]) }}">Users</a>
+                    
                 @endif
             </header>
             <section id="content">
