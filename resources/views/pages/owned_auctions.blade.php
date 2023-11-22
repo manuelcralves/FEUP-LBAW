@@ -37,4 +37,5 @@
         @endif
         </div>
     @endif
+    <a href="{{ route('show', ['id' => Auth::user()->id]) }}" class="button">Back to profile</a>
 @endsection

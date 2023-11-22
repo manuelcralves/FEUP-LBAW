@@ -364,11 +364,11 @@ CREATE TRIGGER check_wallet_balance
 CREATE OR REPLACE FUNCTION check_and_update_user_balance_and_create_transaction_function() RETURNS TRIGGER AS
 $BODY$
 DECLARE 
-    user_balance NUMERIC(20,2);
+    user_balance EURO;
     auction_title TEXT;
 BEGIN
     SELECT balance INTO user_balance
-    FROM lbaw23152.authenticated_user
+    FROM authenticated_user
     WHERE id = NEW."user";  
     
     IF user_balance < NEW.value THEN
@@ -376,14 +376,14 @@ BEGIN
     END IF;
     
     SELECT title INTO auction_title
-    FROM lbaw23152.auction
+    FROM auction
     WHERE id = NEW.auction;
     
-    UPDATE lbaw23152.authenticated_user
+    UPDATE authenticated_user
     SET balance = balance - NEW.value
     WHERE id = NEW."user";
     
-    INSERT INTO lbaw23152.transaction (value, transaction_date, description, "user")
+    INSERT INTO transaction (value, transaction_date, description, "user")
     VALUES (-NEW.value, NOW(), 'Bid on auction: ' || auction_title, NEW."user");
     
     RETURN NEW;

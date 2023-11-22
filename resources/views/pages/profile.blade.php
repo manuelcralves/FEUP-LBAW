@@ -8,6 +8,12 @@
             {{ session('success') }}
         </div>
     @endif
+    <h1>User Information</h1>
+        <p><strong>Name:</strong> {{ Auth::user()->username }}</p>
+        <p><strong>Email:</strong> {{ Auth::user()->email }}</p>
+        <p><strong>First Name:</strong> {{ Auth::user()->first_name }}</p>
+        <p><strong>Last Name:</strong> {{ Auth::user()->last_name }}</p>
+        <p><strong>Balance:</strong> {{ Auth::user()->balance }}€</p>
     @if(Auth::check())
         <h2>Your Addresses</h2>
         @foreach (Auth::user()->addresses as $address)
@@ -31,7 +37,7 @@
         <a href="{{ route('balance', ['id' => Auth::user()->id]) }}" class="button">Add Funds</a>
         <a href="{{ route('owned.auctions', ['id' => Auth::user()->id, 'pageNr' => 1]) }}" class="button">My Auctions</a>
         <a href="{{ route('myBids', ['id' => Auth::user()->id, 'pageNr' => 1]) }}" class="button">My Bids</a>
-    @else
-        <p>User is not logged in.</p>
+        <a class="button" href="{{ url('/home') }}">Back to Home Page</a>
     @endif
+    
 @endsection

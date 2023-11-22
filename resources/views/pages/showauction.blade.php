@@ -30,7 +30,7 @@
     <p><strong>End Date:</strong> {{ $auction->end_date->format('Y-m-d H:i:s') }}</p>
     <p><strong>Status:</strong> {{ $auction->status }}</p>
     <p><strong>Description:</strong> {{ $auction->description }}<br></p>
-    @if (Auth::check() && Auth::user()->id == $auction->owner)
+    @if (Auth::check() && Auth::user()->id == $auction->owner && $auction->status == 'ACTIVE')
         <a href="{{ route('auction.edit', $auction->id) }}" class="button">Edit Auction</a>
         <form method="POST" action="{{ route('auction.cancel', $auction->id) }}" style="display: inline;">
             @csrf
