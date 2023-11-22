@@ -13,7 +13,9 @@
         <p><strong>Email:</strong> {{ $user->email }}</p>
         <p><strong>First Name:</strong> {{ $user->first_name }}</p>
         <p><strong>Last Name:</strong> {{ $user->last_name }}</p>
+        @if(Auth::user()->role != 'ADMIN')
         <p><strong>Balance:</strong> {{ $user->balance }}€</p>
+        @endif
     @if(Auth::check())
         <h2>{{$user->first_name}} {{$user->last_name}} Addresses</h2>
         @foreach ($user->addresses as $address)
@@ -38,8 +40,9 @@
             <a href="{{ route('owned.auctions', ['id' => Auth::user()->id, 'pageNr' => 1]) }}" class="button">My Auctions</a>
             <a href="{{ route('myBids', ['id' => Auth::user()->id, 'pageNr' => 1]) }}" class="button">My Bids</a>
             @endif
+            <a class="button" href="{{ url('/home') }}">Back to Home Page</a>
+        @else
+        <a class="button" href="{{ route('show.users', ['pageNr' => 1]) }}">Back to Users Page</a>
         @endif
-        <a class="button" href="{{ url('/home') }}">Back to Home Page</a>
     @endif
-    
 @endsection

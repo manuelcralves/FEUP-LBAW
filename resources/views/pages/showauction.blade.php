@@ -67,7 +67,7 @@
         </tbody>
     </table>
     <!-- Bid Form -->
-    @if(Auth::user()->role != 'ADMIN')
+    @if(Auth::user()->role != 'ADMIN' && Auth::user() != $auction->authenticatedUser)
         <form id="bidForm" method="POST" action="/auction/{{ $auction->id }}/bid">
             @csrf
             <label for="bid_amount">Bid Amount:</label>

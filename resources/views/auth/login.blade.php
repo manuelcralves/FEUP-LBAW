@@ -12,7 +12,7 @@
         </span>
     @endif
 
-    <label for="password" >Password</label>
+    <label for="password">Password</label>
     <input id="password" type="password" name="password" required>
     @if ($errors->has('password'))
         <span class="error">
@@ -21,13 +21,23 @@
     @endif
 
     <button type="submit">
-        Login
+        Let's Go!
     </button>
-    
-    @if (session('success'))
-        <p class="success">
-            {{ session('success') }}
-        </p>
-    @endif
 </form>
+
+<button type="button" onclick="redirectToHome()">
+    Continue as Guest
+</button>
+
+@if (session('success'))
+    <p class="success">
+        {{ session('success') }}
+    </p>
+@endif
+
+<script>
+    function redirectToHome() {
+        window.location.href = "{{ route('home') }}";
+    }
+</script>
 @endsection
