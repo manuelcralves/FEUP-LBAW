@@ -67,11 +67,13 @@
         </tbody>
     </table>
     <!-- Bid Form -->
-    <form id="bidForm" method="POST" action="/auction/{{ $auction->id }}/bid">
-        @csrf
-        <label for="bid_amount">Bid Amount:</label>
-        <input type="number" id="bid_amount" name="bid_amount" min="{{ $auction->current_price }}" step="1" required>
-        <button type="submit" class="button">Bid</button>
-    </form>
+    @if(Auth::user()->role != 'ADMIN')
+        <form id="bidForm" method="POST" action="/auction/{{ $auction->id }}/bid">
+            @csrf
+            <label for="bid_amount">Bid Amount:</label>
+            <input type="number" id="bid_amount" name="bid_amount" min="{{ $auction->current_price }}" step="1" required>
+            <button type="submit" class="button">Bid</button>
+        </form>
+    @endif
 
 @endsection

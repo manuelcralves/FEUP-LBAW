@@ -35,7 +35,9 @@
                     <a class="button" href="{{ route('show.users', ['pageNr' => 1]) }}">Users</a>
                     <a class="button" href="{{ url('/logout') }}">Logout</a>
                     <span>{{ Auth::user()->name }}</span>
+                    @if(Auth::user()->role != 'ADMIN')
                     <a class="button" href="{{ route('auction.create') }}">Create Auction</a>
+                    @endif
                     
                 @endif
             </header>
