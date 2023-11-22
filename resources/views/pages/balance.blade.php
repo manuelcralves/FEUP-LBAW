@@ -15,5 +15,6 @@
         @enderror
 
         <button type="submit">Add Funds</button>
+        <a href="{{ route('show', ['id' => Auth::user()->id]) }}" class="button">Cancel</a>
     </form>
 @endsection

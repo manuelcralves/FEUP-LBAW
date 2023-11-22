@@ -24,6 +24,7 @@
         <a href="{{ route('balance', ['id' => Auth::user()->id]) }}" class="button">Add Funds</a>
         <a href="{{ route('owned.auctions', ['id' => Auth::user()->id, 'pageNr' => 1]) }}" class="button">My Auctions</a>
         <a href="{{ route('myBids', ['id' => Auth::user()->id, 'pageNr' => 1]) }}" class="button">My Bids</a>
+        <a class="button" href="{{ url('/home') }}">Back to Home Page</a>
     @endif
     
 @endsection
