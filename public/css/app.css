@@ -1,37 +1,79 @@
 body {
-    background-color: #ffffff;
-    color: #9b4dca;
-  }
-  main > header {
-    display: grid;
-    grid-template-columns: 1fr auto auto;
-    align-items: center;
-    background-color: #d2afe7;
-    padding: 1em;
-    margin: 1em;
-  }
-  main > header h1 {
-    margin: 0;
-  }
-  main > header a.button {
-    margin: 1em;
-    justify-self: center;
-  }
-  main > header span {
-    margin: 1em;
-    justify-self: center;
-  }
-  #cards {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-  }
-  #cards article.card {
-    display: flex;
-    flex-direction: column;
-    background-color: #d3edc3;
-    padding: 1em;
-    margin: 1em;
-  }
+  align-self: center;
+  text-align: center;
+  background-color: #45a745;
+  color: #ffffff; /* Dark green text color */
+}
+
+
+main > header h1 {
+  margin: 0;
+  align-self: center;
+  text-align: center;
+  display: grid;
+  align-items: center;
+  background-color: #008000; /* Dark green header background */
+  padding: 1em;
+  border-radius: 10px; /* Rounded edges */
+  gap: 1em; /* Gap between grid items */
+}
+
+
+main > a.button {
+  margin: 1em;
+  text-align: center;
+  display: inline;
+  text-align: center;
+  grid-auto-flow: row;
+  align-content: center;
+  margin: 1em;
+  text-align: center;
+  
+  color: #ffffff; /* White text color */
+}
+
+/* New styles for a.grid-container for organizing the buttons */
+main > header a.grid-container {
+  display: grid;
+  text-align: center;
+  grid-auto-flow: column;
+  align-content: center;
+  gap: 1em; /* Adjust the gap between buttons */
+}
+
+/* Apply styles for individual buttons within the grid */
+main > header a.grid-container a.button {
+  margin: 0; /* Reset margin for buttons inside the grid */
+}
+
+
+main > header a.button {
+  align-content: center;
+  margin: 1em;
+  justify-self: center; /* Align buttons to the right */
+  color: #ffffff; /* White text color */
+}
+
+main > header span {
+  
+  justify-self: center;
+  color: #000000; /* White text color */
+}
+#cards {
+  display: grid; /* Display as a grid */
+  width: 100%; /* Full width of the container */
+  border-spacing: 10px; /* Spacing between "table cells" */
+  grid-template-columns: repeat(3, 1fr);
+}
+
+#cards article.card {
+  display: flex; 
+  background-color: #006400; /* Dark green card background */
+  padding: 1em;
+  border-radius: 5px; /* Rounded corners for each "cell" */
+  vertical-align: top; /* Align cards to the top within the "cell" */
+}
+
   #cards article.card header {
     display: flex;
     align-items: center;
@@ -86,7 +128,7 @@ body {
     margin: 0 auto;
     padding: 1em;
     max-width: 20em;
-    border: 1px solid #d2afe7;
+    
   }
   #content > form .error {
     font-weight: bold;
@@ -94,7 +136,7 @@ body {
   }
   #content > form .success {
     font-weight: bold;
-    color: #106af1;
+    color: white;
   }
   #content > form input {
     background-color: white;
@@ -140,23 +182,44 @@ body {
    * Override milligram colors
    * Some styles might be missing
    **/
-  button {
-    background-color: #9b4dca;
-    border-color: #9b4dca;
+   button,
+   a.button {
+      display:inline-block;
+      text-align:center;
+      background-color: #125e12; /* Dark green button background */
+      border-color: #125e12; /* Dark green border color */
+      
+      color: #ffffff; /* White text color */
+   }
+   
+   a.button.button-outline {
+    align-content: center;
+     color: #125e12; /* Dark green text color */
+   }
+   
+   
+   a {
+    text-align: center;
+    justify-content: space-between; /* Align items with space between them */
+    align-items: center; /* Center items vertically */
+    background-color: #004300; /* Dark green header background */
+    padding: 8px;
+    border-radius: 5px;
+    color: #ffffff; /* White text color */
   }
-  a.button {
-    background-color: #9b4dca;
-    border-color: #9b4dca;
+    
+  strong{
+    align-content: center;
+    text-align: center;
+
   }
-  a.button.button-outline {
-    color: #9b4dca;
-  }
-  a {
-    color: #9b4dca;
-  }
-  input[type=text]:focus,
-  input[type=email]:focus,
-  input[type=password]:focus {
-    border-color: #9b4dca;
-  }
+   
+   
+   input[type=text]:focus,
+   input[type=email]:focus,
+   input[type=password]:focus {
+     border-color: #125e12; /* Dark green border color on focus */
+   }
+
+   
   
