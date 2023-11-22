@@ -6,6 +6,7 @@ use App\Models\Auction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\AuthenticatedUser;
+use App\Models\Item;
 
 class AuctionController extends Controller
 {
@@ -25,6 +26,9 @@ class AuctionController extends Controller
             $auctionsQuery->whereRaw("tsvectors @@ to_tsquery('english', ?)", [$query]);
         }
     
+        // Add a condition to filter auctions with 'status' as "ACTIVE"
+        $auctionsQuery->where('status', 'ACTIVE');
+    
         // Paginate the results
         $auctions = $auctionsQuery->paginate($perPage, ['*'], 'page', $pageNr);
     
@@ -32,7 +36,8 @@ class AuctionController extends Controller
         $auctions->appends(['query' => $query])->links();
     
         return view('pages.auctions', compact('auctions', 'query'));
-    }    
+    }
+    
 
     public function showOwnedAuctions($id, $pageNr)
     {
@@ -69,15 +74,100 @@ class AuctionController extends Controller
      */
     public function create()
     {
-        //
-    }
+        return view('pages.auctionCreate'); 
+    }    
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        //
+        try {
+            if (!Auth::check()) {
+                // Handle unauthenticated user scenario
+                return redirect()->route('login'); // Redirect to login or another appropriate response
+            }
+    
+            $user = Auth::user();
+    
+            // Combine validation rules for both Auction and Item
+            $validatedData = $request->validate([
+                'title' => 'required|string|max:255',
+                'description' => 'required|string',
+                'end_date' => 'required|date|after:start_date',
+                'starting_price' => 'required|numeric|min:0',
+                'name' => 'required|string|max:255',
+                'category' => 'required|string|max:255',
+                'brand' => 'required|string|max:255',
+                'color' => 'required|string|max:255',
+                'condition' => 'required|string|max:255',
+            ]);
+    
+            // Create and save the Auction
+            $auction = new Auction($validatedData);
+            $auction->current_price = $validatedData['starting_price'];
+            $auction->owner = $user->id;
+            $auction->save();
+    
+            // Create the Item and associate it with the Auction
+            $item = new Item($validatedData);
+            $item->save();
+            $item->auction = $auction->id;
+    
+            return redirect()->route('auction.show', ['id' => $auction->id]);
+        } catch (\Illuminate\Database\QueryException $ex) {
+            // Capture the SQL error message
+            $errorMessage = $ex->getMessage();
+    
+            // Regular expression to find text between "ERROR:" and "CONTEXT"
+            $pattern = '/ERROR:(.*?)CONTEXT/';
+            if (preg_match($pattern, $errorMessage, $matches)) {
+                // The custom message is in $matches[1]
+                $customMessage = trim($matches[1]);
+            } else {
+                $customMessage = 'An unexpected error occurred. Please try again.';
+            }
+    
+            return redirect()->back()->with('error', $customMessage);
+        }
+    }    
+
+    public function edit($id)
+    {
+        if (!Auth::check()) {
+            // Handle unauthenticated user scenario
+            return redirect()->route('login'); // Redirect to login or another appropriate response
+        }
+    
+        $auction = Auction::findOrFail($id);
+        $item = $auction->item; // Assuming a one-to-one relationship between Auction and Item
+    
+        // Return the edit view with the auction and item data
+        return view('pages.auctionEdit', compact('auction', 'item'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        if (!Auth::check()) {
+            // Handle unauthenticated user scenario
+            return redirect()->route('login');
+        }
+    
+        $user = Auth::user();
+    
+        $auction = Auction::findOrFail($id);
+    
+        // Only update fields that can be changed
+        $validatedAuctionData = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+        ]);
+    
+        // Update the Auction
+        $auction->fill($validatedAuctionData);
+        $auction->save();
+    
+        return redirect()->route('auction.show', ['id' => $auction->id]);
     }
 
     /**
@@ -98,21 +188,38 @@ class AuctionController extends Controller
         return view('pages.showauction', compact('auction', 'item'));
     }    
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Auction $auction)
+    public function cancel($id)
     {
-        //
-    }
+        try {
+            $auction = Auction::findOrFail($id);
+        
+            // Check if the user has the permission to cancel the auction (e.g., only the owner can cancel it)
+            if (Auth::user()->id != $auction->owner) {
+                return redirect()->back()->with('error', 'You do not have permission to cancel this auction.');
+            }
+        
+            // Update the status to "CANCELLED"
+            $auction->status = 'CANCELLED';
+            $auction->save();
+        
+            return redirect()->route('auction.show', $id)->with('success', 'The auction has been canceled.');
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Auction $auction)
-    {
-        //
-    }
+        } catch (\Illuminate\Database\QueryException $ex) {
+            // Capture the SQL error message
+            $errorMessage = $ex->getMessage();
+    
+            // Regular expression to find text between "ERROR:" and "CONTEXT"
+            $pattern = '/ERROR:(.*?)CONTEXT/';
+            if (preg_match($pattern, $errorMessage, $matches)) {
+                // The custom message is in $matches[1]
+                $customMessage = trim($matches[1]);
+            } else {
+                $customMessage = 'An unexpected error occurred. Please try again.';
+            }
+    
+            return redirect()->back()->with('error', $customMessage);
+        }
+    }    
 
     /**
      * Remove the specified resource from storage.

@@ -28,6 +28,7 @@
                     <a class="button" href="{{ route('show', ['id' => Auth::user()->id]) }}">View Profile</a>
                     <a class="button" href="{{ url('/logout') }}">Logout</a>
                     <span>{{ Auth::user()->name }}</span>
+                    <a class="button" href="{{ route('auction.create') }}">Create Auction</a>
                     <a class="button" href="{{ route('auction.index', ['pageNr' => 1]) }}">Auctions</a>
                     <a class="button" href="{{ route('show.users', ['pageNr' => 1]) }}">Users</a>
                 @endif

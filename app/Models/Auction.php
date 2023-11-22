@@ -32,7 +32,7 @@ class Auction extends Model
     ];
 
     public function items() {
-        return $this->hasOne(Item::class, 'item');
+        return $this->belongsTo(Item::class, 'auction');
     }
 
     public function review() {
