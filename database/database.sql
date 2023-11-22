@@ -63,7 +63,7 @@ CREATE TABLE item (
     category TEXT,
     brand TEXT,
     color TEXT,
-    picture TEXT NOT NULL,
+    picture TEXT,
     condition ITEM_CONDITION NOT NULL
 );
 
@@ -191,7 +191,7 @@ BEGIN
         SET current_price = NEW.value
         WHERE id = NEW.auction;
     ELSE
-        RAISE EXCEPTION 'New bid must be at least 5%% higher than the current bid';
+        RAISE EXCEPTION 'New bid must be at least 5%% higher than the current bid.';
     END IF;
     
     RETURN NEW;
@@ -259,7 +259,7 @@ BEGIN
     auction_duration := NEW.end_date - NEW.start_date;
 
     IF auction_duration <= INTERVAL '1 day' OR auction_duration >= INTERVAL '30 days' THEN
-        RAISE EXCEPTION 'Auction duration must be more than 1 day and less than 30 days';
+        RAISE EXCEPTION 'Auction duration must be more than 1 day and less than 30 days.';
     END IF;
 
     RETURN NEW;
@@ -315,7 +315,7 @@ BEGIN
        (SELECT COUNT(id) FROM review WHERE "reviewer" = NEW."reviewer" AND "reviewed" = NEW."reviewed" AND "auction" = NEW."auction") = 0 THEN
         RETURN NEW;
     ELSE
-        RAISE EXCEPTION 'To rate an auctioneer, a user has to win an auction of theirs and not have already reviewed them for that auction';
+        RAISE EXCEPTION 'To rate an auctioneer, a user has to win an auction of theirs and not have already reviewed them for that auction.';
     END IF;   
 END
 $BODY$
@@ -435,7 +435,7 @@ BEGIN
     ) INTO has_active_auction;
 
     IF has_active_auction THEN
-        RAISE EXCEPTION 'Cannot delete user with active auctions';
+        RAISE EXCEPTION 'Cannot delete user with active auctions.';
     END IF;
 
     SELECT EXISTS (
@@ -448,7 +448,7 @@ BEGIN
     ) INTO has_highest_bid;
 
     IF has_highest_bid THEN
-        RAISE EXCEPTION 'Cannot delete user with the current highest bid in an active auction';
+        RAISE EXCEPTION 'Cannot delete user with the current highest bid in an active auction.';
     END IF;
 
     UPDATE bid
@@ -670,7 +670,7 @@ BEGIN
     WHERE "auction" = NEW.id;
 
     IF bid_count > 0 THEN
-        RAISE EXCEPTION 'An auction with bids cannot be canceled';
+        RAISE EXCEPTION 'An auction with bids cannot be canceled.';
     ELSIF NEW.status = 'CANCELLED' THEN
         INSERT INTO notification (message, type, creation_date, "user")
         SELECT 

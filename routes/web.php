@@ -50,7 +50,12 @@ Route::controller(AuthenticatedUserController::class)->group(function () {
 
 Route::controller(AuctionController::class)->group(function () {
     Route::get('/auctions/{pageNr}', [AuctionController::class, 'index'])->name('auction.index');
-    Route::get('/auction/{id}', [AuctionController::class, 'show'])->name('auction.show');
+    Route::get('/auction/{id}', [AuctionController::class, 'show'])->name('auction.show');  
+    Route::get('/auctionCreate', [AuctionController::class, 'create'])->name('auction.create');
+    Route::post('/auctionCreate', [AuctionController::class, 'store'])->name('auction.store');
+    Route::get('/auction/{id}/edit', [AuctionController::class, 'edit'])->name('auction.edit');
+    Route::post('/auction/{id}/edit', [AuctionController::class, 'update'])->name('auction.update');
+    Route::put('/auction/{id}/cancel', [AuctionController::class, 'cancel'])->name('auction.cancel');
 });
 
 Route::controller(BidController::class)->group(function () {

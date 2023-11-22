@@ -14,6 +14,13 @@
             {{ session('error') }}
         </div>
     @endif
+
+    @if (isset($customError))
+        <div class="alert alert-danger">
+            {{ $customError }}
+        </div>
+    @endif
+    
     <h2>Auction Details</h2>
 
     <p><strong>Title:</strong> {{ $auction->title }}</p>
@@ -23,6 +30,15 @@
     <p><strong>End Date:</strong> {{ $auction->end_date->format('Y-m-d H:i:s') }}</p>
     <p><strong>Status:</strong> {{ $auction->status }}</p>
     <p><strong>Description:</strong> {{ $auction->description }}<br></p>
+    @if (Auth::check() && Auth::user()->id == $auction->owner)
+        <a href="{{ route('auction.edit', $auction->id) }}" class="button">Edit Auction</a>
+        <form method="POST" action="{{ route('auction.cancel', $auction->id) }}" style="display: inline;">
+            @csrf
+            @method('PUT')
+            <button type="submit" class="button" onclick="return confirm('Are you sure you want to cancel this auction (You can only cancel an auction if it has 0 bids)?')">Cancel Auction</button>
+        </form>
+    @endif
+
     <!-- Table to display bid information -->
     <table id="bidTable">
         <thead>
