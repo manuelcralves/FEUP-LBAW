@@ -21,7 +21,7 @@ class AuctionController extends Controller
      */
     public function create()
     {
-        return view('auctions.create');
+        return $this->authorize("create", authenticatedUser::class);
     }
 
     /**
@@ -39,7 +39,6 @@ class AuctionController extends Controller
             'status' => 'required|in:ACTIVE,CLOSED',
             'owner' => 'nullable|exists:authenticated_user,id',
             'item' => 'nullable|exists:item,id',
-            // Add validation rules for other fields
         ]);
 
         Auction::create($validatedData);
@@ -79,7 +78,6 @@ class AuctionController extends Controller
             'status' => 'required|in:ACTIVE,CLOSED',
             'owner' => 'nullable|exists:authenticated_user,id',
             'item' => 'nullable|exists:item,id',
-            // Add validation rules for other fields
         ]);
 
         $auction->update($validatedData);
