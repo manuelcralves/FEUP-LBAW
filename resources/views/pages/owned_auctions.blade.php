@@ -3,25 +3,28 @@
 @section('title', 'Your Owned Auctions')
 
 @section('content')
-    <h2>Your Owned Auctions</h2>
+    <div class="owned-auctions-container">
+        <h2 class="auctions-title">Your Owned Auctions</h2>
 
-    @if ($ownedAuctions->isEmpty())
-        <p>No auctions</p>
-    @else
-        <ul>
-            @foreach ($ownedAuctions as $auction)
-                <li>
-                    <a href="{{ route('auction.show', ['id' => $auction->id]) }}">
-                        {{ $auction->title }}
-                    </a>
-                    <br>
-                    <strong>Title:</strong> {{ $auction->title }}<br>
-                    <strong>Description:</strong> {{ $auction->description }}<br>
-                    <strong>Current Price:</strong> {{ $auction->current_price }}<br>
-                    <strong>Status:</strong> {{ $auction->status }}<br>
-                </li>
-            @endforeach
-        </ul>
+        @if ($ownedAuctions->isEmpty())
+            <p class="no-auctions-message">No auctions</p>
+        @else
+            <div class="auctions-list">
+                @foreach ($ownedAuctions as $auction)
+                    <div class="auction-card">
+                        <a href="{{ route('auction.show', ['id' => $auction->id]) }}" class="auction-link">
+                            {{ $auction->title }}
+                        </a>
+                        <div class="auction-details">
+                            <p><strong>Title:</strong> {{ $auction->title }}</p>
+                            <p><strong>Description:</strong> {{ $auction->description }}</p>
+                            <p><strong>Current Price:</strong> {{ $auction->current_price }}</p>
+                            <p><strong>Status:</strong> {{ $auction->status }}</p>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        @endif
 
         <div class="pagination">
         @if ($ownedAuctions->currentPage() > 1)
@@ -36,6 +39,7 @@
             <a href="{{ route('owned.auctions', ['id' => Auth::id(), 'pageNr' => $ownedAuctions->currentPage() + 1]) }}" class="next">Next</a>
         @endif
         </div>
-    @endif
-    <a href="{{ route('show', ['id' => Auth::user()->id]) }}" class="button">Back to profile</a>
+
+        <a href="{{ route('show', ['id' => Auth::user()->id]) }}" class="button back-button">Back to profile</a>
+    </div>
 @endsection

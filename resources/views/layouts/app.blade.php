@@ -21,27 +21,38 @@
         </script>
     </head>
     <body>
-        <main>
-            <header>
-                <h1><a href="{{ url('/home') }}">StyleSwap!</a></h1>
-                @if (!Auth::check())
+    <main>
+        <header>
+            <h1><a href="{{ url('/home') }}">StyleSwap!</a></h1>
+            @if (!Auth::check())
+                <!-- Non-authenticated user links -->
                 <a class="button" href="{{ url('/login') }}">Login</a>
-                <a class="button" href="{{ route('auction.index', ['pageNr' => 1]) }}">Auctions</a>
-                <a class="button" href="{{ route('show.users', ['pageNr' => 1]) }}">Users</a>
                 <a class="button" href="{{ route('register', ['pageNr' => 1]) }}">Register</a>
-                @elseif(Auth::check())
-                    <a class="button" href="{{ route('show', ['id' => Auth::user()->id]) }}">My Profile</a>
-                    <a class="button" href="{{ route('auction.index', ['pageNr' => 1]) }}">Auctions</a>
-                    <a class="button" href="{{ route('show.users', ['pageNr' => 1]) }}">Users</a>
-                    <a class="button" href="{{ url('/logout') }}">Logout</a>
-                    <span>{{ Auth::user()->name }}</span>
+            @endif
+            <!-- Search form for all users -->
+            @if(Auth::check())
+                <form id="search-form" action="{{ route('search.results') }}" method="GET">
+                    <input type="text" name="query" placeholder="Search...">
+                    <button type="submit">Search</button>
+                </form>
+            @endif
+            <!-- Links visible to all users -->
+            <a class="button" href="{{ route('auction.index', ['pageNr' => 1]) }}">Auctions</a>
+            <a class="button" href="{{ route('show.users', ['pageNr' => 1]) }}">Users</a>
+            @if (Auth::check())
+                <!-- Links for authenticated users -->
+                <a class="button" href="{{ route('show', ['id' => Auth::user()->id]) }}">My Profile</a>
+                <span>{{ Auth::user()->name }}</span>
+                <!-- Other authenticated user links -->
+                @if(Auth::user()->role != 'ADMIN')
                     <a class="button" href="{{ route('auction.create') }}">Create Auction</a>
-                    
                 @endif
-            </header>
-            <section id="content">
-                @yield('content')
-            </section>
-        </main>
-    </body>
+                <a class="button" href="{{ url('/logout') }}">Logout</a>
+            @endif
+        </header>
+        <section id="content">
+            @yield('content')
+        </section>
+    </main>
+</body>
 </html>

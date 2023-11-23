@@ -221,5 +221,706 @@ main > header span {
      border-color: #125e12; /* Dark green border color on focus */
    }
 
-   
-  
+#search-form {
+    text-align: center; /* Center the form */
+    margin: 10px auto; /* Center the form horizontally */
+    max-width: 300px; /* Limit the form's width */
+}
+
+#search-form input[type="text"] {
+  width: 100%; /* Full width of the container */
+  padding: 12px; /* Slightly larger padding for a better look */
+  border: 2px solid #008000; /* Green border */
+  background-color: #ffffff; /* White background */
+  border-radius: 20px; /* More rounded corners */
+  font-size: 16px; /* Font size */
+  outline: none; /* No focus outline */
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle inner shadow for depth */
+}
+
+#search-form input[type="text"]:focus {
+  border-color: #004d00; /* Darker green on focus */
+  box-shadow: 0 0 5px rgba(0, 128, 0, 0.5); /* Green glow effect on focus */
+}
+
+
+/* Main Container */
+.content-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+/* Auctions and Bidders Containers */
+.auctions-container,
+.bidders-container {
+  flex-basis: 48%;
+  margin: 15px;
+  background-color: #3da35a; /* Light green background */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 100, 0, 0.3);
+}
+
+/* Auction and Bidder Items */
+.auction-item,
+.bidder-item {
+  border: 1px solid #006622;
+  padding: 15px;
+  margin-bottom: 15px;
+  margin-left: 15px;
+  margin-right: 15px;
+  border-radius: 10px;
+  box-shadow: 0 3px 6px rgba(0, 128, 0, 0.3);
+  background-color: #bef7be; /* Very light green for items */
+}
+
+/* Headers and Paragraphs */
+h1 {
+  color: #005500; /* Darker green for main headers */
+}
+
+h2 {
+  color: #007700; /* Mid-tone green for subheaders */
+}
+
+p {
+  color: #003300; /* Very dark green for text */
+}
+
+.profile-container {
+  background-color: #9ed19e; /* Light green background */
+  padding: 20px;
+  border-radius: 10px;
+  width: 60%;
+  box-shadow: 0 3px 6px rgba(0, 128, 0, 0.2);
+  text-align: center; /* Center-align text */
+  margin: 0 auto; /* Center the container horizontally */
+}
+
+/* Headers within the profile */
+.profile-header, .addresses-header {
+  color: #006400; /* Dark green */
+  margin-bottom: 20px;
+  font-size: 1.5em; /* Larger font size for headers */
+  font-weight: bold;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); /* Text shadow for depth */
+}
+
+/* User information and address item styling */
+.user-info, .address-item {
+  background-color: #f0f0f0; /* Light gray for contrast */
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 15px; /* More rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  font-size: 1.1em; /* Slightly larger font size */
+}
+
+/* Container for addresses */
+.addresses-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 15px; /* Increased gap */
+  margin-top: 10px; /* Top margin for separation */
+}
+
+/* Styling for buttons */
+.button {
+  background-color: #125e12; /* Dark green */
+  color: #ffffff;
+  padding: 0px 18px; /* Increased padding for better touch */
+  border-radius: 8px; /* More rounded */
+  text-align: center;
+  margin: 0px 10px; /* Adjusted margin */
+  text-decoration: none; /* Remove underline */
+  transition: background-color 0.3s, transform 0.2s; /* Added transform transition */
+  font-weight: bold; /* Bold font for buttons */
+}
+
+.button:hover {
+  background-color: #0d4a0b; /* Slightly darker green on hover */
+  transform: translateY(-2px); /* Lift effect on hover */
+}
+
+/* Form alignment with buttons */
+.admin-form {
+  display: inline-block; /* Align form with buttons */
+}
+
+.users-title {
+  text-align: center;
+  color: #006400; /* Dark green */
+  margin-bottom: 20px;
+}
+
+.user-search-form {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Styles for No Users Message */
+.no-users-message {
+  text-align: center;
+  color: #ffffff; /* Red color for message */
+  margin-top: 20px;
+}
+
+/* Container for user cards */
+.users-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+/* Individual user card */
+.user-card {
+  background-color: #9ed19e; /* Light green background */
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 128, 0, 0.3); /* Shadow for depth */
+  padding: 20px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.user-card:hover {
+  transform: translateY(-5px); /* Slight lift effect on hover */
+  box-shadow: 0 8px 20px rgba(0, 128, 0, 0.5); /* Increased shadow on hover */
+}
+
+.user-name {
+  color: #adc0ad; /* Dark green */
+  font-weight: bold;
+  text-decoration: none;
+  margin-bottom: 10px;
+  display: block; /* Make name a block element for better layout */
+}
+
+.user-details p {
+  margin: 5px 0;
+}
+
+/* Pagination styles ... */
+
+.auctions-title {
+  text-align: center;
+  color: #006400; /* Dark green */
+  margin-bottom: 20px;
+}
+
+.auction-search-form {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Styles for No Auctions Message */
+.no-auctions-message {
+  text-align: center;
+  color: #ffffff; /* Red color for message */
+  margin-top: 20px;
+}
+
+/* Container for auction cards */
+.auctions-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+/* Individual auction card */
+.auction-card {
+  background-color: #9ed19e; /* Light green background */
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 128, 0, 0.3); /* Shadow for depth */
+  padding: 20px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.auction-card:hover {
+  transform: translateY(-5px); /* Slight lift effect on hover */
+  box-shadow: 0 8px 20px rgba(0, 128, 0, 0.5); /* Increased shadow on hover */
+}
+
+.auction-title {
+  color: #adc0ad; /* Dark green */
+  font-weight: bold;
+  text-decoration: none;
+  margin-bottom: 10px;
+  display: block; /* Make title a block element for better layout */
+}
+
+.auction-details p {
+  margin: 5px 0;
+}
+
+/* Pagination styles ... */
+
+.search-results-section {
+  margin-bottom: 20px;
+}
+
+.section-title {
+  text-align: center;
+  color: #006400; /* Dark green */
+  margin-bottom: 15px;
+}
+
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.card {
+  background-color: #9ed19e; /* Light green background for cards */
+  border-radius: 15px;
+  padding: 15px;
+  box-shadow: 0 4px 8px rgba(0, 128, 0, 0.3); /* Shadow for depth */
+  text-align: center;
+}
+
+.card-title {
+  color: #adc0ad; /* Custom color for titles */
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.no-results-message {
+  text-align: center;
+  color: #ffffff; /* Red color for no results message */
+}
+
+.create-auction-container {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+  background-color: #e6ffe6; /* Light gray background */
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-title {
+  text-align: center;
+  color: #006400; /* Dark green */
+  margin-bottom: 20px;
+}
+
+.auction-form label {
+  display: block;
+  margin-bottom: 5px;
+  color: #004d00; /* Darker green for labels */
+}
+
+.auction-form input[type="text"],
+.auction-form input[type="number"],
+.auction-form input[type="datetime-local"],
+.auction-form textarea,
+.auction-form select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #000;
+  border-radius: 5px;
+}
+
+.auction-form textarea {
+  resize: vertical;
+}
+
+.submit-button, .cancel-button {
+  background-color: #125e12; /* Dark green */
+  color: #ffffff;
+  padding: 0px 20px; /* Increased padding for larger size */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none; /* Remove underline from 'Cancel' link */
+  margin-right: 10px;
+  font-size: 1.1em; /* Larger font size for better readability */
+  display: inline-block; /* Ensure link behaves like a button */
+  text-align: center; /* Center text in 'Cancel' link-button */
+  width: auto; /* Auto width for content adjustment */
+  min-width: 100px; /* Minimum width for consistency */
+  font-size: small;
+}
+
+.submit-button:hover, .cancel-button:hover {
+  background-color: #0d4a0b; /* Slightly darker green on hover */
+}
+
+.alert-danger {
+  background-color: #ffdddd; /* Light red background for error messages */
+  border: 1px solid rgb(255, 255, 255);
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.auction-details-container {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+  background-color: #9ed19e;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.details-title {
+  text-align: center;
+  color: #006400; /* Dark green */
+  margin-bottom: 20px;
+}
+
+.auction-info p {
+  margin: 10px 0;
+  color: #004d00;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.edit-button, .cancel-button {
+  background-color: #125e12;
+  color: #ffffff;
+  padding: 0px 20px;
+  border-radius: 5px;
+  font-size: small;
+  text-decoration: none;
+  margin: 0 10px;
+}
+
+.edit-button:hover, .cancel-button:hover {
+  background-color: #0d4a0b;
+}
+
+#bidTable {
+  width: 100%;
+  margin-top: 20px;
+  /* Additional styling for table */
+}
+
+#bidForm {
+  margin-top: 20px;
+  /* Styling for bid form */
+}
+
+.alert {
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.alert-success {
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+}
+
+.alert-danger {
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+}
+
+.my-bids-container {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+  background-color: #f0f0f0;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.page-title {
+  text-align: center;
+  color: #006400; /* Dark green */
+  margin-bottom: 20px;
+}
+
+.no-bids-message {
+  text-align: center;
+  color: #ff0000; /* Red color for message */
+  margin-top: 20px;
+}
+
+.bids-list {
+  margin-bottom: 20px;
+}
+
+.bid-card {
+  background-color: #9ed19e; /* Light green background for cards */
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 6px rgba(0, 128, 0, 0.2); /* Shadow for depth */
+}
+
+.pagination {
+  text-align: center;
+  margin-top: 20px;
+  /* Additional styling for pagination */
+}
+
+.back-button {
+  background-color: #125e12;
+  color: #ffffff;
+  padding: 0px 15px;
+  border-radius: 5px;
+  text-decoration: none;
+  display: block;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.back-button:hover {
+  background-color: #0d4a0b;
+}
+
+.owned-auctions-container {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+  background-color: #f0f0f0;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.auctions-title {
+  text-align: center;
+  color: #006400; /* Dark green */
+  margin-bottom: 20px;
+}
+
+.no-auctions-message {
+  text-align: center;
+  color: #ff0000; /* Red color for message */
+}
+
+.auctions-list {
+  margin-bottom: 20px;
+}
+
+.auction-card {
+  background-color: #9ed19e; /* Light green background for cards */
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 6px rgba(0, 128, 0, 0.2); /* Shadow for depth */
+}
+
+.auction-link {
+  color: rgb(255, 255, 255); /* Dark green */
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.auction-details p {
+  margin: 5px 0;
+}
+
+.pagination {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.back-button {
+  background-color: #125e12;
+  color: #ffffff;
+  padding: 0px 15px;
+  border-radius: 5px;
+  text-decoration: none;
+  display: block;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.back-button:hover {
+  background-color: #0d4a0b;
+}
+
+.add-funds-container {
+  max-width: 400px;
+  margin: auto;
+  padding: 20px;
+  background-color: #f0f0f0;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.add-funds-title {
+  text-align: center;
+  color: #006400; /* Dark green */
+  margin-bottom: 20px;
+}
+
+.add-funds-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #333; /* Dark gray */
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc; /* Light gray border */
+  border-radius: 5px;
+}
+
+.error {
+  color: #ff0000; /* Red color for error message */
+}
+
+.add-funds-button {
+  background-color: #125e12; /* Dark green */
+  color: #ffffff;
+  padding: 0px 15px;
+  border-radius: 5px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.add-funds-button:hover {
+  background-color: #0d4a0b; /* Slightly darker green on hover */
+}
+
+.cancel-button {
+  background-color: #ff0000; /* Red color for cancel button */
+  color: #ffffff;
+  padding: 0px 5px;
+  border-radius: 5px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.cancel-button:hover {
+  background-color: #cc0000; /* Slightly darker red on hover */
+}
+
+.edit-auction-container {
+  max-width: 400px;
+  margin: auto;
+  padding: 20px;
+  background-color: #f0f0f0;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.edit-auction-title {
+  text-align: center;
+  color: #006400; /* Dark green */
+  margin-bottom: 20px;
+}
+
+.edit-auction-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #333; /* Dark gray */
+}
+
+.form-input,
+.form-textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc; /* Light gray border */
+  border-radius: 5px;
+}
+
+.form-textarea {
+  resize: vertical; /* Allow vertical resizing of textarea */
+}
+
+.update-auction-button {
+  background-color: #125e12; /* Dark green */
+  color: #ffffff;
+  padding: 0px 15px;
+  border-radius: 5px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.update-auction-button:hover {
+  background-color: #0d4a0b; /* Slightly darker green on hover */
+}
+
+.profile-update-container {
+  max-width: 400px;
+  margin: auto;
+  padding: 20px;
+  background-color: #f0f0f0;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.profile-update-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  text-align: left;
+  width: 100%;
+}
+
+.form-label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #333; /* Dark gray */
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc; /* Light gray border */
+  border-radius: 5px;
+}
+
+.error {
+  color: #ff0000; /* Red for error messages */
+}
+
+.update-profile-button {
+  background-color: #125e12; /* Dark green */
+  color: #ffffff;
+  padding: 0px 15px;
+  border-radius: 5px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.update-profile-button:hover {
+  background-color: #0d4a0b; /* Slightly darker green on hover */
+}

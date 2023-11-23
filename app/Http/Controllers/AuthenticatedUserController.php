@@ -6,6 +6,11 @@ use App\Models\AuthenticatedUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use App\Policies\AuthenticatedUserPolicy;
+use App\Http\Controllers\Controller;
+use App\Models\Auction;
+use App\Models\Bid;
+use Illuminate\Support\Facades\DB;
 
 class AuthenticatedUserController extends Controller
 {
@@ -14,8 +19,19 @@ class AuthenticatedUserController extends Controller
      */
     public function index()
     {
-        return view('pages.home');
-    }    
+        // Fetch auctions with the highest current price
+        $topAuctions = Auction::orderBy('current_price', 'desc')->take(5)->get();
+
+        // Fetch top bidders
+        $topBidders = Bid::select('user', DB::raw('COUNT(*) as total_bids'), DB::raw('SUM(value) as total_bid_amount'))
+                         ->groupBy('user')
+                         ->orderBy('total_bid_amount', 'desc')
+                         ->take(5)
+                         ->with('authenticatedUser')
+                         ->get();
+
+        return view('pages.home', compact('topAuctions', 'topBidders'));
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -61,46 +77,103 @@ class AuthenticatedUserController extends Controller
     
         // Check if the authenticated user has permission to promote users to ADMIN
         if (Auth::user()->role === 'ADMIN' && Auth::user()->id != $user->id) {
-            $user->role = 'ADMIN';
-            $user->save();
+            // Check if the user has any "ACTIVE" auctions
+            $hasActiveAuctions = $user->auctions()->where('status', 'ACTIVE')->exists();
     
-            return back()->with('success', 'User promoted to ADMIN successfully');
+            // Check if the user has any active bids
+            $hasActiveBids = $user->bids()->whereHas('auctions', function ($query) {
+                $query->where('status', 'ACTIVE');
+            })->exists();
+    
+            if (!$hasActiveAuctions && !$hasActiveBids) {
+                // User doesn't have active auctions or active bids, so promote them to ADMIN
+                $user->role = 'ADMIN';
+                $user->save();
+    
+                return back()->with('success', 'User promoted to ADMIN successfully');
+            } else {
+                // Handle the case where the user has active auctions or active bids
+                return back()->with('error', 'User has active auctions or active bids and cannot be promoted to ADMIN.');
+            }
         } else {
             // Handle the case where the authenticated user doesn't have permission
             return abort(403); // Return a 403 Forbidden response
         }
-    }    
+    }
+    
+    
 
     /**
      * Display the specified resource.
      */
     public function show($id)
     {
-        // Retrieve the user whose profile you want to display
         $user = AuthenticatedUser::find($id);
     
         if (!$user) {
-            return abort(404); // Display a 404 error if the user is not found
+            return abort(404);
         }
     
-        // Pass the user data to the profile view
+        $this->authorize('viewProfile', $user);
+    
         return view('pages.profile', compact('user'));
-    }    
+    }
+
+    public function searchResults(Request $request)
+    {
+        $perPage = 5;
+        $query = $request->input('query');
+
+        // Query users based on the search criteria if a query is provided
+        $usersQuery = AuthenticatedUser::query();
+        
+        if ($query) {
+            $usersQuery->where('username', 'LIKE', '%' . $query . '%')
+            ->orWhere('first_name', 'LIKE', '%' . $query . '%')
+            ->orWhere('last_name', 'LIKE', '%' . $query . '%')
+            ->orWhere('email', 'LIKE', '%' . $query . '%');
+        }
+
+        // Query auctions based on the search criteria if a query is provided
+        $auctionsQuery = Auction::query();
+
+        if ($query) {
+            $auctionsQuery->whereRaw("tsvectors @@ to_tsquery('english', ?)", [$query]);
+        }
+
+        // Add a condition to filter auctions with 'status' as "ACTIVE"
+        $auctionsQuery->where('status', 'ACTIVE');
+
+        // Paginate the results for both users and auctions
+        $users = $usersQuery->paginate($perPage, ['*'], 'users_page');
+        $auctions = $auctionsQuery->paginate($perPage, ['*'], 'auctions_page');
+
+        // Return the search results view
+        return view('pages.search_results', compact('users', 'auctions', 'query'));
+    }
+      
 
     public function all(Request $request, $pageNr)
     {
         $perPage = 5; // Number of users per page
         $query = $request->input('query'); // Get the search query from the request
     
-        // Query users based on the search criteria
-        $users = AuthenticatedUser::where('username', 'LIKE', "%$query%")
-            ->orWhere('first_name', 'LIKE', "%$query%")
-            ->orWhere('last_name', 'LIKE', "%$query%")
-            ->orWhere('email', 'LIKE', "%$query%")
-            ->paginate($perPage, ['*'], 'page', $pageNr);
+        // Query users based on the search criteria if a query is provided
+        $usersQuery = AuthenticatedUser::query();
+        
+        if ($query) {
+            $usersQuery->where('username', '=', $query)
+                       ->orWhere('first_name', '=', $query)
+                       ->orWhere('last_name', '=', $query)
+                       ->orWhere('email', '=', $query);
+        }
+        
+        // Paginate the results
+        $users = $usersQuery->paginate($perPage, ['*'], 'page', $pageNr);
     
         return view('pages.all_users', compact('users', 'query'));
-    }    
+    }
+    
 
     /**
      * Show the form for editing the specified resource.
