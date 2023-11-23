@@ -375,7 +375,7 @@ p {
 /* Styles for No Users Message */
 .no-users-message {
   text-align: center;
-  color: #ffffff; /* Red color for message */
+  color: #000000; 
   margin-top: 20px;
 }
 
@@ -429,7 +429,7 @@ p {
 /* Styles for No Auctions Message */
 .no-auctions-message {
   text-align: center;
-  color: #ffffff; /* Red color for message */
+  color: #000000; 
   margin-top: 20px;
 }
 
