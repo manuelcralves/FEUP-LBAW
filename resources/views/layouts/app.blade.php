@@ -29,6 +29,10 @@
                 <a class="button" href="{{ route('auction.index', ['pageNr' => 1]) }}">Auctions</a>
                 <a class="button" href="{{ route('show.users', ['pageNr' => 1]) }}">Users</a>
                 <a class="button" href="{{ route('register', ['pageNr' => 1]) }}">Register</a>
+                <form id="search-form" action="{{ route('search.results') }}" method="GET">
+                    <input type="text" name="query" placeholder="Search...">
+                    <button type="submit">Search</button>
+                </form>
                 @elseif(Auth::check())
                     <form id="search-form" action="{{ route('search.results') }}" method="GET">
                         <input type="text" name="query" placeholder="Search...">

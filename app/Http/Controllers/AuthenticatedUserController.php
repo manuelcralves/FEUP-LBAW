@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Policies\AuthenticatedUserPolicy;
 use App\Http\Controllers\Controller;
 use App\Models\Auction;
+use App\Models\Bid;
+use Illuminate\Support\Facades\DB;
 
 class AuthenticatedUserController extends Controller
 {
@@ -17,8 +19,19 @@ class AuthenticatedUserController extends Controller
      */
     public function index()
     {
-        return view('pages.home');
-    }    
+        // Fetch auctions with the highest current price
+        $topAuctions = Auction::orderBy('current_price', 'desc')->take(5)->get();
+
+        // Fetch top bidders
+        $topBidders = Bid::select('user', DB::raw('COUNT(*) as total_bids'), DB::raw('SUM(value) as total_bid_amount'))
+                         ->groupBy('user')
+                         ->orderBy('total_bid_amount', 'desc')
+                         ->take(5)
+                         ->with('authenticatedUser')
+                         ->get();
+
+        return view('pages.home', compact('topAuctions', 'topBidders'));
+    }
 
     /**
      * Show the form for creating a new resource.

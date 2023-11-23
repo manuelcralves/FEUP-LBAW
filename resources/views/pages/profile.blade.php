@@ -14,9 +14,12 @@
         <p><strong>First Name:</strong> {{ $user->first_name }}</p>
         <p><strong>Last Name:</strong> {{ $user->last_name }}</p>
         @if(Auth::user()->role != 'ADMIN')
-        <p><strong>Balance:</strong> {{ $user->balance }}€</p>
+            @if(Auth::user()->id == $user->id)
+            <p><strong>Balance:</strong> {{ $user->balance }}€</p>
+            @endif
         @endif
     @if(Auth::check())
+        @if(Auth::user()->id == $user->id)
         <h2>{{$user->first_name}} {{$user->last_name}} Addresses</h2>
         @foreach ($user->addresses as $address)
             <div>
@@ -26,6 +29,7 @@
                 <p>Country: {{ $address->country }}</p>
             </div>
         @endforeach
+        @endif
         @if(Auth::user()->role === 'ADMIN' && Auth::user()->id != $user->id && $user->role !== 'ADMIN')
             <a href="{{ route('edit', ['id' => $user->id]) }}" class="button">Edit User</a>
             <form method="POST" action="{{ route('promote.admin', ['id' => $user->id]) }}">
