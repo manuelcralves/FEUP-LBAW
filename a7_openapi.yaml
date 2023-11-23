@@ -385,6 +385,28 @@ paths:
         '200':
           description: 'Ok. Show search results.'
 
+  /users/{pageNr}/search:
+    get:
+      operationId: R115
+      summary: 'R115: Search User with Exact Match'
+      description: 'Perform an exact match search for users. Access: USR, ADM'
+      tags:
+        - 'M01: Authentication and User Profile'
+      parameters:
+        - in: path
+          name: pageNr
+          schema:
+            type: integer
+          required: true
+        - in: query
+          name: query
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: 'Ok. Show exact match search results for users'
+
     /profile/{id}/promote:
     post:
       operationId: R201
@@ -682,26 +704,4 @@ paths:
       responses:
         '200':
           description: 'Ok. Show full-text search results for auctions'
-
-  /users/{pageNr}/search:
-    get:
-      operationId: R409
-      summary: 'R409: Search User with Exact Match'
-      description: 'Perform an exact match search for users. Access: USR, ADM'
-      tags:
-        - 'M01: Authentication and User Profile'
-      parameters:
-        - in: path
-          name: pageNr
-          schema:
-            type: integer
-          required: true
-        - in: query
-          name: query
-          schema:
-            type: string
-          required: true
-      responses:
-        '200':
-          description: 'Ok. Show exact match search results for users'
 
