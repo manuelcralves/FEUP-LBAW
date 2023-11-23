@@ -77,7 +77,7 @@ paths:
                   value: '/login'
 
   /logout:
-    post: 
+    get: 
       operationId: R103
       summary: 'R103: Logout Action'
       description: 'Logout the current authenticated user. Access: USR, ADM'
@@ -303,73 +303,10 @@ paths:
         '404':
           description: 'Not Found. No user found with the given ID.'
 
-  /profile/{id}/picture:
-    get:
-      operationId: R111
-      summary: 'R111: Upload profile picture form'
-      description: 'Shows the upload user profile picture form. Access: OWN'
-      tags: 
-        - 'M01: Authentication and User Profile'
-      parameters:
-        - in: path
-          name: id
-          schema:
-            type: integer
-          required: true
-      
-      responses:
-        '200':
-          description: 'Ok. Show profile picture form'     
-              
-    post:
-      operationId: R112
-      summary: 'R112: Upload profile picture action'
-      description: 'Processes the upload of a user profile picture. Access: OWN'
-      tags: 
-        - 'M01: Authentication and User Profile'
-      parameters:
-        - in: path
-          name: id
-          schema:
-            type: integer
-          required: true
-      requestBody:
-        required: true
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              properties:
-                picture:
-                  type: string
-              required:
-                - picture
-
-      responses:
-        '302':
-          description: 'Redirect after processing the upload of a user`s picture.'
-          headers:
-            Location:
-              schema:
-                type: string
-              examples:
-                302Success:
-                  description: 'Successful upload. Redirecting to user profile page.'
-                  value: '/profile/{id}'
-                302Failure: 
-                  description: 'Failed to upload, redirecting to upload form.'
-                  value: '/profile/{id}/picture'
-        '400':
-          description: 'Bad request. Incorrect or insufficient data provided.'
-        '403':
-          description: 'Forbidden. User not authorized to upload picture for this profile.'
-        '404':
-          description: 'Not Found. No user found with the given ID.'
-
   /profile/{id}/auctions/{pageNr}:
     get:
-      operationId: R113
-      summary: 'R113: User´s auctions list'
+      operationId: R111
+      summary: 'R111: User´s auctions list'
       description: 'Show the list of an user´s auctions. Access: USR, ADM'
       tags: 
         - 'M01: Authentication and User Profile'
@@ -391,8 +328,8 @@ paths:
 
   /profile/{id}/bids/{pageNr}:
     get:
-      operationId: R114
-      summary: 'R114: User´s bids list'
+      operationId: R112
+      summary: 'R112: User´s bids list'
       description: 'Show the list of an user´s bids. Access: OWN, ADM'
       tags: 
         - 'M01: Authentication and User Profile'
@@ -414,8 +351,8 @@ paths:
 
   /users/{pageNr}:
     get:
-      operationId: R115
-      summary: 'R115: Users list by page'
+      operationId: R113
+      summary: 'R113: Users list by page'
       description: 'Show the list of users by page. Access: USR, ADM'
       tags: 
         - 'M01: Authentication and User Profile'
@@ -430,29 +367,11 @@ paths:
         '200':
           description: 'Ok. Show users list by page.'
 
-  /search/user:
-    get:
-      operationId: R116
-      summary: 'R116: Search for a user'
-      description: 'Show the search results of a user search by a query "q". Access: USR, ADM'
-      tags: 
-        - 'M01: Authentication and User Profile'
-      parameters:
-        - in: query
-          name: q
-          schema:
-            type: string
-          required: true
-
-      responses:
-        '200':
-          description: 'Ok. Show search results of users list.'
-
   /search:
     get: 
-      operationId: R117
-      summary: 'R117: Main search page'
-      description: 'Show the main search page for various entities (users, auctions, bids, etc.). Access: USR, ADM'
+      operationId: R114
+      summary: 'R114: Main search page'
+      description: 'Show the main search page for various entities (users, auctions, etc.). Access: USR, ADM'
       tags: 
         - 'M01: Authentication and User Profile'
       parameters:
@@ -466,7 +385,39 @@ paths:
         '200':
           description: 'Ok. Show search results.'
 
-  /auction/{auctionId}/bid:
+    /profile/{id}/promote:
+    post:
+      operationId: R201
+      summary: 'R201: Promote User to Admin'
+      description: 'Promotes a specified user to ADMIN. Access: ADM'
+      tags: 
+        - 'M02: User Administration/ Static Pages'
+      parameters:
+        - in: path
+          name: id
+          schema: 
+            type: integer
+          required: true
+      responses:
+        '302':
+          description: 'Redirect after attempting to promote the user.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful promotion. Redirecting to user profile page.'
+                  value: '/profile/{id}'
+                302Failure:
+                  description: 'Failed to promote user, redirecting to user profile page.'
+                  value: '/profile/{id}'
+        '403':
+          description: 'Forbidden. Only admins are authorized to promote users.'
+        '404':
+          description: 'Not Found. No user found with the given ID.'
+
+  /auction/{id}/bid:
     post: 
       operationId: R301
       summary: 'R301: Make bid'
@@ -512,7 +463,7 @@ paths:
                 user: 2
                 value: 5000
 
-  /auction/{auctionId}:
+  /auction/{id}:
     get:
       operationId: R401
       summary: 'R401: View individual auction'
@@ -624,7 +575,7 @@ paths:
                   description: 'Creation failed. Redirect to home.'
                   value: '/home'
 
-  /auction/{auctionId}/edit:
+  /auction/{id}/edit:
     get:
       operationId: R405
       summary: 'R405: Edit an Auction'
@@ -680,10 +631,10 @@ paths:
                   value: '/auction/{id}'
                 302Failure:
                   description: 'Fail. Return to edit auction page.'
-                  value: '/auction/{auctionId}/edit'
+                  value: '/auction/{id}/edit'
 
-  /auction/{auctionId}/cancel:
-    post:
+  /auction/{id}/cancel:
+    put:
       operationId: R407
       summary: 'R407: Cancel Auction'
       description: 'Canceling process of an auction. Access: ACT/OWN'
@@ -704,42 +655,53 @@ paths:
                 type: string
               examples:
                 302Success:
-                  description: 'Success on the cancellation. Forwarding to home.'
-                  value: '/auction/{auctionId}/'
+                  description: 'Success on the cancellation. Forwarding to auction.'
+                  value: '/auction/{id}/'
                 302Failure:
-                  description: 'Failed to cancel the auction. Forwarding to home.'
-                  value: '/auction/{auctionId}/'
+                  description: 'Failed to cancel the auction. Forwarding to auction.'
+                  value: '/auction/{id}/'
 
-  /search/auctions/fts:
+  /auctions/{pageNr}/search:
     get:
       operationId: R408
       summary: 'R408: Search Auction with Full Text Search'
-      description: 'After a query, show the results of the search. Access: USR, ADM'
+      description: 'Perform a full-text search for auctions. Access: USR, ADM'
       tags:
         - 'M04: Auctions'
       parameters:
+        - in: path
+          name: pageNr
+          schema:
+            type: integer
+          required: true
         - in: query
-          name: q
+          name: query
           schema:
             type: string
           required: true
       responses:
         '200':
-          description: 'Ok. Show the FTS results'
+          description: 'Ok. Show full-text search results for auctions'
 
-  /search/auctions/exact:
+  /users/{pageNr}/search:
     get:
       operationId: R409
-      summary: 'R409: Search Auction with Exact Match'
-      description: 'After a query, show the results. Access: USR, ADM'
+      summary: 'R409: Search User with Exact Match'
+      description: 'Perform an exact match search for users. Access: USR, ADM'
       tags:
-        - 'M04: Auctions'
+        - 'M01: Authentication and User Profile'
       parameters:
+        - in: path
+          name: pageNr
+          schema:
+            type: integer
+          required: true
         - in: query
-          name: q
+          name: query
           schema:
             type: string
           required: true
       responses:
         '200':
-          description: 'Ok. Show exact match search results'
+          description: 'Ok. Show exact match search results for users'
+
