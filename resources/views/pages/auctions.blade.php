@@ -13,7 +13,7 @@
     @if ($auctions->isEmpty())
         <p class="no-auctions-message">No auctions found.</p>
     @else
-        <div class="auctions-container">
+    <div class="auctions-container">
             @foreach ($auctions as $auction)
                 <div class="auction-card">
                     <a href="{{ route('auction.show', ['id' => $auction->id]) }}" class="auction-title">
@@ -22,9 +22,35 @@
                     <div class="auction-details">
                         <p><strong>Title:</strong> {{ $auction->title }}</p>
                         <p><strong>Description:</strong> {{ $auction->description }}</p>
-                        <p><strong>Current Price:</strong> {{ $auction->current_price }}</p>
+                        <p><strong>Current Price:</strong> {{ $auction->current_price }}€</p>
                         <p><strong>Status:</strong> {{ $auction->status }}</p>
+                        <p id="time-remaining-{{ $auction->id }}">
+                            <strong>Time Left:</strong> 
+                            <span id="days-{{ $auction->id }}"></span>d 
+                            <span id="hours-{{ $auction->id }}"></span>h 
+                            <span id="minutes-{{ $auction->id }}"></span>m 
+                            <span id="seconds-{{ $auction->id }}"></span>s
+                        </p>
                     </div>
+                    <script>
+                        var auctionEndDate{{ $auction->id }} = new Date("{{ $auction->end_date }}");
+                        setInterval(function() {
+                            var now = new Date();
+                            var timeRemaining = auctionEndDate{{ $auction->id }} - now;
+                            if (timeRemaining > 0) {
+                                var seconds = Math.floor((timeRemaining / 1000) % 60);
+                                var minutes = Math.floor((timeRemaining / 1000 / 60) % 60);
+                                var hours = Math.floor((timeRemaining / (1000 * 60 * 60)) % 24);
+                                var days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+                                document.getElementById('days-{{ $auction->id }}').innerText = days;
+                                document.getElementById('hours-{{ $auction->id }}').innerText = hours;
+                                document.getElementById('minutes-{{ $auction->id }}').innerText = minutes;
+                                document.getElementById('seconds-{{ $auction->id }}').innerText = seconds;
+                            } else {
+                                document.getElementById('time-remaining-{{ $auction->id }}').innerText = "Auction ended";
+                            }
+                        }, 1000);
+                    </script>
                 </div>
             @endforeach
         </div>

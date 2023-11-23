@@ -868,16 +868,20 @@ INSERT INTO item (name, category, brand, color, picture, condition) VALUES
 INSERT INTO auction (title, description, end_date, starting_price, current_price, "owner", "item")
 VALUES
 ('Floral Tee', 'Size M', NOW() + INTERVAL '7 days', 10.00, 10.00, 2, 1),
-('Cotton Socks', 'Size L', NOW() + INTERVAL '7 days', 15.00, 15.00, 3, 2),
-('Denim Jacket', 'Size XL', NOW() + INTERVAL '7 days', 20.00, 20.00, 4, 3),
-('Silk Scarf', 'One Size', NOW() + INTERVAL '7 days', 25.00, 25.00, 2, 4),
-('Leather Belt', 'Size 32', NOW() + INTERVAL '7 days', 30.00, 30.00, 6, 5),
-('Running Shoes', 'Size 9', NOW() + INTERVAL '7 days', 35.00, 35.00, 7, 6),
-('Winter Gloves', 'Size S', NOW() + INTERVAL '7 days', 40.00, 40.00, 8, 7),
-('Wool Hat', 'One Size', NOW() + INTERVAL '7 days', 45.00, 45.00, 9, 8),
-('Sunglasses', 'One Size', NOW() + INTERVAL '7 days', 50.00, 50.00, 10, 9);
+('Cotton Socks', 'Size L', NOW() + INTERVAL '6 days', 15.00, 15.00, 3, 2),
+('Denim Jacket', 'Size XL', NOW() + INTERVAL '5 days', 20.00, 20.00, 4, 3),
+('Silk Scarf', 'One Size', NOW() + INTERVAL '5 days', 25.00, 25.00, 2, 4),
+('Leather Belt', 'Size 32', NOW() + INTERVAL '6 days', 30.00, 30.00, 6, 5),
+('Running Shoes', 'Size 9', NOW() + INTERVAL '5 days', 35.00, 35.00, 7, 6),
+('Winter Gloves', 'Size S', NOW() + INTERVAL '6 days', 40.00, 40.00, 8, 7),
+('Wool Hat', 'One Size', NOW() + INTERVAL '5 days', 45.00, 45.00, 9, 8),
+('Sunglasses', 'One Size', NOW() + INTERVAL '6 days', 50.00, 50.00, 10, 9);
 
 INSERT INTO bid (value, "user", "auction", creation_date)
 VALUES 
 (30.00, 3, 4, NOW() + INTERVAL '1 hour'),
-(35.00, 3, 5, NOW() + INTERVAL '2 hours');
+(40.00, 3, 6, NOW() + INTERVAL '3 hours'),
+(35.00, 4, 5, NOW() + INTERVAL '1 hours'),
+(35.00, 8, 4, NOW() + INTERVAL '5 hours'),
+(28.00, 9, 1, NOW() + INTERVAL '1 hours'),
+(19.00, 10, 2, NOW() + INTERVAL '6 hours');

@@ -187,7 +187,7 @@ class AuctionController extends Controller
         }]);
     
         // Load the associated item (if necessary)
-        $item = $auction->item;
+        $item = Item::findOrFail($auction->item);
     
         return view('pages.showauction', compact('auction', 'item'));
     }

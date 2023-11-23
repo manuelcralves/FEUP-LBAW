@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="add-funds-container">
-        <h2 class="add-funds-title">Add Funds to Your Balance</h2>
+        <h2 class="add-funds-title">Add Funds</h2>
 
         <form method="POST" action="{{ route('balance', ['id' => $user->id]) }}" class="add-funds-form">
             @csrf
