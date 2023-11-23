@@ -46,41 +46,46 @@
             </div>
         @endif
 
-    <!-- Table to display bid information -->
-    <table id="bidTable">
-        <thead>
-            <tr>
-                <th>Place</th>
-                <th>Rating</th>
-                <th>Username</th>
-                <th>Bid Amount</th>
-                <th>Creation Date</th>
-            </tr>
-        </thead>
-        <tbody id="bidTableBody">
-            @forelse ($auction->bids as $bid)
-                <tr>
-                    <td>{{ $loop->iteration }}</td>
-                    <td>{{ $bid->authenticatedUser->rating ?? '(No rating yet)' }}</td>
-                    <td>{{ $bid->authenticatedUser->username }}</td>
-                    <td>{{ $bid->value }}</td>
-                    <td>{{ $bid->creation_date->format('Y-m-d H:i:s') }}</td>
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="6">There are no bids yet, be the first!</td>
-                </tr>
-            @endforelse
-        </tbody>
-    </table>
-    <!-- Bid Form -->
-    @if(Auth::user()->role != 'ADMIN' && Auth::user() != $auction->authenticatedUser)
-        <form id="bidForm" method="POST" action="/auction/{{ $auction->id }}/bid">
-            @csrf
-            <label for="bid_amount">Bid Amount:</label>
-            <input type="number" id="bid_amount" name="bid_amount" min="{{ $auction->current_price }}" step="1" required>
-            <button type="submit" class="button">Bid</button>
-        </form>
-    @endif
+        <!-- Back to Auctions button -->
+        <a href="{{ route('auction.index', 1) }}" class="button">Back to Auctions</a>
+        <a href="{{ url('/home') }}" class="button back-home">Back to Home Page</a>
 
+        <!-- Table to display bid information -->
+        <table id="bidTable">
+            <thead>
+                <tr>
+                    <th>Place</th>
+                    <th>Rating</th>
+                    <th>Username</th>
+                    <th>Bid Amount</th>
+                    <th>Creation Date</th>
+                </tr>
+            </thead>
+            <tbody id="bidTableBody">
+                @forelse ($auction->bids as $bid)
+                    <tr>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ $bid->authenticatedUser->rating ?? '(No rating yet)' }}</td>
+                        <td>{{ $bid->authenticatedUser->username }}</td>
+                        <td>{{ $bid->value }}</td>
+                        <td>{{ $bid->creation_date->format('Y-m-d H:i:s') }}</td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="6">There are no bids yet, be the first!</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+
+        <!-- Bid Form -->
+        @if(Auth::user()->role != 'ADMIN' && Auth::user() != $auction->authenticatedUser)
+            <form id="bidForm" method="POST" action="/auction/{{ $auction->id }}/bid">
+                @csrf
+                <label for="bid_amount">Bid Amount:</label>
+                <input type="number" id="bid_amount" name="bid_amount" min="{{ $auction->current_price }}" step="1" required>
+                <button type="submit" class="button">Bid</button>
+            </form>
+        @endif
+    </div>
 @endsection

@@ -77,15 +77,31 @@ class AuthenticatedUserController extends Controller
     
         // Check if the authenticated user has permission to promote users to ADMIN
         if (Auth::user()->role === 'ADMIN' && Auth::user()->id != $user->id) {
-            $user->role = 'ADMIN';
-            $user->save();
+            // Check if the user has any "ACTIVE" auctions
+            $hasActiveAuctions = $user->auctions()->where('status', 'ACTIVE')->exists();
     
-            return back()->with('success', 'User promoted to ADMIN successfully');
+            // Check if the user has any active bids
+            $hasActiveBids = $user->bids()->whereHas('auctions', function ($query) {
+                $query->where('status', 'ACTIVE');
+            })->exists();
+    
+            if (!$hasActiveAuctions && !$hasActiveBids) {
+                // User doesn't have active auctions or active bids, so promote them to ADMIN
+                $user->role = 'ADMIN';
+                $user->save();
+    
+                return back()->with('success', 'User promoted to ADMIN successfully');
+            } else {
+                // Handle the case where the user has active auctions or active bids
+                return back()->with('error', 'User has active auctions or active bids and cannot be promoted to ADMIN.');
+            }
         } else {
             // Handle the case where the authenticated user doesn't have permission
             return abort(403); // Return a 403 Forbidden response
         }
-    }    
+    }
+    
+    
 
     /**
      * Display the specified resource.

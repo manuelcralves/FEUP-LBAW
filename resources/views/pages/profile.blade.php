@@ -9,6 +9,18 @@
         </div>
     @endif
 
+    @if (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
+
+    @if (isset($customError))
+        <div class="alert alert-danger">
+            {{ $customError }}
+        </div>
+    @endif
+    
     <div class="profile-container">
         <h1 class="profile-header">User Information</h1>
         <div class="user-info">
@@ -51,9 +63,11 @@
                     <a href="{{ route('owned.auctions', ['id' => Auth::user()->id, 'pageNr' => 1]) }}" class="button my-auctions">My Auctions</a>
                     <a href="{{ route('myBids', ['id' => Auth::user()->id, 'pageNr' => 1]) }}" class="button my-bids">My Bids</a>
                 @endif
-            @elseif(Auth::check())
-                <a href="{{ url('/home') }}" class="button back-home">Back to Home Page</a>
                 <a href="{{ route('show.users', ['pageNr' => 1]) }}" class="button back-users">Back to Users Page</a>
+                <a href="{{ url('/home') }}" class="button back-home">Back to Home Page</a>
+            @elseif(Auth::check())
+                <a href="{{ route('show.users', ['pageNr' => 1]) }}" class="button back-users">Back to Users Page</a>
+                <a href="{{ url('/home') }}" class="button back-home">Back to Home Page</a>
             @endif
         </div>
     </div>

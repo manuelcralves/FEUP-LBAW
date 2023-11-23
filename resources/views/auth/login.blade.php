@@ -29,6 +29,12 @@
     Continue as Guest
 </button>
 
+@if (session('message'))
+    <p class="message">
+        {{ session('message') }}
+    </p>
+@endif
+
 @if (session('success'))
     <p class="success">
         {{ session('success') }}
