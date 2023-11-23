@@ -1,26 +1,32 @@
 body {
   align-self: center;
   text-align: center;
-  background-color: #45a745;
-  color: #ffffff; /* Dark green text color */
+  background-color: #FFFFE4;
+  color: #003300; /* Dark green text color */
+  margin: 0; 
+  padding: 0;
 }
 
 
 main > header h1 {
-  margin: 0;
+  /*position: fixed;*/
+  top: 0;
+  width: 100%;
+  z-index: 100;
+  margin: 0px !important;
   align-self: center;
   text-align: center;
   display: grid;
   align-items: center;
-  background-color: #008000; /* Dark green header background */
+  background-color: #004300; /* Dark green header background */
   padding: 1em;
-  border-radius: 10px; /* Rounded edges */
   gap: 1em; /* Gap between grid items */
+  
 }
 
 
 main > a.button {
-  margin: 1em;
+  margin: 3em;
   text-align: center;
   display: inline;
   text-align: center;
@@ -31,6 +37,10 @@ main > a.button {
   
   color: #ffffff; /* White text color */
 }
+.buttonColor {
+  background-color:#9ed19e;;
+}
+
 
 /* New styles for a.grid-container for organizing the buttons */
 main > header a.grid-container {
@@ -49,7 +59,7 @@ main > header a.grid-container a.button {
 
 main > header a.button {
   align-content: center;
-  margin: 1em;
+  margin-top: 1em;
   justify-self: center; /* Align buttons to the right */
   color: #ffffff; /* White text color */
 }
@@ -68,7 +78,7 @@ main > header span {
 
 #cards article.card {
   display: flex; 
-  background-color: #006400; /* Dark green card background */
+  background-color: #9ed19e; /* Dark green card background */
   padding: 1em;
   border-radius: 5px; /* Rounded corners for each "cell" */
   vertical-align: top; /* Align cards to the top within the "cell" */
@@ -225,6 +235,7 @@ main > header span {
     text-align: center; /* Center the form */
     margin: 10px auto; /* Center the form horizontally */
     max-width: 300px; /* Limit the form's width */
+    margin-top: 1em;
 }
 
 #search-form input[type="text"] {
@@ -257,22 +268,22 @@ main > header span {
 .bidders-container {
   flex-basis: 48%;
   margin: 15px;
-  background-color: #3da35a; /* Light green background */
+  background-color: #FFFFE4; /* Light green background */
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 100, 0, 0.3);
+  /*box-shadow: 0 4px 8px rgba(0, 100, 0, 0.3);*/
 }
 
 /* Auction and Bidder Items */
 .auction-item,
 .bidder-item {
-  border: 1px solid #006622;
+  /*border: 1px solid #006622;*/
   padding: 15px;
   margin-bottom: 15px;
   margin-left: 15px;
   margin-right: 15px;
   border-radius: 10px;
   box-shadow: 0 3px 6px rgba(0, 128, 0, 0.3);
-  background-color: #bef7be; /* Very light green for items */
+  background-color: #9ed19e; /*#bef7be;  Very light green for items */
 }
 
 /* Headers and Paragraphs */
@@ -288,12 +299,13 @@ p {
   color: #003300; /* Very dark green for text */
 }
 
+
 .profile-container {
-  background-color: #9ed19e; /* Light green background */
+  background-color: #FFFFE4; /* Light green background */
   padding: 20px;
   border-radius: 10px;
   width: 60%;
-  box-shadow: 0 3px 6px rgba(0, 128, 0, 0.2);
+  box-shadow: none;/*0 3px 6px rgba(0, 128, 0, 0.2);*/
   text-align: center; /* Center-align text */
   margin: 0 auto; /* Center the container horizontally */
 }
@@ -309,18 +321,19 @@ p {
 
 /* User information and address item styling */
 .user-info, .address-item {
-  background-color: #f0f0f0; /* Light gray for contrast */
+  background-color: #9ed19e;/* #FFFFE4; /* Light gray for contrast */
   padding: 20px;
+  width: 100%;
   margin-bottom: 20px;
   border-radius: 15px; /* More rounded corners */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  box-shadow: none;/*0 4px 8px rgba(0, 0, 0, 0.1);  Subtle shadow for depth */
   font-size: 1.1em; /* Slightly larger font size */
 }
 
 /* Container for addresses */
 .addresses-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  /*grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));*/
   gap: 15px; /* Increased gap */
   margin-top: 10px; /* Top margin for separation */
 }
@@ -496,7 +509,7 @@ p {
   max-width: 600px;
   margin: auto;
   padding: 20px;
-  background-color: #e6ffe6; /* Light gray background */
+  background-color: #9ed19e; /* Light gray background */
   border-radius: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -629,9 +642,9 @@ p {
   max-width: 800px;
   margin: auto;
   padding: 20px;
-  background-color: #f0f0f0;
+  background-color: #FFFFE4;
   border-radius: 15px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  /*box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
 }
 
 .page-title {
@@ -683,9 +696,9 @@ p {
   max-width: 800px;
   margin: auto;
   padding: 20px;
-  background-color: #f0f0f0;
+  background-color: #FFFFE4;
   border-radius: 15px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  /*box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
 }
 
 .auctions-title {
@@ -745,9 +758,9 @@ p {
   max-width: 400px;
   margin: auto;
   padding: 20px;
-  background-color: #f0f0f0;
+  background-color: #FFFFE4;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  /*box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);*/
 }
 
 .add-funds-title {
@@ -876,7 +889,7 @@ p {
   max-width: 400px;
   margin: auto;
   padding: 20px;
-  background-color: #f0f0f0;
+  background-color: #9ed19e;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
