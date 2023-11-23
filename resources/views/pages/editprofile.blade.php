@@ -1,46 +1,60 @@
 @extends('layouts.app')
 
 @section('content')
-<form method="POST" action="{{ route('update', ['id' => $user->id]) }}">
-    @csrf
-    @method('POST')
+<div class="profile-update-container">
+    <form method="POST" action="{{ route('update', ['id' => $user->id]) }}" class="profile-update-form">
+        @csrf
+        @method('POST')
 
-    <label for="username">Username</label>
-    <input id="username" type="text" name="username" value="{{ old('username', $user->username) }}" required autofocus>
-    @error('username')
-    <span class="error">{{ $message }}</span>
-    @enderror
+        <div class="form-group">
+            <label for="username" class="form-label">Username</label>
+            <input id="username" type="text" name="username" value="{{ old('username', $user->username) }}" required autofocus class="form-input">
+            @error('username')
+            <span class="error">{{ $message }}</span>
+            @enderror
+        </div>
 
-    <label for="first_name">First Name</label>
-    <input id="first_name" type="text" name="first_name" value="{{ old('first_name', $user->first_name) }}" required>
-    @error('first_name')
-    <span class="error">{{ $message }}</span>
-    @enderror
+        <div class="form-group">
+            <label for="first_name" class="form-label">First Name</label>
+            <input id="first_name" type="text" name="first_name" value="{{ old('first_name', $user->first_name) }}" required class="form-input">
+            @error('first_name')
+            <span class="error">{{ $message }}</span>
+            @enderror
+        </div>
 
-    <label for="last_name">Last Name</label>
-    <input id="last_name" type="text" name="last_name" value="{{ old('last_name', $user->last_name) }}" required>
-    @error('last_name')
-    <span class="error">{{ $message }}</span>
-    @enderror
+        <div class="form-group">
+            <label for="last_name" class="form-label">Last Name</label>
+            <input id="last_name" type="text" name="last_name" value="{{ old('last_name', $user->last_name) }}" required class="form-input">
+            @error('last_name')
+            <span class="error">{{ $message }}</span>
+            @enderror
+        </div>
 
-    <label for="email">E-Mail Address</label>
-    <input id="email" type="email" name="email" value="{{ old('email', $user->email) }}" required>
-    @error('email')
-    <span class="error">{{ $message }}</span>
-    @enderror
+        <div class="form-group">
+            <label for="email" class="form-label">E-Mail Address</label>
+            <input id="email" type="email" name="email" value="{{ old('email', $user->email) }}" required class="form-input">
+            @error('email')
+            <span class="error">{{ $message }}</span>
+            @enderror
+        </div>
 
-    <label for="password">New Password (optional)</label>
-    <input id="password" type="password" name="password">
-    @error('password')
-    <span class="error">{{ $message }}</span>
-    @enderror
+        <div class="form-group">
+            <label for="password" class="form-label">New Password (optional)</label>
+            <input id="password" type="password" name="password" class="form-input">
+            @error('password')
+            <span class="error">{{ $message }}</span>
+            @enderror
+        </div>
 
-    <label for="password_confirmation">Confirm New Password (optional)</label>
-    <input id="password_confirmation" type="password" name="password_confirmation">
+        <div class="form-group">
+            <label for="password_confirmation" class="form-label">Confirm New Password (optional)</label>
+            <input id="password_confirmation" type="password" name="password_confirmation" class="form-input">
+        </div>
 
-    <button type="submit">
-        Update Profile
-    </button>
-    <a class="button button-outline" href="{{ route('show', ['id' => $user->id]) }}">Cancel</a>
-</form>
+        <button type="submit" class="update-profile-button">
+            Update Profile
+        </button>
+        <a class="cancel-button" href="{{ route('show', ['id' => $user->id]) }}">Cancel</a>
+    </form>
+</div>
 @endsection

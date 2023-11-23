@@ -3,29 +3,33 @@
 @section('title', 'General Search')
 
 @section('content')
-    <section>
-        <h2>Auctions</h2>
+    <section class="search-results-section">
+        <h2 class="section-title">Auctions</h2>
         @if ($auctions->count() > 0)
-            <ul>
+            <div class="cards-container">
                 @foreach ($auctions as $auction)
-                    <li><a href="{{ route('auction.show', ['id' => $auction->id]) }}">{{ $auction->title }}</a></li>
+                    <div class="card">
+                        <a href="{{ route('auction.show', ['id' => $auction->id]) }}" class="card-title">{{ $auction->title }}</a>
+                    </div>
                 @endforeach
-            </ul>
+            </div>
         @else
-            <p>No auctions found.</p>
+            <p class="no-results-message">No auctions found.</p>
         @endif
     </section>
 
-    <section>
-        <h2>Users</h2>
+    <section class="search-results-section">
+        <h2 class="section-title">Users</h2>
         @if ($users->count() > 0)
-            <ul>
+            <div class="cards-container">
                 @foreach ($users as $user)
-                    <li><a href="{{ route('show', ['id' => $user->id]) }}">{{ $user->username }}</a></li>
+                    <div class="card">
+                        <a href="{{ route('show', ['id' => $user->id]) }}" class="card-title">{{ $user->username }}</a>
+                    </div>
                 @endforeach
-            </ul>
+            </div>
         @else
-            <p>No users found.</p>
+            <p class="no-results-message">No users found.</p>
         @endif
     </section>
 @endsection

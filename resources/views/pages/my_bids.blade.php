@@ -3,24 +3,25 @@
 @section('title', 'My Bids')
 
 @section('content')
-    <h2>My Bids</h2>
+    <div class="my-bids-container">
+        <h2 class="page-title">My Bids</h2>
 
-    @if ($bids->isEmpty())
-        <p>No bids found.</p>
-    @else
-        <ul>
-            @foreach ($bids as $bid)
-                <li>
-                    <strong>Auction Title:</strong> {{ $bid->auctions->title }}<br>
-                    <strong>Auction ID:</strong> {{ $bid->auction }}<br>
-                    <strong>Value:</strong> {{ $bid->value }}€<br>
-                    <strong>Creation Date:</strong> {{ $bid->creation_date }}<br>
-                </li>
-            @endforeach
-        </ul>
-    @endif
+        @if ($bids->isEmpty())
+            <p class="no-bids-message">No bids found.</p>
+        @else
+            <div class="bids-list">
+                @foreach ($bids as $bid)
+                    <div class="bid-card">
+                        <p><strong>Auction Title:</strong> {{ $bid->auctions->title }}</p>
+                        <p><strong>Auction ID:</strong> {{ $bid->auction }}</p>
+                        <p><strong>Value:</strong> {{ $bid->value }}€</p>
+                        <p><strong>Creation Date:</strong> {{ $bid->creation_date }}</p>
+                    </div>
+                @endforeach
+            </div>
+        @endif
 
-    <div class="pagination">
+        <div class="pagination">
         @if ($bids->currentPage() > 1)
             <a href="{{ route('myBids', ['id' => $id, 'pageNr' => $bids->currentPage() - 1]) }}" class="prev">Previous</a>
         @endif
@@ -33,5 +34,7 @@
             <a href="{{ route('myBids', ['id' => $id, 'pageNr' => $bids->currentPage() + 1]) }}" class="next">Next</a>
         @endif
     </div>
-    <a href="{{ route('show', ['id' => Auth::user()->id]) }}" class="button">Back to profile</a>
+
+        <a href="{{ route('show', ['id' => Auth::user()->id]) }}" class="button back-button">Back to profile</a>
+    </div>
 @endsection

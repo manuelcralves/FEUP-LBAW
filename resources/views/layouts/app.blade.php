@@ -25,28 +25,27 @@
             <header>
                 <h1><a href="{{ url('/home') }}">StyleSwap!</a></h1>
                 @if (!Auth::check())
-                <a class="button" href="{{ url('/login') }}">Login</a>
-                <a class="button" href="{{ route('auction.index', ['pageNr' => 1]) }}">Auctions</a>
-                <a class="button" href="{{ route('show.users', ['pageNr' => 1]) }}">Users</a>
-                <a class="button" href="{{ route('register', ['pageNr' => 1]) }}">Register</a>
+                <!-- Search form for all users -->
                 <form id="search-form" action="{{ route('search.results') }}" method="GET">
                     <input type="text" name="query" placeholder="Search...">
                     <button type="submit">Search</button>
                 </form>
-                @elseif(Auth::check())
-                    <form id="search-form" action="{{ route('search.results') }}" method="GET">
-                        <input type="text" name="query" placeholder="Search...">
-                        <button type="submit">Search</button>
-                    </form>
-                    <a class="button" href="{{ route('show', ['id' => Auth::user()->id]) }}">My Profile</a>
-                    <a class="button" href="{{ route('auction.index', ['pageNr' => 1]) }}">Auctions</a>
-                    <a class="button" href="{{ route('show.users', ['pageNr' => 1]) }}">Users</a>
-                    <a class="button" href="{{ url('/logout') }}">Logout</a>
-                    <span>{{ Auth::user()->name }}</span>
-                    @if(Auth::user()->role != 'ADMIN')
-                    <a class="button" href="{{ route('auction.create') }}">Create Auction</a>
-                    @endif
-                    
+                <!-- Non-authenticated user links -->
+                <a class="button" href="{{ url('/login') }}">Login</a>
+                <a class="button" href="{{ route('register', ['pageNr' => 1]) }}">Register</a>
+                @endif
+                <!-- Links visible to all users -->
+                <a class="button" href="{{ route('auction.index', ['pageNr' => 1]) }}">Auctions</a>
+                <a class="button" href="{{ route('show.users', ['pageNr' => 1]) }}">Users</a>
+                @if (Auth::check())
+                <!-- Links for authenticated users -->
+                <a class="button" href="{{ route('show', ['id' => Auth::user()->id]) }}">My Profile</a>
+                <span>{{ Auth::user()->name }}</span>
+                <!-- Other authenticated user links -->
+                @if(Auth::user()->role != 'ADMIN')
+                <a class="button" href="{{ route('auction.create') }}">Create Auction</a>
+                @endif
+                <a class="button" href="{{ url('/logout') }}">Logout</a>
                 @endif
             </header>
             <section id="content">
