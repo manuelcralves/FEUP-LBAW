@@ -27,6 +27,6 @@ class Item extends Model
     ];
 
     public function auction() {
-        return $this->hasOne(Auction::class, 'auction'); 
+        return $this->hasOne(Auction::class, 'item'); 
     }
 }

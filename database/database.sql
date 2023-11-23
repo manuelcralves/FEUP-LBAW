@@ -861,8 +861,7 @@ INSERT INTO item (name, category, brand, color, picture, condition) VALUES
 ('Running Shoes', 'Shoes', 'Brand1', 'Grey', 'running_shoes.jpg', 'EXCELLENT'),
 ('Winter Gloves', 'Gloves', 'Brand2', 'Black', 'winter_gloves.jpg', 'NEW'),
 ('Wool Hat', 'Hat', 'Brand3', 'Beige', 'wool_hat.jpg', 'LIKE NEW'),
-('Sunglasses', 'Sunglasses', 'Brand4', 'Black', 'sunglasses.jpg', 'NEW'),
-('Watch', 'Watch', 'Brand5', 'Silver', 'watch.jpg', 'GOOD');
+('Sunglasses', 'Sunglasses', 'Brand4', 'Black', 'sunglasses.jpg', 'NEW');
 
 -- Create auctions for the 10 items and associate each with a user
 INSERT INTO auction (title, description, end_date, starting_price, current_price, "owner", "item")

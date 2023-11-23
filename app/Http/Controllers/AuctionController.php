@@ -104,16 +104,14 @@ class AuctionController extends Controller
                 'condition' => 'required|string|max:255',
             ]);
     
-            // Create and save the Auction
+            $item = new Item($validatedData);
+            $item->save();
+            
             $auction = new Auction($validatedData);
             $auction->current_price = $validatedData['starting_price'];
             $auction->owner = $user->id;
-            $auction->save();
-    
-            // Create the Item and associate it with the Auction
-            $item = new Item($validatedData);
-            $item->save();
-            $item->auction = $auction->id;
+            $auction->items()->associate($item); // Associate the auction with the item
+            $auction->save();            
     
             return redirect()->route('auction.show', ['id' => $auction->id]);
         } catch (\Illuminate\Database\QueryException $ex) {

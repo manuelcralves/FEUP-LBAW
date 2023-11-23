@@ -23,8 +23,6 @@ use App\Http\Controllers\Auth\RegisterController;
 // Home
 Route::redirect('/', '/login');
 
-Route::get('/home', [AuthenticatedUserController::class, 'index'])->name('home');
-
 // Authentication
 Route::controller(LoginController::class)->group(function () {
     Route::get('/login', 'showLoginForm')->name('login');
@@ -38,11 +36,12 @@ Route::controller(RegisterController::class)->group(function () {
 });
 
 Route::controller(AuthenticatedUserController::class)->group(function () {
+    Route::get('/home','index')->name('home');
     Route::get('/profile/{id}', 'show')->name('show');
     Route::get('/profile/{id}/edit', 'edit')->name('edit');
     Route::post('/profile/{id}/edit', 'update')->name('update');
-    Route::get('/profile/{id}/balance', [AuthenticatedUserController::class, 'balance'])->name('balance');
-    Route::post('/profile/{id}/balance', [AuthenticatedUserController::class, 'addFunds'])->name('addFunds');
+    Route::get('/profile/{id}/balance', 'balance')->name('balance');
+    Route::post('/profile/{id}/balance', 'addFunds')->name('addFunds');
     Route::post('/profile/{id}/promote', 'promoteToAdmin')->name('promote.admin');
     Route::get('users/{pageNr}', 'all')->name('show.users');
     Route::get('/auctionCreate', 'showCreateAuction')-> name('showCreateAuction');
@@ -51,18 +50,18 @@ Route::controller(AuthenticatedUserController::class)->group(function () {
 
 
 Route::controller(AuctionController::class)->group(function () {
-    Route::get('/auctions/{pageNr}', [AuctionController::class, 'index'])->name('auction.index');
-    Route::get('/auction/{id}', [AuctionController::class, 'show'])->name('auction.show');  
-    Route::get('/auctionCreate', [AuctionController::class, 'create'])->name('auction.create');
-    Route::post('/auctionCreate', [AuctionController::class, 'store'])->name('auction.store');
-    Route::get('/auction/{id}/edit', [AuctionController::class, 'edit'])->name('auction.edit');
-    Route::post('/auction/{id}/edit', [AuctionController::class, 'update'])->name('auction.update');
-    Route::put('/auction/{id}/cancel', [AuctionController::class, 'cancel'])->name('auction.cancel');
+    Route::get('/auctions/{pageNr}', 'index')->name('auction.index');
+    Route::get('/auction/{id}', 'show')->name('auction.show');  
+    Route::get('/auctionCreate', 'create')->name('auction.create');
+    Route::post('/auctionCreate', 'store')->name('auction.store');
+    Route::get('/auction/{id}/edit', 'edit')->name('auction.edit');
+    Route::post('/auction/{id}/edit', 'update')->name('auction.update');
+    Route::put('/auction/{id}/cancel', 'cancel')->name('auction.cancel');
+    Route::get('/profile/{id}/auctions/{pageNr}', 'showOwnedAuctions')->name('owned.auctions');
+    Route::get('/auction/{id}',  'show')->name('auction.show');
 });
 
 Route::controller(BidController::class)->group(function () {
     Route::post('/auction/{id}/bid','placeBid')->name('place.bid');
-    Route::get('/profile/{id}/auctions/{pageNr}', [AuctionController::class,'showOwnedAuctions'])->name('owned.auctions');
-    Route::get('/auction/{id}', [AuctionController::class, 'show'])->name('auction.show');
     Route::get('/profile/{id}/bids/{pageNr}', 'myBids')->name('myBids');
 });
