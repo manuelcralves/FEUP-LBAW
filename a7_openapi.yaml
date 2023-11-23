@@ -407,7 +407,7 @@ paths:
         '200':
           description: 'Ok. Show exact match search results for users'
 
-    /profile/{id}/promote:
+  /profile/{id}/promote:
     post:
       operationId: R201
       summary: 'R201: Promote User to Admin'
