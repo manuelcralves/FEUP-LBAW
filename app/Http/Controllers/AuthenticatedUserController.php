@@ -265,4 +265,20 @@ class AuthenticatedUserController extends Controller
     {
         //
     }
+
+    public function showAboutUs()
+    {
+        
+      return view('pages.aboutUs');
+      
+    }
+
+    public function showFAQ()
+    {
+        
+      return view('pages.faq');
+      
+    }
+
+    
 }

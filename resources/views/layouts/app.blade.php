@@ -39,6 +39,7 @@
             <!-- Links visible to all users -->
             <a class="button" href="{{ route('auction.index', ['pageNr' => 1]) }}">Auctions</a>
             <a class="button" href="{{ route('show.users', ['pageNr' => 1]) }}">Users</a>
+            <a class="button" href="{{ url('/login') }}">About Us</a>
             @if (Auth::check())
                 <!-- Links for authenticated users -->
                 <a class="button" href="{{ route('show', ['id' => Auth::user()->id]) }}">My Profile</a>
@@ -55,4 +56,11 @@
         </section>
     </main>
 </body>
+
+<footer id="sticky-footer" class="flex-shrink-0 py-4 bg-dark text-white-50">
+    <div class="container text-center">
+      <small> <a href="/aboutUs">About Us </a>  | <a href="/faq">Contacts</a> | <a href="/faq">FAQ</a></small>
+    </div>
+  </footer>  
+
 </html>

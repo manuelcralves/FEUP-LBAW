@@ -37,6 +37,8 @@ Route::controller(RegisterController::class)->group(function () {
 
 Route::controller(AuthenticatedUserController::class)->group(function () {
     Route::get('/home','index')->name('home');
+    Route::get('/aboutUs', 'showAboutUs')->name('aboutUs');
+    Route::get('/faq', 'showFAQ')->name('faq');
     Route::get('/profile/{id}', 'show')->name('show');
     Route::get('/profile/{id}/edit', 'edit')->name('edit');
     Route::post('/profile/{id}/edit', 'update')->name('update');
