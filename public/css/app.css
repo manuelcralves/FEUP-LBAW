@@ -939,11 +939,12 @@ p {
   background-color: #0d4a0b; /* Slightly darker green on hover */
 }
 
-.profile-picture img {
-  width: 200px;
-  max-height: 200px;
+.profile-picture img, .user-profile-image {
+  width: 175px;
+  height: 175px;
   object-fit: cover; /* This ensures the image covers the whole area without stretching */
   border-radius: 50%; /* Optional: makes the image circular */
+  border: 2px solid #0d4a0b;
 }
 
 .auction-image img {
@@ -951,4 +952,5 @@ p {
   max-height: 400px;
   object-fit: cover; /* This ensures the image covers the whole area without stretching */
   border-radius: 5%; /* Optional: makes the image circular */
+  border: 2px solid #0d4a0b;
 }

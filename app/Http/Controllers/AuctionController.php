@@ -32,7 +32,8 @@ class AuctionController extends Controller
         $auctionsQuery->where('status', 'ACTIVE');
     
         // Paginate the results
-        $auctions = $auctionsQuery->paginate($perPage, ['*'], 'page', $pageNr);
+        // In the index method of your controller
+        $auctions = $auctionsQuery->with('items')->paginate($perPage, ['*'], 'page', $pageNr);
     
         // Set the path for the paginator to use the named route with query parameter
         $auctions->appends(['query' => $query])->links();
