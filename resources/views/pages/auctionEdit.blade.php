@@ -21,6 +21,7 @@
             </div>
 
             <button type="submit" class="update-auction-button">Update Auction</button>
+            <a class="cancel-button" href="{{ route('auction.show', ['id' => $auction->id]) }}">Cancel</a>
         </form>
     </div>
 @endsection
