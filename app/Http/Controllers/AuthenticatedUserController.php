@@ -11,6 +11,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Auction;
 use App\Models\Bid;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 
 class AuthenticatedUserController extends Controller
 {
@@ -212,6 +214,7 @@ class AuthenticatedUserController extends Controller
             'last_name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:authenticated_user,email,'.$id,
             'password' => 'nullable|string|min:8', // Allow the password to be nullable if not changed
+            'picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         // Hash the password if provided
@@ -222,6 +225,16 @@ class AuthenticatedUserController extends Controller
             unset($validatedData['password']);
         }
 
+        if ($request->hasFile('picture')) {
+            $file = $request->file('picture');
+            $originalExtension = $file->getClientOriginalExtension();
+            $uniqueName = Carbon::now()->format('YmdHis') . '.' . $originalExtension;
+            $filePath = $file->storeAs('pictures', $uniqueName, 'public');
+        
+            // Update the validatedData array with the new file path
+            $validatedData['picture'] = $filePath;
+        }        
+        
         // Update the user's information
         $user->update($validatedData);
 

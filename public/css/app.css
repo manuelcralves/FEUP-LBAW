@@ -938,3 +938,10 @@ p {
 .update-profile-button:hover {
   background-color: #0d4a0b; /* Slightly darker green on hover */
 }
+
+.profile-picture img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover; /* This ensures the image covers the whole area without stretching */
+  border-radius: 50%; /* Optional: makes the image circular */
+}
