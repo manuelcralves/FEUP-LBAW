@@ -941,7 +941,14 @@ p {
 
 .profile-picture img {
   width: 200px;
-  height: 200px;
+  max-height: 200px;
   object-fit: cover; /* This ensures the image covers the whole area without stretching */
   border-radius: 50%; /* Optional: makes the image circular */
+}
+
+.auction-image img {
+  width: auto;
+  max-height: 400px;
+  object-fit: cover; /* This ensures the image covers the whole area without stretching */
+  border-radius: 5%; /* Optional: makes the image circular */
 }

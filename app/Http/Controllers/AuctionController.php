@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\AuthenticatedUser;
 use App\Models\Item;
 use App\Policies\AuctionPolicy;
+use Carbon\Carbon;
 
 class AuctionController extends Controller
 {
@@ -102,8 +103,17 @@ class AuctionController extends Controller
                 'brand' => 'required|string|max:255',
                 'color' => 'required|string|max:255',
                 'condition' => 'required|string|max:255',
+                'picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
     
+            if ($request->hasFile('picture')) {
+                $file = $request->file('picture');
+                $originalExtension = $file->getClientOriginalExtension();
+                $uniqueName = Carbon::now()->format('YmdHis') . '.' . $originalExtension;
+                $filePath = $file->storeAs('pictures', $uniqueName, 'public');
+                $validatedData['picture'] = $filePath;
+            }
+
             $item = new Item($validatedData);
             $item->save();
             

@@ -24,6 +24,12 @@
         
         <h2 class="details-title">Auction Details</h2>
 
+        @if (isset($item->picture) && $item->picture)
+            <div class="auction-image">
+                <img src="{{ asset('storage/' . $item->picture) }}" alt="Auction Image">
+            </div>
+        @endif
+
         <div class="auction-info">
             <p><strong>Title:</strong> {{ $auction->title }}</p>
             <p><strong>Owner:</strong> {{ $auction->authenticatedUser->username}}</p>
