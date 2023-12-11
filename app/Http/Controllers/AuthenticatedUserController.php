@@ -279,6 +279,15 @@ class AuthenticatedUserController extends Controller
       return view('pages.faq');
       
     }
+    
+    public function showFeatures()
+    {
+        return view('pages.features');
+    }
 
+    public function showContacts()
+    {
+        return view('pages.contacts');
+    }
     
 }

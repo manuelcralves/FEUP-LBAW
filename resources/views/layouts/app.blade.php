@@ -59,7 +59,7 @@
 
 <footer id="sticky-footer" class="flex-shrink-0 py-4 bg-dark text-white-50">
     <div class="container text-center">
-      <small> <a href="/aboutUs">About Us </a>  | <a href="/faq">Contacts</a> | <a href="/faq">FAQ</a></small>
+      <small> <a href="/aboutUs">About Us </a>  | <a href="/contacts">Contacts</a> | <a href="/faq">FAQ</a> | <a href="/features">Features</a></small>
     </div>
   </footer>  
 

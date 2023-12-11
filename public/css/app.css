@@ -295,6 +295,10 @@ h2 {
   color: #007700; /* Mid-tone green for subheaders */
 }
 
+h3 {
+  color: #007700;
+}
+
 p {
   color: #003300; /* Very dark green for text */
 }
