@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthenticatedUserController;
 use App\Http\Controllers\AuctionController;
 use App\Http\Controllers\BidController;
-
+use App\Http\Controllers\FollowingController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 
@@ -68,4 +68,9 @@ Route::controller(AuctionController::class)->group(function () {
 Route::controller(BidController::class)->group(function () {
     Route::post('/auction/{id}/bid','placeBid')->name('place.bid');
     Route::get('/profile/{id}/bids/{pageNr}', 'myBids')->name('myBids');
+});
+
+Route::controller(FollowingController::class)->group(function () {
+    Route::post('/auction/{id}/follow', 'follow')->name('auction.follow');
+    Route::post('/auction/{id}/unfollow', 'unfollow')->name('auction.unfollow');
 });
