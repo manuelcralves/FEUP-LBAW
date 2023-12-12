@@ -64,7 +64,7 @@ class FollowingController extends Controller
     /**
      * Follow an auction.
      */
-    public function follow($id)
+    public function follow(Auction $auction)
     {
         // Get the authenticated user
         $user = Auth::user();
@@ -97,7 +97,7 @@ class FollowingController extends Controller
     /**
      * Unfollow an auction.
      */
-    public function unfollow($id)
+    public function unfollow(Auction $auction)
     {
         // Get the authenticated user
         $user = Auth::user();

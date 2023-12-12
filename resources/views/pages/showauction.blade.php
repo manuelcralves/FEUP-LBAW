@@ -90,5 +90,13 @@
                 <button type="submit" class="button">Bid</button>
             </form>
         @endif
-    </div>
+
+    <!--    // Follow 
+            @if(Auth::user()->role != 'ADMIN' && Auth::user() != $auction->authenticatedUser)
+            <form id="follow" method="POST" action="/auction/{{ $auction->id }}/follow">
+                @csrf
+                <button type="submit" class="button">Follow</button>
+            </form>
+        @endif
+    </div> -->
 @endsection

@@ -20,6 +20,20 @@
                         {{ $auction->title }}
                     </a>
                     <div class="auction-details">
+                    <!--    @if(Auth::check()) // Check if the user is authenticated 
+                                @if(Auth::user()->followings()->where('auction_id', $auction->id)->exists())
+                                    <form method="POST" action="{{ route('auction.unfollow', ['id' => $auction->id]) }}" class="follow-form">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="unfollow-button">Unfollow</button>
+                                    </form>
+                                @else
+                                    <form method="POST" action="{{ route('auction.follow', ['id' => $auction->id]) }}" class="follow-form">
+                                        @csrf
+                                        <button type="submit" class="follow-button">Follow</button>
+                                    </form>
+                                @endif
+                            @endif -->
                         <p><strong>Title:</strong> {{ $auction->title }}</p>
                         <p><strong>Description:</strong> {{ $auction->description }}</p>
                         <p><strong>Current Price:</strong> {{ $auction->current_price }}€</p>
