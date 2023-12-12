@@ -24,7 +24,9 @@
                         <p><strong>Last Name:</strong> {{ $user->last_name }}</p>
                         <p><strong>Email:</strong> {{ $user->email }}</p>
                         <p><strong>Rating:</strong> {{ $user->rating ?? 'No rating yet' }}</p>
+                        @if(Auth::user()->role === 'ADMIN')
                         <p><strong>Role:</strong> {{ $user->role }}</p>
+                        @endif
                     </div>
                 </div>
             @endforeach

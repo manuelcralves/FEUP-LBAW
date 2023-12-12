@@ -24,12 +24,16 @@
     <div class="profile-container">
         <h1 class="profile-header">User Information</h1>
         <div class="user-info">
-            <p><strong>Name:</strong> {{ $user->username }}</p>
-            <p><strong>Email:</strong> {{ $user->email }}</p>
+            <p><strong>Username:</strong> {{ $user->username }}</p>
             <p><strong>First Name:</strong> {{ $user->first_name }}</p>
             <p><strong>Last Name:</strong> {{ $user->last_name }}</p>
+            <p><strong>Email:</strong> {{ $user->email }}</p>
+            
             @if(Auth::user()->role != 'ADMIN' && Auth::user()->id == $user->id)
                 <p><strong>Balance:</strong> {{ $user->balance }}€</p>
+            @endif
+            @if($user->is_blocked == TRUE)
+                <h4><strong>This user has been blocked!</strong></h4>
             @endif
         </div>
 
@@ -56,6 +60,18 @@
                 </form>
             @endif
 
+            @if(Auth::user()->role === 'ADMIN' && Auth::user()->id != $user->id && $user->role !== 'ADMIN' && $user->is_blocked == FALSE)
+                <form method="POST" action="{{ route('block.user', ['id' => $user->id]) }}" class="admin-form">
+                    @csrf
+                    <button type="submit" class="button promote-button">Block User</button>
+                </form>
+            @endif
+            @if(AUth::user()->role === 'ADMIN' && Auth::user()->id != $user->id && $user->role !== 'ADMIN' && $user->is_blocked == TRUE)
+                <form method="POST" action="{{ route('unblock.user', ['id' => $user->id]) }}" class="admin-form">
+                    @csrf 
+                    <button type="submit" class="button promote-button">Unblock User</button>
+                </form>    
+            @endif
             @if(Auth::user()->id == $user->id)
                 <a href="{{ route('edit', ['id' => Auth::user()->id]) }}" class="button edit-profile">Edit Profile</a>
                 @if(Auth::user()->role != 'ADMIN')

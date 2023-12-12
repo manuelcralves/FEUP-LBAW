@@ -299,6 +299,10 @@ h3 {
   color: #007700;
 }
 
+h4 {
+  color:#ff0000;
+}
+
 p {
   color: #003300; /* Very dark green for text */
 }
