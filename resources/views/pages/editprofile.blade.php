@@ -2,9 +2,14 @@
 
 @section('content')
 <div class="profile-update-container">
-    <form method="POST" action="{{ route('update', ['id' => $user->id]) }}" class="profile-update-form">
+    <form method="POST" action="{{ route('update', ['id' => $user->id]) }}" enctype="multipart/form-data" class="profile-update-form">
         @csrf
         @method('POST')
+
+        <div class="form-group">
+            <label for="picture">Profile Picture</label>
+            <input type="file" id="picture" name="picture" accept="image/*">
+        </div>
 
         <div class="form-group">
             <label for="username" class="form-label">Username</label>

@@ -20,6 +20,11 @@
                         {{ $auction->title }}
                     </a>
                     <div class="auction-details">
+                        @if (isset($auction->items->picture))
+                            <div class="auction-image">
+                                <img src="{{ asset('storage/' . $auction->items->picture) }}" alt="Auction Image" class="auction-image">
+                            </div>
+                        @endif
                         <p><strong>Title:</strong> {{ $auction->title }}</p>
                         <p><strong>Description:</strong> {{ $auction->description }}</p>
                         <p><strong>Current Price:</strong> {{ $auction->current_price }}€</p>

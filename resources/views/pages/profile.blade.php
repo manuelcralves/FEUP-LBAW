@@ -23,7 +23,15 @@
     
     <div class="profile-container">
         <h1 class="profile-header">User Information</h1>
+        
         <div class="user-info">
+            <div class="profile-picture">
+                @if ($user->picture == 'default.jpg')
+                    <img src="{{ asset('storage/pictures/default.jpg') }}" alt="Default Profile Picture" class="user-profile-image">
+                @else
+                    <img src="{{ asset('storage/' . $user->picture) }}" alt="{{ $user->username }}'s Profile Picture" class="user-profile-image">
+                @endif
+            </div>
             <p><strong>Name:</strong> {{ $user->username }}</p>
             <p><strong>Email:</strong> {{ $user->email }}</p>
             <p><strong>First Name:</strong> {{ $user->first_name }}</p>

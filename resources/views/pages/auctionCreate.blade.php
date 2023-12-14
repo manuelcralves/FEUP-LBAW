@@ -6,7 +6,7 @@
     <div class="create-auction-container">
         <h2 class="form-title">Create Auction</h2>
         
-        <form action="{{ route('auction.store') }}" method="POST" class="auction-form">
+        <form action="{{ route('auction.store') }}" method="POST" class="auction-form" enctype="multipart/form-data">
             @csrf
 
             <!-- Display Error Messages -->
@@ -26,6 +26,9 @@
 
             <label for="description">Description:</label>
             <textarea id="description" name="description" placeholder="Description">{{ old('description') }}</textarea>
+
+            <label for="picture">Item Picture</label>
+            <input type="file" id="picture" name="picture" accept="image/*">
 
             <label for="end_date">End Date:</label>
             <input type="datetime-local" id="end_date" name="end_date" value="{{ old('end_date') }}">

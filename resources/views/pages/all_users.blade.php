@@ -20,6 +20,11 @@
                         <strong>{{ $user->username }}</strong>
                     </a>
                     <div class="user-details">
+                        @if (isset($user->picture) && $user->picture != 'default.jpg')
+                            <img src="{{ asset('storage/' . $user->picture) }}" alt="{{ $user->username }}'s Profile Picture" class="user-profile-image">
+                        @else
+                            <img src="{{ asset('storage/pictures/default.jpg') }}" alt="Default Profile Picture" class="user-profile-image">
+                        @endif
                         <p><strong>First Name:</strong> {{ $user->first_name }}</p>
                         <p><strong>Last Name:</strong> {{ $user->last_name }}</p>
                         <p><strong>Email:</strong> {{ $user->email }}</p>

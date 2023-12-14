@@ -942,3 +942,19 @@ p {
 .update-profile-button:hover {
   background-color: #0d4a0b; /* Slightly darker green on hover */
 }
+
+.profile-picture img, .user-profile-image {
+  width: 175px;
+  height: 175px;
+  object-fit: cover; /* This ensures the image covers the whole area without stretching */
+  border-radius: 50%; /* Optional: makes the image circular */
+  border: 2px solid #0d4a0b;
+}
+
+.auction-image img {
+  width: auto;
+  max-height: 400px;
+  object-fit: cover; /* This ensures the image covers the whole area without stretching */
+  border-radius: 5%; /* Optional: makes the image circular */
+  border: 2px solid #0d4a0b;
+}
