@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthenticatedUserController;
 use App\Http\Controllers\AuctionController;
 use App\Http\Controllers\BidController;
+use App\Http\Controllers\ReportAuctionController;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -65,9 +66,17 @@ Route::controller(AuctionController::class)->group(function () {
     Route::put('/auction/{id}/cancel', 'cancel')->name('auction.cancel');
     Route::get('/profile/{id}/auctions/{pageNr}', 'showOwnedAuctions')->name('owned.auctions');
     Route::get('/auction/{id}',  'show')->name('auction.show');
+    Route::get('/auctionReport', 'createReport')->name('report.create');
+    Route::post('/auctionReport', 'storeReport')->name('report.store');
 });
 
 Route::controller(BidController::class)->group(function () {
     Route::post('/auction/{id}/bid','placeBid')->name('place.bid');
     Route::get('/profile/{id}/bids/{pageNr}', 'myBids')->name('myBids');
+});
+
+
+Route::controller(ReportAuctionController::class)->group(function (){
+    Route::get('/auctionReport', 'create')->name('report.create');
+    Route::post('/auctionReport', 'store')->name('report.store');
 });

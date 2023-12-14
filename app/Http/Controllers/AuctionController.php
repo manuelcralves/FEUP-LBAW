@@ -78,6 +78,7 @@ class AuctionController extends Controller
         return view('pages.auctionCreate'); 
     }    
 
+    
     /**
      * Store a newly created resource in storage.
      */
@@ -130,6 +131,8 @@ class AuctionController extends Controller
             return redirect()->back()->with('error', $customMessage);
         }
     }    
+
+
 
     public function edit($id)
     {

@@ -48,6 +48,12 @@
                 </form>
             </div>
         @endif
+        @if(Auth::check() && Auth::user()->id != $auction->owner)
+            <div class="action-buttons">
+                <a href="{{ route('report.create', $auction->id) }}" class="button edit-button">Report Auction</a>
+            </div>
+        @endif
+
 
         <!-- Back to Auctions button -->
         <a href="{{ route('auction.index', 1) }}" class="button">Back to Auctions</a>
@@ -90,5 +96,6 @@
                 <button type="submit" class="button">Bid</button>
             </form>
         @endif
+        
     </div>
 @endsection

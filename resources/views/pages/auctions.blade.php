@@ -20,7 +20,6 @@
                         {{ $auction->title }}
                     </a>
                     <div class="auction-details">
-                        <p><strong>Title:</strong> {{ $auction->title }}</p>
                         <p><strong>Description:</strong> {{ $auction->description }}</p>
                         <p><strong>Current Price:</strong> {{ $auction->current_price }}€</p>
                         <p><strong>Status:</strong> {{ $auction->status }}</p>
