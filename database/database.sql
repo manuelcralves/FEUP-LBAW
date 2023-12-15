@@ -853,15 +853,15 @@ INSERT INTO address (street, postal_code, city, country, "user") VALUES
 
 -- items
 INSERT INTO item (name, category, brand, color, picture, condition) VALUES
-('Floral Tee', 'T-Shirt', 'Brand1', 'White', 'floral_tee.jpg', 'NEW'),
-('Cotton Socks', 'Socks', 'Brand2', 'Black', 'cotton_socks.jpg', 'NEW'),
-('Denim Jacket', 'Jacket', 'Brand3', 'Blue', 'denim_jacket.jpg', 'LIKE NEW'),
-('Silk Scarf', 'Scarf', 'Brand4', 'Red', 'silk_scarf.jpg', 'NEW'),
-('Leather Belt', 'Belt', 'Brand5', 'Brown', 'leather_belt.jpg', 'GOOD'),
-('Running Shoes', 'Shoes', 'Brand1', 'Grey', 'running_shoes.jpg', 'EXCELLENT'),
-('Winter Gloves', 'Gloves', 'Brand2', 'Black', 'winter_gloves.jpg', 'NEW'),
-('Wool Hat', 'Hat', 'Brand3', 'Beige', 'wool_hat.jpg', 'LIKE NEW'),
-('Sunglasses', 'Sunglasses', 'Brand4', 'Black', 'sunglasses.jpg', 'NEW');
+('Floral Tee', 'T-Shirt', 'Brand1', 'White', 'pictures/floral_tee.jpg', 'NEW'),
+('Cotton Socks', 'Socks', 'Brand2', 'Black', 'pictures/cotton_socks.jpg', 'NEW'),
+('Denim Jacket', 'Jacket', 'Brand3', 'Blue', 'pictures/denim_jacket.jpg', 'LIKE NEW'),
+('Silk Scarf', 'Scarf', 'Brand4', 'Red', 'pictures/silk_scarf.jpg', 'NEW'),
+('Leather Belt', 'Belt', 'Brand5', 'Brown', 'pictures/leather_belt.jpg', 'GOOD'),
+('Running Shoes', 'Shoes', 'Brand1', 'Grey', 'pictures/running_shoes.jpg', 'EXCELLENT'),
+('Winter Gloves', 'Gloves', 'Brand2', 'Black', 'pictures/winter_gloves.jpg', 'NEW'),
+('Wool Hat', 'Hat', 'Brand3', 'Beige', 'pictures/wool_hat.jpg', 'LIKE NEW'),
+('Sunglasses', 'Sunglasses', 'Brand4', 'Black', 'pictures/sunglasses.jpg', 'NEW');
 
 -- Create auctions for the 10 items and associate each with a user
 INSERT INTO auction (title, description, end_date, starting_price, current_price, "owner", "item")

@@ -19,6 +19,10 @@ class AuctionController extends Controller
     {
         $perPage = 5; // Number of auctions per page
         $query = $request->input('query'); // Get the search query from the request
+        $minPrice = $request->input('min-price'); // Get the minimum price from the request
+        $maxPrice = $request->input('max-price'); // Get the maximum price from the request
+        $condition = $request->input('condition'); // Get the condition filter from the request
+        $selectedCategory = $request->input('category'); // Get the selected category filter from the request
     
         // Initialize a query builder for auctions
         $auctionsQuery = Auction::query();
@@ -28,19 +32,32 @@ class AuctionController extends Controller
             $auctionsQuery->whereRaw("tsvectors @@ to_tsquery('english', ?)", [$query]);
         }
     
-        // Add a condition to filter auctions with 'status' as "ACTIVE"
+        // Filter auctions with 'status' as "ACTIVE"
         $auctionsQuery->where('status', 'ACTIVE');
     
+        // Filter auctions by price range if min and max prices are provided
+        if ($minPrice !== null) {
+            $auctionsQuery->where('current_price', '>=', $minPrice);
+        }
+        if ($maxPrice !== null) {
+            $auctionsQuery->where('current_price', '<=', $maxPrice);
+        }
+    
+        // Filter auctions by condition if a condition is selected
+        if ($condition) {
+            $auctionsQuery->whereHas('items', function ($query) use ($condition) {
+                $query->where('condition', $condition);
+            });
+        }
+    
         // Paginate the results
-        // In the index method of your controller
         $auctions = $auctionsQuery->with('items')->paginate($perPage, ['*'], 'page', $pageNr);
     
-        // Set the path for the paginator to use the named route with query parameter
-        $auctions->appends(['query' => $query])->links();
+        // Set the path for the paginator to use the named route with query parameters
+        $auctions->appends(['query' => $query, 'min-price' => $minPrice, 'max-price' => $maxPrice, 'condition' => $condition])->links();
     
-        return view('pages.auctions', compact('auctions', 'query'));
+        return view('pages.auctions', compact('auctions', 'query', 'minPrice', 'maxPrice', 'condition'));
     }
-    
 
     public function showOwnedAuctions($id, $pageNr)
     {
@@ -104,7 +121,7 @@ class AuctionController extends Controller
                 'brand' => 'required|string|max:255',
                 'color' => 'required|string|max:255',
                 'condition' => 'required|string|max:255',
-                'picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'picture' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
     
             if ($request->hasFile('picture')) {

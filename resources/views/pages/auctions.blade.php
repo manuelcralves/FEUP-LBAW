@@ -10,6 +10,34 @@
         <button type="submit" class="search-button">Search</button>
     </form>
 
+    <div class="filter-section">
+        <h3>Filter by Price</h3>
+        <form method="GET" action="{{ route('auction.index', ['pageNr' => 1]) }}" id="filter-form">
+            <div class="price-inputs">
+                <div class="input-group">
+                    <label for="min-price">Minimum Price:</label>
+                    <input type="number" name="min-price" id="min-price" value="{{ $minPrice }}">
+                </div>
+                <div class="input-group">
+                    <label for="max-price">Maximum Price:</label>
+                    <input type="number" name="max-price" id="max-price" value="{{ $maxPrice }}">
+                </div>
+            </div>
+            
+            <h3>Filter by Condition</h3>
+            <select name="condition" id="condition">
+                <option value="">Select Condition</option>
+                <option value="NEW" @if ($condition === 'NEW') selected @endif>NEW</option>
+                <option value="LIKE NEW" @if ($condition === 'LIKE NEW') selected @endif>LIKE NEW</option>
+                <option value="GOOD" @if ($condition === 'GOOD') selected @endif>GOOD</option>
+                <option value="USED" @if ($condition === 'USED') selected @endif>USED</option>
+                <option value="EXCELLENT" @if ($condition === 'EXCELLENT') selected @endif>EXCELLENT</option>
+            </select>
+            
+            <button type="submit">Apply Filters</button>
+        </form>
+    </div>
+
     @if ($auctions->isEmpty())
         <p class="no-auctions-message">No auctions found.</p>
     @else
@@ -62,16 +90,16 @@
 
         <div class="pagination">
             @if ($auctions->currentPage() > 1)
-                <a href="{{ route('auction.index', ['pageNr' => $auctions->currentPage() - 1, 'query' => $query]) }}" class="prev">Previous</a>
+                <a href="{{ route('auction.index', ['pageNr' => $auctions->currentPage() - 1, 'query' => $query, 'min-price' => $minPrice, 'max-price' => $maxPrice]) }}" class="prev">Previous</a>
             @endif
 
             @for ($i = 1; $i <= $auctions->lastPage(); $i++)
-                <a href="{{ route('auction.index', ['pageNr' => $i, 'query' => $query]) }}" class="{{ $i == $auctions->currentPage() ? 'active' : '' }}">{{ $i }}</a>
+                <a href="{{ route('auction.index', ['pageNr' => $i, 'query' => $query, 'min-price' => $minPrice, 'max-price' => $maxPrice]) }}" class="{{ $i == $auctions->currentPage() ? 'active' : '' }}">{{ $i }}</a>
             @endfor
 
             @if ($auctions->currentPage() < $auctions->lastPage())
-                <a href="{{ route('auction.index', ['pageNr' => $auctions->currentPage() + 1, 'query' => $query]) }}" class="next">Next</a>
-        @endif
-            </div>
+                <a href="{{ route('auction.index', ['pageNr' => $auctions->currentPage() + 1, 'query' => $query, 'min-price' => $minPrice, 'max-price' => $maxPrice]) }}" class="next">Next</a>
+            @endif
+        </div>
     @endif
 @endsection
