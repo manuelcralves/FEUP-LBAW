@@ -33,6 +33,8 @@
                 <option value="USED" @if ($condition === 'USED') selected @endif>USED</option>
                 <option value="EXCELLENT" @if ($condition === 'EXCELLENT') selected @endif>EXCELLENT</option>
             </select>
+            <h3>Filter by Category</h3>
+            <input type="text" name="category" placeholder="Search by Category..." value="{{ $category }}" class="search-input">
             
             <button type="submit">Apply Filters</button>
         </form>
@@ -90,15 +92,15 @@
 
         <div class="pagination">
             @if ($auctions->currentPage() > 1)
-                <a href="{{ route('auction.index', ['pageNr' => $auctions->currentPage() - 1, 'query' => $query, 'min-price' => $minPrice, 'max-price' => $maxPrice]) }}" class="prev">Previous</a>
+                <a href="{{ route('auction.index', ['pageNr' => $auctions->currentPage() - 1, 'query' => $query, 'min-price' => $minPrice, 'max-price' => $maxPrice, 'condition' => $condition, 'category' => $category]) }}" class="prev">Previous</a>
             @endif
 
             @for ($i = 1; $i <= $auctions->lastPage(); $i++)
-                <a href="{{ route('auction.index', ['pageNr' => $i, 'query' => $query, 'min-price' => $minPrice, 'max-price' => $maxPrice]) }}" class="{{ $i == $auctions->currentPage() ? 'active' : '' }}">{{ $i }}</a>
+                <a href="{{ route('auction.index', ['pageNr' => $i, 'query' => $query, 'min-price' => $minPrice, 'max-price' => $maxPrice, 'condition' => $condition, 'category' => $category]) }}" class="{{ $i == $auctions->currentPage() ? 'active' : '' }}">{{ $i }}</a>
             @endfor
 
             @if ($auctions->currentPage() < $auctions->lastPage())
-                <a href="{{ route('auction.index', ['pageNr' => $auctions->currentPage() + 1, 'query' => $query, 'min-price' => $minPrice, 'max-price' => $maxPrice]) }}" class="next">Next</a>
+                <a href="{{ route('auction.index', ['pageNr' => $auctions->currentPage() + 1, 'query' => $query, 'min-price' => $minPrice, 'max-price' => $maxPrice, 'condition' => $condition, 'category' => $category]) }}" class="next">Next</a>
             @endif
         </div>
     @endif

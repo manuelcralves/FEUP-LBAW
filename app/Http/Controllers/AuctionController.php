@@ -22,7 +22,7 @@ class AuctionController extends Controller
         $minPrice = $request->input('min-price'); // Get the minimum price from the request
         $maxPrice = $request->input('max-price'); // Get the maximum price from the request
         $condition = $request->input('condition'); // Get the condition filter from the request
-        $selectedCategory = $request->input('category'); // Get the selected category filter from the request
+        $category = $request->input('category'); // Get the selected category filter from the request
     
         // Initialize a query builder for auctions
         $auctionsQuery = Auction::query();
@@ -49,14 +49,20 @@ class AuctionController extends Controller
                 $query->where('condition', $condition);
             });
         }
+
+        if ($category) {
+            $auctionsQuery->whereHas('items', function ($query) use ($category) {
+                $query->where('category', 'ILIKE', '%' . $category . '%');
+            });
+        }
     
         // Paginate the results
         $auctions = $auctionsQuery->with('items')->paginate($perPage, ['*'], 'page', $pageNr);
     
         // Set the path for the paginator to use the named route with query parameters
-        $auctions->appends(['query' => $query, 'min-price' => $minPrice, 'max-price' => $maxPrice, 'condition' => $condition])->links();
+        $auctions->appends(['query' => $query, 'min-price' => $minPrice, 'max-price' => $maxPrice, 'condition' => $condition, 'category' => $category])->links();
     
-        return view('pages.auctions', compact('auctions', 'query', 'minPrice', 'maxPrice', 'condition'));
+        return view('pages.auctions', compact('auctions', 'query', 'minPrice', 'maxPrice', 'condition', 'category'));
     }
 
     public function showOwnedAuctions($id, $pageNr)
