@@ -952,9 +952,50 @@ p {
 }
 
 .auction-image img {
-  width: auto;
-  max-height: 400px;
+  width: 300px;
+  height: auto;
   object-fit: cover; /* This ensures the image covers the whole area without stretching */
   border-radius: 5%; /* Optional: makes the image circular */
   border: 2px solid #0d4a0b;
+}
+
+.filter-section {
+  display: flex;
+  flex-direction: row; /* aligns children in a row */
+  flex-wrap: wrap; /* allows items to wrap onto the next line */
+  gap: 20px; /* space between children */
+  padding: 0 100px; /* padding on the left and right */
+}
+
+.filter-price, 
+.filter-condition, 
+.filter-category, 
+.order-by {
+  display: flex;
+  flex-direction: column; /* stacks the label and input/select vertically */
+  align-items: flex-start; /* aligns items to the start of the flex container */
+  padding: 10px; /* padding around each filter block */
+  flex: 1; /* each block will grow equally to fill the space */
+  min-width: 160px; /* minimum width for each block */
+}
+
+.price-inputs, 
+.input-group {
+  display: flex;
+  flex-direction: column; /* stacks inputs vertically */
+  gap: 10px; /* space between inputs */
+}
+
+.input-group input[type="number"],
+.input-group select {
+  border: 1px solid #0d4a0b; /* sets the border color */
+}
+
+.apply-filters {
+  align-self: center; /* centers the button in the flex container */
+  color: white; /* text color of the button */
+  border: none; /* no border */
+  border-radius: 5px; /* rounded corners of the button */
+  cursor: pointer; /* pointer cursor on hover */
+  margin-top: 20px; /* space above the button */
 }

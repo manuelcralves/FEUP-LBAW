@@ -19,6 +19,11 @@ class AuctionController extends Controller
     {
         $perPage = 5; // Number of auctions per page
         $query = $request->input('query'); // Get the search query from the request
+        $minPrice = $request->input('min-price'); // Get the minimum price from the request
+        $maxPrice = $request->input('max-price'); // Get the maximum price from the request
+        $condition = $request->input('condition'); // Get the condition filter from the request
+        $category = $request->input('category'); // Get the selected category filter from the request
+        $sort = $request->input('sort', 'closest');
     
         // Initialize a query builder for auctions
         $auctionsQuery = Auction::query();
@@ -28,19 +33,63 @@ class AuctionController extends Controller
             $auctionsQuery->whereRaw("tsvectors @@ to_tsquery('english', ?)", [$query]);
         }
     
-        // Add a condition to filter auctions with 'status' as "ACTIVE"
+        // Filter auctions with 'status' as "ACTIVE"
         $auctionsQuery->where('status', 'ACTIVE');
     
+        // Filter auctions by price range if min and max prices are provided
+        if ($minPrice !== null) {
+            $auctionsQuery->where('current_price', '>=', $minPrice);
+        }
+        if ($maxPrice !== null) {
+            $auctionsQuery->where('current_price', '<=', $maxPrice);
+        }
+    
+        // Filter auctions by condition if a condition is selected
+        if ($condition) {
+            $auctionsQuery->whereHas('items', function ($query) use ($condition) {
+                $query->where('condition', $condition);
+            });
+        }
+
+        if ($category) {
+            $auctionsQuery->whereHas('items', function ($query) use ($category) {
+                $query->where('category', 'ILIKE', '%' . $category . '%');
+            });
+        }
+        switch ($sort) {
+            case 'price_asc':
+                $auctionsQuery->orderBy('current_price', 'asc');
+                break;
+            case 'price_desc':
+                $auctionsQuery->orderBy('current_price', 'desc');
+                break;
+            case 'alpha_asc':
+                $auctionsQuery->orderBy('title', 'asc'); 
+                break;
+            case 'alpha_desc':
+                $auctionsQuery->orderBy('title', 'desc');
+                break;
+            case 'closest':
+            default:
+                $auctionsQuery->orderBy('end_date', 'asc'); 
+                break;
+        }
+    
         // Paginate the results
-        // In the index method of your controller
         $auctions = $auctionsQuery->with('items')->paginate($perPage, ['*'], 'page', $pageNr);
     
-        // Set the path for the paginator to use the named route with query parameter
-        $auctions->appends(['query' => $query])->links();
+        // Set the path for the paginator
+        $auctions->appends([
+            'query' => $query,
+            'min-price' => $minPrice,
+            'max-price' => $maxPrice,
+            'condition' => $condition,
+            'category' => $category,
+            'sort' => $sort
+        ])->links();
     
-        return view('pages.auctions', compact('auctions', 'query'));
+        return view('pages.auctions', compact('auctions', 'query', 'minPrice', 'maxPrice', 'condition', 'category', 'sort'));
     }
-    
 
     public function showOwnedAuctions($id, $pageNr)
     {
@@ -104,7 +153,7 @@ class AuctionController extends Controller
                 'brand' => 'required|string|max:255',
                 'color' => 'required|string|max:255',
                 'condition' => 'required|string|max:255',
-                'picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'picture' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
     
             if ($request->hasFile('picture')) {

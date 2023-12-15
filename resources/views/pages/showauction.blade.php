@@ -37,6 +37,7 @@
             <p><strong>Start Date:</strong> {{ $auction->start_date->format('Y-m-d H:i:s') }}</p>
             <p><strong>End Date:</strong> {{ $auction->end_date->format('Y-m-d H:i:s') }}</p>
             <p><strong>Status:</strong> {{ $auction->status }}</p>
+            <p><strong>Category:</strong> {{ $item->category }}</p>
             <p><strong>Color:</strong> {{ $item->color }}</p>
             <p><strong>Condition:</strong> {{ $item->condition }}</p>
             <p><strong>Brand:</strong> {{ $item->brand }}</p>
