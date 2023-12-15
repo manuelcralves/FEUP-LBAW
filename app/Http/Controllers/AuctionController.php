@@ -115,7 +115,7 @@ class AuctionController extends Controller
     
         // Retrieve the auctions where the authenticated user is the owner and paginate them
         $ownedAuctions = $targetUser->auctions()
-            ->orderBy('start_date', 'desc') 
+            ->orderBy('end_date', 'asc') 
             ->paginate($perPage, ['*'], 'page', $pageNr); // Paginate with the specified per page limit and page number
     
         return view('pages.owned_auctions', compact('ownedAuctions', 'id', 'pageNr'));
@@ -290,4 +290,34 @@ class AuctionController extends Controller
     {
         //
     }
+
+    public function follow(Auction $auction)
+    {
+        auth()->user()->followingAuctions()->attach($auction->id);
+    
+        // Redirect back to the same page
+        return back();
+    }
+    
+    public function unfollow(Auction $auction)
+    {
+        auth()->user()->followingAuctions()->detach($auction->id);
+    
+        // Redirect back to the same page
+        return back();
+    }    
+
+    public function following($pageNr)
+    {
+        // Get the authenticated user
+        $user = auth()->user();
+    
+        // Retrieve the auctions that the user is following with pagination
+        $perPage = 5; // Change the number to the desired items per page
+        $followingAuctions = $user->followingAuctions()
+            ->orderBy('end_date', 'asc') 
+            ->paginate($perPage, ['*'], 'page', $pageNr);
+    
+        return view('pages.following_auctions', compact('followingAuctions', 'pageNr'));
+    }    
 }
