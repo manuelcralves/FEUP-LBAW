@@ -23,6 +23,7 @@ class AuctionController extends Controller
         $maxPrice = $request->input('max-price'); // Get the maximum price from the request
         $condition = $request->input('condition'); // Get the condition filter from the request
         $category = $request->input('category'); // Get the selected category filter from the request
+        $sort = $request->input('sort', 'closest');
     
         // Initialize a query builder for auctions
         $auctionsQuery = Auction::query();
@@ -55,14 +56,39 @@ class AuctionController extends Controller
                 $query->where('category', 'ILIKE', '%' . $category . '%');
             });
         }
+        switch ($sort) {
+            case 'price_asc':
+                $auctionsQuery->orderBy('current_price', 'asc');
+                break;
+            case 'price_desc':
+                $auctionsQuery->orderBy('current_price', 'desc');
+                break;
+            case 'alpha_asc':
+                $auctionsQuery->orderBy('title', 'asc'); 
+                break;
+            case 'alpha_desc':
+                $auctionsQuery->orderBy('title', 'desc');
+                break;
+            case 'closest':
+            default:
+                $auctionsQuery->orderBy('end_date', 'asc'); 
+                break;
+        }
     
         // Paginate the results
         $auctions = $auctionsQuery->with('items')->paginate($perPage, ['*'], 'page', $pageNr);
     
-        // Set the path for the paginator to use the named route with query parameters
-        $auctions->appends(['query' => $query, 'min-price' => $minPrice, 'max-price' => $maxPrice, 'condition' => $condition, 'category' => $category])->links();
+        // Set the path for the paginator
+        $auctions->appends([
+            'query' => $query,
+            'min-price' => $minPrice,
+            'max-price' => $maxPrice,
+            'condition' => $condition,
+            'category' => $category,
+            'sort' => $sort
+        ])->links();
     
-        return view('pages.auctions', compact('auctions', 'query', 'minPrice', 'maxPrice', 'condition', 'category'));
+        return view('pages.auctions', compact('auctions', 'query', 'minPrice', 'maxPrice', 'condition', 'category', 'sort'));
     }
 
     public function showOwnedAuctions($id, $pageNr)

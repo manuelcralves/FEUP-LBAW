@@ -11,33 +11,51 @@
     </form>
 
     <div class="filter-section">
-        <h3>Filter by Price</h3>
-        <form method="GET" action="{{ route('auction.index', ['pageNr' => 1]) }}" id="filter-form">
-            <div class="price-inputs">
-                <div class="input-group">
-                    <label for="min-price">Minimum Price:</label>
-                    <input type="number" name="min-price" id="min-price" value="{{ $minPrice }}">
+
+        <div class="filter-price">
+            <h3>Price</h3>
+            <form method="GET" action="{{ route('auction.index', ['pageNr' => 1]) }}" id="filter-form">
+                <div class="price-inputs">
+                    <div class="input-group">
+                        <input type="number" name="min-price" id="min-price" value="{{ $minPrice }}" placeholder="Min price...">
+                    </div>
+                    <div class="input-group">
+                        <input type="number" name="max-price" id="max-price" value="{{ $maxPrice }}" placeholder="Max price...">
+                    </div>
                 </div>
-                <div class="input-group">
-                    <label for="max-price">Maximum Price:</label>
-                    <input type="number" name="max-price" id="max-price" value="{{ $maxPrice }}">
-                </div>
-            </div>
-            
-            <h3>Filter by Condition</h3>
-            <select name="condition" id="condition">
-                <option value="">Select Condition</option>
-                <option value="NEW" @if ($condition === 'NEW') selected @endif>NEW</option>
-                <option value="LIKE NEW" @if ($condition === 'LIKE NEW') selected @endif>LIKE NEW</option>
-                <option value="GOOD" @if ($condition === 'GOOD') selected @endif>GOOD</option>
-                <option value="USED" @if ($condition === 'USED') selected @endif>USED</option>
-                <option value="EXCELLENT" @if ($condition === 'EXCELLENT') selected @endif>EXCELLENT</option>
-            </select>
-            <h3>Filter by Category</h3>
+        </div>
+
+        <div class="filter-condition">
+            <h3>Condition</h3>
+                <select name="condition" id="condition">
+                    <option value="">Select Condition</option>
+                    <option value="NEW" @if ($condition === 'NEW') selected @endif>NEW</option>
+                    <option value="LIKE NEW" @if ($condition === 'LIKE NEW') selected @endif>LIKE NEW</option>
+                    <option value="GOOD" @if ($condition === 'GOOD') selected @endif>GOOD</option>
+                    <option value="USED" @if ($condition === 'USED') selected @endif>USED</option>
+                    <option value="EXCELLENT" @if ($condition === 'EXCELLENT') selected @endif>EXCELLENT</option>
+                </select>
+        </div>
+
+        <div class="filter-category">
+            <h3>Category</h3>
             <input type="text" name="category" placeholder="Search by Category..." value="{{ $category }}" class="search-input">
-            
-            <button type="submit">Apply Filters</button>
-        </form>
+        </div>
+
+        <div class="order-by">
+            <h3>Sort</h3>
+                <select name="sort">
+                    <option value="closest" {{ $sort == 'closest' ? 'selected' : '' }}>Closest Ending</option>
+                    <option value="price_asc" {{ $sort == 'price_asc' ? 'selected' : '' }}>Price Low to High</option>
+                    <option value="price_desc" {{ $sort == 'price_desc' ? 'selected' : '' }}>Price High to Low</option>
+                    <option value="alpha_asc" {{ $sort == 'alpha_asc' ? 'selected' : '' }}>A-Z</option>
+                    <option value="alpha_desc" {{ $sort == 'alpha_desc' ? 'selected' : '' }}>Z-A</option>
+                </select>
+        </div>
+
+        <button type="submit" class="apply-filters">Apply Filters</button>
+
+            </form>
     </div>
 
     @if ($auctions->isEmpty())
@@ -92,15 +110,15 @@
 
         <div class="pagination">
             @if ($auctions->currentPage() > 1)
-                <a href="{{ route('auction.index', ['pageNr' => $auctions->currentPage() - 1, 'query' => $query, 'min-price' => $minPrice, 'max-price' => $maxPrice, 'condition' => $condition, 'category' => $category]) }}" class="prev">Previous</a>
+                <a href="{{ route('auction.index', ['pageNr' => $auctions->currentPage() - 1, 'query' => $query, 'min-price' => $minPrice, 'max-price' => $maxPrice, 'condition' => $condition, 'category' => $category, 'sort' => $sort]) }}" class="prev">Previous</a>
             @endif
 
             @for ($i = 1; $i <= $auctions->lastPage(); $i++)
-                <a href="{{ route('auction.index', ['pageNr' => $i, 'query' => $query, 'min-price' => $minPrice, 'max-price' => $maxPrice, 'condition' => $condition, 'category' => $category]) }}" class="{{ $i == $auctions->currentPage() ? 'active' : '' }}">{{ $i }}</a>
+                <a href="{{ route('auction.index', ['pageNr' => $i, 'query' => $query, 'min-price' => $minPrice, 'max-price' => $maxPrice, 'condition' => $condition, 'category' => $category, 'sort' => $sort]) }}" class="{{ $i == $auctions->currentPage() ? 'active' : '' }}">{{ $i }}</a>
             @endfor
 
             @if ($auctions->currentPage() < $auctions->lastPage())
-                <a href="{{ route('auction.index', ['pageNr' => $auctions->currentPage() + 1, 'query' => $query, 'min-price' => $minPrice, 'max-price' => $maxPrice, 'condition' => $condition, 'category' => $category]) }}" class="next">Next</a>
+                <a href="{{ route('auction.index', ['pageNr' => $auctions->currentPage() + 1, 'query' => $query, 'min-price' => $minPrice, 'max-price' => $maxPrice, 'condition' => $condition, 'category' => $category, 'sort' => $sort]) }}" class="next">Next</a>
             @endif
         </div>
     @endif
