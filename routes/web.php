@@ -63,6 +63,10 @@ Route::controller(AuctionController::class)->group(function () {
     Route::put('/auction/{id}/cancel', 'cancel')->name('auction.cancel');
     Route::get('/profile/{id}/auctions/{pageNr}', 'showOwnedAuctions')->name('owned.auctions');
     Route::get('/auction/{id}',  'show')->name('auction.show');
+    Route::post('/auction/{auction}/follow', 'follow')->name('follow.auction');
+    Route::delete('/auction/{auction}/unfollow', 'unfollow')->name('unfollow.auction');    
+    Route::get('/following/{pageNr}', 'following')->name('following.auctions');
+
 });
 
 Route::controller(BidController::class)->group(function () {

@@ -290,4 +290,33 @@ class AuctionController extends Controller
     {
         //
     }
+
+    public function follow(Auction $auction)
+    {
+        auth()->user()->followingAuctions()->attach($auction->id);
+    
+        // Redirect back to the same page
+        return back();
+    }
+    
+    public function unfollow(Auction $auction)
+    {
+        auth()->user()->followingAuctions()->detach($auction->id);
+    
+        // Redirect back to the same page
+        return back();
+    }    
+
+    public function following($pageNr)
+    {
+        // Get the authenticated user
+        $user = auth()->user();
+    
+        // Retrieve the auctions that the user is following with pagination
+        $perPage = 5; // Change the number to the desired items per page
+        $followingAuctions = $user->followingAuctions()
+            ->paginate($perPage, ['*'], 'page', $pageNr);
+    
+        return view('pages.following_auctions', compact('followingAuctions', 'pageNr'));
+    }    
 }

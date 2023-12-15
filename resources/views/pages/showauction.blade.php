@@ -96,6 +96,18 @@
                 <input type="number" id="bid_amount" name="bid_amount" min="{{ $auction->current_price }}" step="1" required>
                 <button type="submit" class="button">Bid</button>
             </form>
+            @if (!Auth::user()->followingAuctions->contains($auction->id))
+                <form action="{{ route('follow.auction', ['auction' => $auction->id]) }}" method="POST">
+                    @csrf
+                    <button type="submit" class="button">Follow auction</button>
+                </form>
+            @else
+                <form action="{{ route('unfollow.auction', ['auction' => $auction->id]) }}" method="POST">
+                    @csrf
+                    @method('DELETE') 
+                    <button type="submit" class="cancel-button">Unfollow auction</button>
+                </form>
+            @endif
         @endif
     </div>
 @endsection

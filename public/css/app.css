@@ -555,12 +555,10 @@ p {
   cursor: pointer;
   text-decoration: none; /* Remove underline from 'Cancel' link */
   margin-right: 10px;
-  font-size: 1.1em; /* Larger font size for better readability */
   display: inline-block; /* Ensure link behaves like a button */
   text-align: center; /* Center text in 'Cancel' link-button */
   width: auto; /* Auto width for content adjustment */
   min-width: 100px; /* Minimum width for consistency */
-  font-size: small;
 }
 
 .submit-button:hover, .cancel-button:hover {
@@ -606,7 +604,6 @@ p {
   color: #ffffff;
   padding: 0px 20px;
   border-radius: 5px;
-  font-size: small;
   text-decoration: none;
   margin: 0 10px;
 }

@@ -46,6 +46,7 @@
                 <!-- Other authenticated user links -->
                 @if(Auth::user()->role != 'ADMIN')
                     <a class="button" href="{{ route('auction.create') }}">Create Auction</a>
+                    <a class="button" href="{{ route('following.auctions', ['pageNr' => 1]) }}">Following</a>
                 @endif
                 <a class="button" href="{{ url('/logout') }}">Logout</a>
             @endif
