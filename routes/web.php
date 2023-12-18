@@ -50,8 +50,9 @@ Route::controller(AuthenticatedUserController::class)->group(function () {
     Route::get('users/{pageNr}', 'all')->name('show.users');
     Route::get('/auctionCreate', 'showCreateAuction')-> name('showCreateAuction');
     Route::get('/search', 'searchResults')->name('search.results');
-    Route::post('/user/block/{id}', 'blockUser')->name('block.user');
-    Route::post('/user/unblock/{id}', 'unblockUser')->name('unblock.user');
+    Route::post('/profile/{id}/block/', 'blockUser')->name('block.user');
+    Route::post('/profile/{id}/unblock', 'unblockUser')->name('unblock.user');
+    Route::post('/profile/{id}/delete', 'deleteUser')->name('delete.user');
 });
 
 

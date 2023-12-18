@@ -69,6 +69,10 @@
                     <button type="submit" class="button block-button">Block User</button>
                 </form>
             @endif
+            <form method="POST" action="{{ route('delete.user', ['id' => $user->id]) }}" class="admin-form">
+                @csrf
+                <button type="submit" class="button delete-button">Delete User</button>
+            </form>
         @endif
 
             @if(Auth::user()->id == $user->id)
