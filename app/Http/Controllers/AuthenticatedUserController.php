@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Auction;
 use App\Models\Bid;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 
@@ -26,11 +27,14 @@ class AuthenticatedUserController extends Controller
 
         // Fetch top bidders
         $topBidders = Bid::select('user', DB::raw('COUNT(*) as total_bids'), DB::raw('SUM(value) as total_bid_amount'))
-                         ->groupBy('user')
-                         ->orderBy('total_bid_amount', 'desc')
-                         ->take(5)
-                         ->with('authenticatedUser')
-                         ->get();
+        ->groupBy('user')
+        ->orderBy('total_bid_amount', 'desc')
+        ->take(5)
+        ->whereHas('authenticatedUser', function ($query) {
+            $query->where('is_blocked', false);
+        })
+        ->with('authenticatedUser')
+        ->get();    
 
         return view('pages.home', compact('topAuctions', 'topBidders'));
     }
@@ -301,6 +305,187 @@ class AuthenticatedUserController extends Controller
     public function showContacts()
     {
         return view('pages.contacts');
+    }
+
+    public function blockUser($id)
+    {
+        // Find the user by ID
+        try {
+            $user = AuthenticatedUser::findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            return redirect()->back()->with('error', 'User not found.');
+        }
+    
+        // Check if the logged-in user is an admin and the target user is not an admin
+        if (Auth::user()->role === 'ADMIN' && Auth::user()->id != $user->id && $user->role !== 'ADMIN') {
+            DB::beginTransaction();
+    
+            try {
+                // Find all ACTIVE auctions owned by the blocked user
+                $auctions = Auction::where('owner', $id)->where('status', 'ACTIVE')->get();
+    
+                foreach ($auctions as $auction) {
+                    // Find the highest bidder for this auction
+                    try {
+                        $highestBid = Bid::where('auction', $auction->id)->orderByDesc('value')->first();
+    
+                        if ($highestBid) {
+                            // Check if the highest bidder is blocked
+                            try {
+                                $highestBidder = AuthenticatedUser::find($highestBid->user);
+    
+                                if ($highestBidder) {
+                                    $highestBidder->update(['balance' => $highestBidder->balance + $highestBid->value]);
+                                }
+                            } catch (\Exception $e) {
+                                // Handle exception for highest bidder not found
+                                return redirect()->back()->with('error', 'Error updating highest bidder: ' . $e->getMessage());
+                            }
+                        }
+                    } catch (\Exception $e) {
+                        // Handle exception for highest bid query
+                        return redirect()->back()->with('error', 'Error querying highest bid: ' . $e->getMessage());
+                    }
+    
+                    // Delete all bids related to this auction
+                    try {
+                        Bid::where('auction', $auction->id)->delete();
+                    } catch (\Exception $e) {
+                        // Handle exception for bid deletion
+                        return redirect()->back()->with('error', 'Error deleting bids: ' . $e->getMessage());
+                    }
+    
+                    // Change the auction status to "CANCELLED"
+                    try {
+                        $auction->update(['status' => 'CANCELLED']);
+                    } catch (\Exception $e) {
+                        // Handle exception for auction status update
+                        return redirect()->back()->with('error', 'Error updating auction status: ' . $e->getMessage());
+                    }
+                }
+    
+                // Find all bids made by the blocked user and assign the "user" field to null
+                try {
+                    Bid::where('user', $id)->update(['user' => null]);
+                } catch (\Exception $e) {
+                    // Handle exception for updating bids
+                    return redirect()->back()->with('error', 'Error updating bids made by blocked user: ' . $e->getMessage());
+                }
+    
+                // Update the is_blocked status to true
+                try {
+                    $user->update(['is_blocked' => true]);
+                } catch (\Exception $e) {
+                    // Handle exception for updating user status
+                    return redirect()->back()->with('error', 'Error updating user status: ' . $e->getMessage());
+                }
+    
+                DB::commit();
+    
+                return redirect()->back()->with('success', 'User has been blocked, their bids have been deleted, and their auctions have been cancelled. The highest bidder has been refunded.');
+            } catch (\Exception $e) {
+                DB::rollBack();
+    
+                return redirect()->back()->with('error', 'An error occurred while blocking the user: ' . $e->getMessage());
+            }
+        } else {
+            return redirect()->back()->with('error', 'You do not have permission to block this user.');
+        }
+    }  
+
+
+    public function unblockUser($id)
+    {
+        $user = AuthenticatedUser::findOrFail($id);
+    
+        // Check if the logged-in user is an admin and the target user is not an admin
+        if (Auth::user()->role === 'ADMIN' && Auth::user()->id != $user->id && $user->role !== 'ADMIN') {
+            $user->update(['is_blocked' => false]);
+            return redirect()->back()->with('success', 'User has been unblocked.');
+        } else {
+            return redirect()->back()->with('error', 'You do not have permission to unblock this user.');
+        }
+    }
+    
+    public function deleteUser($id)
+    {
+        try {
+            // Find the user by ID
+            $user = AuthenticatedUser::findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            return redirect()->route('show.users', ['pageNr' => 1])->with('error', 'User not found.');
+        }
+    
+        // Check if the logged-in user is an admin and the target user is not an admin
+        if (Auth::user()->role === 'ADMIN' && Auth::user()->id != $user->id && $user->role !== 'ADMIN') {
+            DB::beginTransaction();
+    
+            try {
+                // Find all auctions owned by the deleted user
+                $auctions = Auction::where('owner', $id)->get();
+    
+                foreach ($auctions as $auction) {
+                    // Find the highest bidder for this auction
+                    try {
+                        $highestBid = Bid::where('auction', $auction->id)->orderByDesc('value')->first();
+    
+                        if ($highestBid) {
+                            // Find the highest bidder user
+                            try {
+                                $highestBidder = AuthenticatedUser::find($highestBid->user);
+    
+                                if ($highestBidder) {
+                                    $highestBidder->update(['balance' => $highestBidder->balance + $highestBid->value]);
+                                }
+                            } catch (\Exception $e) {
+                                // Handle exception for highest bidder not found
+                                throw new \Exception('Error updating highest bidder: ' . $e->getMessage());
+                            }
+                        }
+                    } catch (\Exception $e) {
+                        // Handle exception for highest bid query
+                        throw new \Exception('Error querying highest bid: ' . $e->getMessage());
+                    }
+    
+                    // Delete all bids related to this auction
+                    try {
+                        Bid::where('auction', $auction->id)->delete();
+                    } catch (\Exception $e) {
+                        // Handle exception for bid deletion
+                        throw new \Exception('Error deleting bids: ' . $e->getMessage());
+                    }
+    
+                    // Change the auction status to "CANCELLED"
+                    try {
+                        $auction->update(['status' => 'CANCELLED']);
+                    } catch (\Exception $e) {
+                        // Handle exception for auction status update
+                        throw new \Exception('Error updating auction status: ' . $e->getMessage());
+                    }
+                }
+    
+                // Find all bids made by the deleted user and assign the "user" field to null
+                try {
+                    Bid::where('user', $id)->update(['user' => null]);
+                } catch (\Exception $e) {
+                    // Handle exception for updating bids
+                    throw new \Exception('Error updating bids made by deleted user: ' . $e->getMessage());
+                }
+    
+                // Delete the user after processing refunds, auction cancellations, and bid deletions
+                $user->delete();
+    
+                DB::commit();
+    
+                return redirect()->route('show.users', ['pageNr' => 1])->with('success', 'User deleted successfully, their bids have been deleted, and their auctions have been cancelled. The highest bidder has been refunded.');
+            } catch (\Exception $e) {
+                DB::rollBack();
+    
+                return redirect()->route('show', ['id' => $id])->with('error', 'An error occurred while processing the deletion, refunds, bid deletions, and status update: ' . $e->getMessage());
+            }
+        } else {
+            return redirect()->route('show', ['id' => $id])->with('error', 'You do not have permission to delete this user.');
+        }
     }
     
 }

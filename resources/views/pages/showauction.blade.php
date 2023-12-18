@@ -76,7 +76,7 @@
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $bid->authenticatedUser->rating ?? '(No rating yet)' }}</td>
-                        <td>{{ $bid->authenticatedUser->username }}</td>
+                        <td>{{ $bid->authenticatedUser->username ?? '(null)'}}</td>
                         <td>{{ $bid->value }}</td>
                         <td>{{ $bid->creation_date->format('Y-m-d H:i:s') }}</td>
                     </tr>

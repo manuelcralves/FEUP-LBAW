@@ -50,6 +50,9 @@ Route::controller(AuthenticatedUserController::class)->group(function () {
     Route::get('users/{pageNr}', 'all')->name('show.users');
     Route::get('/auctionCreate', 'showCreateAuction')-> name('showCreateAuction');
     Route::get('/search', 'searchResults')->name('search.results');
+    Route::post('/profile/{id}/block/', 'blockUser')->name('block.user');
+    Route::post('/profile/{id}/unblock', 'unblockUser')->name('unblock.user');
+    Route::post('/profile/{id}/delete', 'deleteUser')->name('delete.user');
 });
 
 
@@ -73,3 +76,5 @@ Route::controller(BidController::class)->group(function () {
     Route::post('/auction/{id}/bid','placeBid')->name('place.bid');
     Route::get('/profile/{id}/bids/{pageNr}', 'myBids')->name('myBids');
 });
+
+Route::view('/blocked', 'pages.blocked');

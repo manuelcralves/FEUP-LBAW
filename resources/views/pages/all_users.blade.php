@@ -10,6 +10,12 @@
         <button type="submit" class="search-button">Search</button>
     </form> 
 
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
     @if ($users->isEmpty())
         <p class="no-users-message">No users found.</p>
     @else
