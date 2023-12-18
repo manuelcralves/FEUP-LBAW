@@ -26,11 +26,14 @@ class AuthenticatedUserController extends Controller
 
         // Fetch top bidders
         $topBidders = Bid::select('user', DB::raw('COUNT(*) as total_bids'), DB::raw('SUM(value) as total_bid_amount'))
-                         ->groupBy('user')
-                         ->orderBy('total_bid_amount', 'desc')
-                         ->take(5)
-                         ->with('authenticatedUser')
-                         ->get();
+        ->groupBy('user')
+        ->orderBy('total_bid_amount', 'desc')
+        ->take(5)
+        ->whereHas('authenticatedUser', function ($query) {
+            $query->where('is_blocked', false);
+        })
+        ->with('authenticatedUser')
+        ->get();    
 
         return view('pages.home', compact('topAuctions', 'topBidders'));
     }
@@ -302,5 +305,65 @@ class AuthenticatedUserController extends Controller
     {
         return view('pages.contacts');
     }
+
+    public function blockUser($id)
+    {
+        $user = AuthenticatedUser::findOrFail($id);
+    
+        // Check if the logged-in user is an admin and the target user is not an admin
+        if (Auth::user()->role === 'ADMIN' && Auth::user()->id != $user->id && $user->role !== 'ADMIN') {
+            DB::beginTransaction();
+    
+            try {
+                // Find all auctions owned by the blocked user
+                $auctions = Auction::where('owner', $id)->get();
+    
+                foreach ($auctions as $auction) {
+                    // Find the highest bidder for this auction
+                    $highestBid = Bid::where('auction', $auction->id)->orderByDesc('value')->first();
+    
+                    if ($highestBid) {
+                        // Refund the highest bidder
+                        $highestBidder = AuthenticatedUser::findOrFail($highestBid->user);
+                        $highestBidder->update(['balance' => $highestBidder->balance + $highestBid->value]);
+                    }
+    
+                    // Delete all bids related to this auction
+                    Bid::where('auction', $auction->id)->delete();
+    
+                    // Change the auction status to "CANCELLED"
+                    $auction->update(['status' => 'CANCELLED']);
+                }
+    
+                // Block the user after processing refunds and cancellations
+                $user->update(['is_blocked' => true]);
+    
+                DB::commit();
+    
+                return redirect()->back()->with('success', 'User has been blocked, their bids have been deleted, and their auctions have been cancelled. The highest bidder has been refunded.');
+            } catch (\Exception $e) {
+                DB::rollBack();
+    
+                return redirect()->back()->with('error', 'An error occurred while processing the block and refunds.');
+            }
+        } else {
+            return redirect()->back()->with('error', 'You do not have permission to block this user.');
+        }
+    }
+    
+
+    public function unblockUser($id)
+    {
+        $user = AuthenticatedUser::findOrFail($id);
+    
+        // Check if the logged-in user is an admin and the target user is not an admin
+        if (Auth::user()->role === 'ADMIN' && Auth::user()->id != $user->id && $user->role !== 'ADMIN') {
+            $user->update(['is_blocked' => false]);
+            return redirect()->back()->with('success', 'User has been unblocked.');
+        } else {
+            return redirect()->back()->with('error', 'You do not have permission to unblock this user.');
+        }
+    }
+    
     
 }

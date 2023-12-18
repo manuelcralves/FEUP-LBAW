@@ -34,13 +34,20 @@ class LoginController extends Controller
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
- 
+    
         if (Auth::attempt($credentials)) {
+            // Check if the authenticated user is blocked
+            $user = Auth::user();
+            if ($user->is_blocked) {
+                Auth::logout(); // Log out the blocked user
+                return redirect()->intended('/blocked'); 
+            }
+    
             $request->session()->regenerate();
- 
+    
             return redirect()->intended('/home');
         }
- 
+    
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
         ])->onlyInput('email');
