@@ -1015,3 +1015,37 @@ p {
   line-height: 1.5;
   margin: 10px 0;
 }
+
+.star-rating {
+  font-size: 0;
+  white-space: nowrap;
+  display: inline-block;
+  margin: 0;
+  position: relative;
+}
+
+.star-rating input {
+  display: none;
+}
+
+.star-rating label {
+  font-size: 2rem;
+  cursor: pointer;
+  display: inline-block;
+  width: 1em;
+  margin-right: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.star-rating label:before {
+  content: "\2605";
+  margin: 0;
+  padding: 0;
+  display: block;
+  color: #ddd;
+}
+
+.star-rating input:checked ~ label:before {
+  color: #FFD700;
+}

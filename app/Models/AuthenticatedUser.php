@@ -76,5 +76,9 @@ class AuthenticatedUser extends Authenticatable
                     ->withPivot('notifications', 'start_date');
     }
 
+    public function ratings() {
+        return $this->belongsToMany(AuthenticatedUser::class, 'user_ratings', 'user_id', 'rated_user_id')
+            ->withPivot('rating', 'start_date');
+    }
     
 }

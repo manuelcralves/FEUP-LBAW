@@ -53,6 +53,7 @@ Route::controller(AuthenticatedUserController::class)->group(function () {
     Route::post('/profile/{id}/block/', 'blockUser')->name('block.user');
     Route::post('/profile/{id}/unblock', 'unblockUser')->name('unblock.user');
     Route::post('/profile/{id}/delete', 'deleteUser')->name('delete.user');
+    Route::post('/profile/{id}/rate', 'rateUser')->name('rate.user');
 });
 
 

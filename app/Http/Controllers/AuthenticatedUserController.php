@@ -488,5 +488,20 @@ class AuthenticatedUserController extends Controller
             return redirect()->route('show', ['id' => $id])->with('error', 'You do not have permission to delete this user.');
         }
     }
-    
+    public function rateUser($id) 
+    {
+        $userRate = AuthenticatedUser::find($id);
+        auth()->user()->ratings()->attach($userRate->id);
+
+        return back()->with('success', 'User rated successfully');
+    }
+
+    public function rating($pageNr)
+    {
+        $user = auth()->user();
+        $perPage = 5;
+        $ratingUsers = $user->ratingUsers()
+            ->paginate($perPage, ['*'],'page', $pageNr);
+        return view('pages.rating_users', compact('ratingUsers','pageNr'));
+    }
 }

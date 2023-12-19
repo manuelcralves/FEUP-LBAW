@@ -36,6 +36,22 @@
             <p><strong>Email:</strong> {{ $user->email }}</p>
             <p><strong>First Name:</strong> {{ $user->first_name }}</p>
             <p><strong>Last Name:</strong> {{ $user->last_name }}</p>
+            @if(Auth::user()->role != 'ADMIN' && Auth::user() != $user->authenticatedUser)
+            <form action="{{ route('rate.user', ['id' => $user->id]) }}" method="POST">
+                @csrf
+                <label for="user_rate">Rate Seller:</label>
+                <div class="star-rating">
+                    <input type="radio" id="star5" name="rating" value="5"><label for="star5"></label>
+                    <input type="radio" id="star4" name="rating" value="4"><label for="star4"></label>
+                    <input type="radio" id="star3" name="rating" value="3"><label for="star3"></label>
+                    <input type="radio" id="star2" name="rating" value="2"><label for="star2"></label>
+                    <input type="radio" id="star1" name="rating" value="1"><label for="star1"></label>
+                </div>
+                <button type="submit">Submit</button>
+                <!--<input id="user_rate" name="user_rate" type="number" class="rating" min=1 max=5 step=1 data-size="sm" data-rtl="false">
+                <button type="submit" class="button">Rate</button>-->
+            </form>
+            @endif    
             @if(Auth::user()->role != 'ADMIN' && Auth::user()->id == $user->id)
                 <p><strong>Balance:</strong> {{ $user->balance }}€</p>
             @endif
