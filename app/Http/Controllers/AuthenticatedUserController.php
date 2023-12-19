@@ -279,7 +279,7 @@ class AuthenticatedUserController extends Controller
     
             if (!$hasActiveAuctions && !$hasActiveBids) {
                 // User doesn't have active auctions or active bids, so promote them to ADMIN
-                $user->is_blocked = TRUE©;
+                $user->is_blocked = TRUE;
                 $user->save();
     
                 return back()->with('success', 'User blocked successfully');

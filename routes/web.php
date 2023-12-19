@@ -66,8 +66,10 @@ Route::controller(AuctionController::class)->group(function () {
     Route::put('/auction/{id}/cancel', 'cancel')->name('auction.cancel');
     Route::get('/profile/{id}/auctions/{pageNr}', 'showOwnedAuctions')->name('owned.auctions');
     Route::get('/auction/{id}',  'show')->name('auction.show');
-    Route::get('/auctionReport', 'createReport')->name('report.create');
-    Route::post('/auctionReport', 'storeReport')->name('report.store');
+    Route::get('/auction/{id}/reports', 'showReports')->name('auction.reports');
+
+    //Route::get('/auctionReport', 'createReport')->name('report.create');
+    //Route::post('/auctionReport', 'storeReport')->name('report.store');
 });
 
 Route::controller(BidController::class)->group(function () {
@@ -77,6 +79,9 @@ Route::controller(BidController::class)->group(function () {
 
 
 Route::controller(ReportAuctionController::class)->group(function (){
-    Route::get('/auctionReport', 'create')->name('report.create');
-    Route::post('/auctionReport', 'store')->name('report.store');
+    //Route::get('/auctionReport', 'create')->name('report.create');
+    Route::post('/auction/{auctionId}/report', 'store')->name('report.store');
+    //Route::post('/auctionReport/{id}', 'store')->name('report.store');
+    Route::get('/auction/{id}/reports', 'show')->name('reports.show');
+
 });

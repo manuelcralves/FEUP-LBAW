@@ -27,62 +27,88 @@ class ReportAuctionController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    /*public function create()
     {
-        return view('pages.report');
-    }
+        return view('pages.reportCreate');
+    }*/
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        try {
-            if (!Auth::check()) {
-                // Handle unauthenticated user scenario
-                return redirect()->route('login'); // Redirect to login or another appropriate response
-            }
-    
-            $user = Auth::user();
-    
-            // Combine validation rules for both Auction and Item
-            $validatedData = $request->validate([
-                'reason' => 'required|string|max:1023',
-            ]);
-            
-
-            $report = new ReportAuction($validatedData);
-            $report->user= $user->id;
-            //$report->auction= $auction->id;
-            $report->save();
-            
-            return redirect()->route('auction.show', ['id' => $auction->id]);
-        } catch (\Illuminate\Database\QueryException $ex) {
-            // Capture the SQL error message
-            $errorMessage = $ex->getMessage();
-    
-            // Regular expression to find text between "ERROR:" and "CONTEXT"
-            $pattern = '/ERROR:(.*?)CONTEXT/';
-            if (preg_match($pattern, $errorMessage, $matches)) {
-                // The custom message is in $matches[1]
-                $customMessage = trim($matches[1]);
-            } else {
-                $customMessage = 'An unexpected error occurred. Please try again.';
-            }
-    
-            return redirect()->back()->with('error', $customMessage);
+    public function store(Request $request, $auctionId)
+{
+    try {
+        if (!Auth::check()) {
+            // Handle unauthenticated user scenario
+            return redirect()->route('login'); // Redirect to login or another appropriate response
         }
+
+        $user = Auth::user();
+
+        // Validation rules for the report
+        $validatedData = $request->validate([
+            'reason' => 'required|string|max:1023',
+        ]);
+
+        // Find the auction based on the provided auctionId
+        $auction = Auction::find($auctionId);
+
+        if (!$auction) {
+            return redirect()->back()->with('error', 'Auction not found.');
+        }
+
+        // Create a new report and associate it with the authenticated user and the auction
+        $report = new ReportAuction($validatedData);
+        $report->authenticatedUser()->associate($user);
+        $report->auctions()->associate($auction);
+        $report->save();
+
+        return redirect()->route('auction.show', ['id' => $auctionId])->with('success', 'Report submitted successfully.');
+    } catch (\Illuminate\Database\QueryException $ex) {
+        // Handle database query exceptions
+        $errorMessage = $ex->getMessage();
+
+        // Regular expression to find text between "ERROR:" and "CONTEXT"
+        $pattern = '/ERROR:(.*?)CONTEXT/';
+        if (preg_match($pattern, $errorMessage, $matches)) {
+            // The custom message is in $matches[1]
+            $customMessage = trim($matches[1]);
+        } else {
+            $customMessage = 'An unexpected error occurred. Please try again.';
+        }
+
+        return redirect()->back()->with('error', $customMessage);
     }
+}
 
    
 
     /**
      * Display the specified resource.
      */
-    public function show(ReportAuction $reportAuction)
-    {
-        //
+    
+    public function show($id)
+{
+    try {
+        // Find the auction based on the provided ID
+        $auction = Auction::findOrFail($id);
+
+        // Use the authorize method to check if the user is authorized to view reports for the auction
+        $this->authorize('viewReports', $auction);
+
+        // Load the reports associated with the auction
+        $auction->load('reports');
+
+        return view('reports.show', ['auction' => $auction]);
+    } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $ex) {
+        // Handle the case where the auction is not found
+        return redirect()->back()->with('error', 'Auction not found.');
+    } catch (\Illuminate\Auth\Access\AuthorizationException $ex) {
+        // Handle the case where the user is not authorized to view reports
+        return redirect()->back()->with('error', 'You are not authorized to view reports for this auction.');
     }
+}
+
 
     /**
      * Show the form for editing the specified resource.

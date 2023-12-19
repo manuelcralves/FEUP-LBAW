@@ -48,17 +48,13 @@
                 </form>
             </div>
         @endif
-        @if(Auth::check() && Auth::user()->id != $auction->owner)
-            <div class="action-buttons">
-                <a href="{{ route('report.create', $auction->id) }}" class="button edit-button">Report Auction</a>
-            </div>
-        @endif
+        
 
 
         <!-- Back to Auctions button -->
         <a href="{{ route('auction.index', 1) }}" class="button">Back to Auctions</a>
         <a href="{{ url('/home') }}" class="button back-home">Back to Home Page</a>
-
+        <a href="{{ url('auction.reports') }}" class="button">View Reports</a>
         <!-- Table to display bid information -->
         <table id="bidTable">
             <thead>
@@ -96,6 +92,15 @@
                 <button type="submit" class="button">Bid</button>
             </form>
         @endif
-        
+        @if(Auth::user() != $auction->authenticatedUser)
+            <h3>Report this auction here if you think something is wrong</h3>   
+            <form id="reportForm" method="POST" action="/auction/{{ $auction->id }}/report">
+                @csrf
+                <label for="reason">Reason:</label>
+                <input type="text" id="reason" name="reason" required>
+                <button type="submit" class="button">Report</button>
+            </form>
+        @endif
+
     </div>
 @endsection

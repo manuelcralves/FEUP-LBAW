@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\AuthenticatedUser;
 use App\Models\Item;
 use App\Policies\AuctionPolicy;
+use App\Models\ReportAuction;
 
 class AuctionController extends Controller
 {
@@ -189,7 +190,11 @@ class AuctionController extends Controller
     
         // Load the associated item (if necessary)
         $item = Item::findOrFail($auction->item);
-    
+        
+        //$reports = ReportAuction::where('auction', $auction->id)->get();
+        $reports = $auction->reports;
+
+
         return view('pages.showauction', compact('auction', 'item'));
     }
 
@@ -225,6 +230,19 @@ class AuctionController extends Controller
             return redirect()->back()->with('error', $customMessage);
         }
     }    
+
+    public function showReports($id)
+{
+    $auction = Auction::find($id);
+
+    if (!$auction) {
+        return redirect()->back()->with('error', 'Auction not found.');
+    }
+
+    $reports = ReportAuction::where('auction_id', $id)->get();
+
+    return view('auction.reports', compact('auction', 'reports'));
+}
 
     /**
      * Remove the specified resource from storage.
