@@ -488,9 +488,19 @@ class AuthenticatedUserController extends Controller
             return redirect()->route('show', ['id' => $id])->with('error', 'You do not have permission to delete this user.');
         }
     }
-    public function rateUser($id) 
+    public function rateUser(Request $request, $id) 
     {
         $userRate = AuthenticatedUser::find($id);
+
+        if (!$userRate) {
+            return back()->with('error','User not found');
+        }
+
+        $request->validate([
+            'rating' => 'required|numeric|between:1,5',
+        ]);
+
+        $userRate->updateRating();
 
         return back()->with('success', 'User rated successfully');
     }

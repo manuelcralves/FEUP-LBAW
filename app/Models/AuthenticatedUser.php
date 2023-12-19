@@ -81,4 +81,16 @@ class AuthenticatedUser extends Authenticatable
             ->withPivot('rating', 'start_date');
     }
     
+    public function updateRating()
+    {
+        $reviews = $this->reviewsReceived;
+
+        if ($reviews->count() > 0) {
+            $totalRating = $reviews->sum('rating');
+            $averageRating = $totalRating / $reviews->count();
+
+            $this->update(['rating' => $averageRating]);
+        }
+    }
+
 }
