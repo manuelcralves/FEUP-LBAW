@@ -491,7 +491,6 @@ class AuthenticatedUserController extends Controller
     public function rateUser($id) 
     {
         $userRate = AuthenticatedUser::find($id);
-        auth()->user()->ratings()->attach($userRate->id);
 
         return back()->with('success', 'User rated successfully');
     }
