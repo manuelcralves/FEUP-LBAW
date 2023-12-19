@@ -70,7 +70,7 @@
                 </form>
             @endif
             <form method="POST" action="{{ route('delete.user', ['id' => $user->id]) }}" class="admin-form">
-                @csrf
+                @csrf   
                 <button type="submit" class="button delete-button">Delete User</button>
             </form>
         @endif
@@ -87,6 +87,20 @@
             @elseif(Auth::check())
                 <a href="{{ route('show.users', ['pageNr' => 1]) }}" class="button back-users">Back to Users Page</a>
                 <a href="{{ url('/home') }}" class="button back-home">Back to Home Page</a>
+            @endif
+            @if(Auth::user()->id == $user->id)
+                <form id="delete-form" method="POST" action="{{ route('delete.user', ['id' => $user->id]) }}">
+                    @csrf   
+                    <button type="button" class="button delete-button" onclick="confirmDelete()">Delete My Account</button>
+                </form>
+
+                <script>
+                    function confirmDelete() {
+                        if (confirm("This action is irreversible. Are you sure you want to delete your account?")) {
+                            document.getElementById('delete-form').submit();
+                        }
+                    }
+                </script>
             @endif
         </div>
     </div>

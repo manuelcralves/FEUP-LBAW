@@ -417,7 +417,8 @@ class AuthenticatedUserController extends Controller
         }
     
         // Check if the logged-in user is an admin and the target user is not an admin
-        if (Auth::user()->role === 'ADMIN' && Auth::user()->id != $user->id && $user->role !== 'ADMIN') {
+        if (Auth::user()->role === 'ADMIN' || (Auth::user()->id === $user->id && Auth::user()->role !== 'ADMIN'))
+        {
             DB::beginTransaction();
     
             try {
