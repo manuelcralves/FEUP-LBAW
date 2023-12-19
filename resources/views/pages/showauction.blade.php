@@ -109,5 +109,12 @@
                 </form>
             @endif
         @endif
+        @if(Auth::check() && Auth::user()->role == 'ADMIN')
+            <form method="POST" action="{{ route('auction.delete', $auction->id) }}" class="delete-form">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="button delete-button" onclick="return confirm('Are you sure you want to delete this auction?')">Delete Auction</button>
+            </form>
+        @endif
     </div>
 @endsection

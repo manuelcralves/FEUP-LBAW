@@ -9,6 +9,7 @@ use App\Models\AuthenticatedUser;
 use App\Models\Item;
 use App\Policies\AuctionPolicy;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class AuctionController extends Controller
 {
@@ -286,9 +287,50 @@ class AuctionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Auction $auction)
+    public function destroy($id)
     {
-        //
+        $auction = Auction::findOrFail($id);
+    
+        // Perform authorization check here to ensure only admin can delete auctions
+        if (Auth::user()->role != 'ADMIN') {
+            abort(403, 'Unauthorized action.');
+        }
+    
+        // Begin a database transaction
+        DB::beginTransaction();
+    
+        try {
+            // Get the highest bidder (if not null)
+            $highestBid = $auction->bids()->orderBy('value', 'desc')->first();
+
+            if ($highestBid) {
+                $highestBidder = $highestBid->authenticatedUser;
+                $refundAmount = $highestBid->value;
+    
+                // Perform the refund action here, e.g., update user's balance
+                $highestBidder->update(['balance' => $highestBidder->balance + $refundAmount]);
+    
+                // You should implement the actual refund logic based on your application's requirements
+            }
+    
+            // Delete all bids for the auction
+            $auction->bids()->delete();
+    
+            // Delete the auction itself
+            $auction->delete();
+    
+            // Refund the highest bidder (if exists)
+    
+            // Commit the database transaction
+            DB::commit();
+    
+            return redirect()->route('auction.index', 1)->with('success', 'Auction deleted successfully.');
+        } catch (\Exception $e) {
+            // Rollback the transaction in case of an exception
+            DB::rollBack();
+    
+            return redirect()->back()->with('error', 'An error occurred while deleting the auction.');
+        }
     }
 
     public function follow(Auction $auction)

@@ -69,7 +69,7 @@ Route::controller(AuctionController::class)->group(function () {
     Route::post('/auction/{auction}/follow', 'follow')->name('follow.auction');
     Route::delete('/auction/{auction}/unfollow', 'unfollow')->name('unfollow.auction');    
     Route::get('/following/{pageNr}', 'following')->name('following.auctions');
-
+    Route::delete('/auction/{id}/delete', 'destroy')->name('auction.delete');
 });
 
 Route::controller(BidController::class)->group(function () {
