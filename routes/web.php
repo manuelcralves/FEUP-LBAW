@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthenticatedUserController;
 use App\Http\Controllers\AuctionController;
 use App\Http\Controllers\BidController;
+use App\Http\Controllers\NotificationController;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -69,7 +70,7 @@ Route::controller(AuctionController::class)->group(function () {
     Route::post('/auction/{auction}/follow', 'follow')->name('follow.auction');
     Route::delete('/auction/{auction}/unfollow', 'unfollow')->name('unfollow.auction');    
     Route::get('/following/{pageNr}', 'following')->name('following.auctions');
-
+    Route::delete('/auction/{id}/delete', 'destroy')->name('auction.delete');
 });
 
 Route::controller(BidController::class)->group(function () {
@@ -78,3 +79,8 @@ Route::controller(BidController::class)->group(function () {
 });
 
 Route::view('/blocked', 'pages.blocked');
+
+Route::controller(NotificationController::class)->group(function () {
+    Route::get('/profile/{id}/notifications/{pageNr}', 'showNotifications')->name('notifications.user');
+    Route::post('/mark-notifications-read', 'markAsRead')->name('mark_notifications_read');
+});

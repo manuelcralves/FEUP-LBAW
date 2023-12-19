@@ -48,6 +48,7 @@
                     <a class="button" href="{{ route('auction.create') }}">Create Auction</a>
                     <a class="button" href="{{ route('following.auctions', ['pageNr' => 1]) }}">Following</a>
                 @endif
+                <a class="button" href="{{ route('notifications.user', ['id' => Auth::user()->id, 'pageNr' => 1])}}">Notifications</a>
                 <a class="button" href="{{ url('/logout') }}">Logout</a>
             @endif
         </header>
