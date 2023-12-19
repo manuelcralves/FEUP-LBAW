@@ -1015,3 +1015,43 @@ p {
   line-height: 1.5;
   margin: 10px 0;
 }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  border-spacing: 0;
+}
+
+table, th, td {
+  border: 1px solid #ddd;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+}
+
+thead tr {
+  background-color: #9ed19e;
+  font-weight: bold;
+}
+
+.checkbox-unread {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+tr.unread-notification {
+  background-color: #FFCCCC; 
+}
+
+tr.read-notification {
+  background-color: #CCFFCC; 
+}
+
+td:first-child , th:first-child {
+  padding: 10px;
+}
