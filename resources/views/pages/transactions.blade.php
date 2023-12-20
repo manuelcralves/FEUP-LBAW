@@ -16,7 +16,11 @@
         <tbody>
             @foreach ($transactions as $transaction)
             <tr>
-                <td>{{ $transaction->value }}</td>
+                <td>
+                    <span style="color: {{ $transaction->value > 0 ? 'green' : ($transaction->value < 0 ? 'red' : 'black') }}">
+                        <strong>{{ $transaction->value > 0 ? number_format($transaction->value, 2) . '€' : ($transaction->value < 0 ? number_format($transaction->value, 2) . '€' : '€0.00') }}</strong>
+                    </span>
+                </td>
                 <td>{{ $transaction->transaction_date }}</td>
                 <td>{{ $transaction->description }}</td>
             </tr>

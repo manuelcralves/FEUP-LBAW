@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
+use App\Models\Transaction;
 
 class AuthenticatedUserController extends Controller
 {
@@ -272,14 +273,44 @@ class AuthenticatedUserController extends Controller
         }
     
         $request->validate([
-            'amount' => 'required|numeric|min:1',
+            'amount' => 'required|numeric|min:0',
         ]);
     
-        $user->balance += $request->input('amount');
-        $user->save();
+        $amount = $request->input('amount');
     
-        return redirect()->route('show', ['id' => $id])->with('success', 'Funds added successfully');
+        // Start a database transaction
+        DB::beginTransaction();
+    
+        try {
+            // Update user's balance
+            $user->balance += $amount;
+            $user->save();
+    
+            // Create a new transaction record
+            $transaction = new Transaction([
+                'value' => $amount, // Use the added amount as the value
+                'transaction_date' => now(), // Use the current date and time
+                'description' => 'Funds added',
+            ]);
+    
+            // Associate the transaction with the user using the relationship method
+            $transaction->authenticatedUser()->associate($user);
+            $transaction->save();
+    
+            // Commit the transaction
+            DB::commit();
+    
+            return redirect()->route('show', ['id' => $id])->with('success', 'Funds added successfully');
+        } catch (\Exception $e) {
+            // Rollback the transaction in case of an error
+            DB::rollback();
+    
+            \Log::error($e->getMessage()); // Log the error for debugging
+    
+            return redirect()->route('show', ['id' => $id])->with('error', 'Failed to add funds. Please try again.');
+        }
     }
+    
 /*
     public function blockUser($id)
     {

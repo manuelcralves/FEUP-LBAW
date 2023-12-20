@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TransactionController extends Controller
 {
@@ -12,12 +13,18 @@ class TransactionController extends Controller
      */
     public function index(Request $request)
     {
-        $perPage = 10; // Number of transactions per page
+        $userId = Auth::id();
+
+        $perPage = 5; // Number of transactions per page
     
         // Retrieve all transactions ordered by most recent transaction_date
-        $transactions = Transaction::orderBy('transaction_date', 'desc')->paginate($perPage);
+        $transactions = Transaction::where('user', $userId)
+        ->orderBy('transaction_date', 'desc')
+        ->paginate($perPage);
+
+        $pageNr = $request->query('pageNr', 1);
     
-        return view('pages.transactions', compact('transactions'));
+        return view('pages.transactions', compact('transactions', 'pageNr'));
     }    
 
     /**
