@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
+use App\Models\Transaction;
 
 class AuthenticatedUserController extends Controller
 {
@@ -272,14 +273,44 @@ class AuthenticatedUserController extends Controller
         }
     
         $request->validate([
-            'amount' => 'required|numeric|min:1',
+            'amount' => 'required|numeric|min:0',
         ]);
     
-        $user->balance += $request->input('amount');
-        $user->save();
+        $amount = $request->input('amount');
     
-        return redirect()->route('show', ['id' => $id])->with('success', 'Funds added successfully');
+        // Start a database transaction
+        DB::beginTransaction();
+    
+        try {
+            // Update user's balance
+            $user->balance += $amount;
+            $user->save();
+    
+            // Create a new transaction record
+            $transaction = new Transaction([
+                'value' => $amount, // Use the added amount as the value
+                'transaction_date' => now(), // Use the current date and time
+                'description' => 'Funds added',
+            ]);
+    
+            // Associate the transaction with the user using the relationship method
+            $transaction->authenticatedUser()->associate($user);
+            $transaction->save();
+    
+            // Commit the transaction
+            DB::commit();
+    
+            return redirect()->route('show', ['id' => $id])->with('success', 'Funds added successfully');
+        } catch (\Exception $e) {
+            // Rollback the transaction in case of an error
+            DB::rollback();
+    
+            \Log::error($e->getMessage()); // Log the error for debugging
+    
+            return redirect()->route('show', ['id' => $id])->with('error', 'Failed to add funds. Please try again.');
+        }
     }
+    
 /*
     public function blockUser($id)
     {
@@ -413,8 +444,33 @@ class AuthenticatedUserController extends Controller
                                 $highestBidder = AuthenticatedUser::find($highestBid->user);
     
                                 if ($highestBidder) {
-                                    $highestBidder->update(['balance' => $highestBidder->balance + $highestBid->value]);
-                                }
+                                    // Start a database transaction
+                                    DB::beginTransaction();
+                                
+                                    try {
+                                        // Update highest bidder's balance
+                                        $highestBidder->update(['balance' => $highestBidder->balance + $highestBid->value]);
+                                
+                                        // Create a new transaction record for the refund
+                                        $refundTransaction = new Transaction([
+                                            'value' => $highestBid->value, // The amount to be refunded
+                                            'transaction_date' => now(), // The current date and time
+                                            'description' => 'Refund because of blocked user',
+                                            // Make sure to associate the transaction with the user correctly
+                                        ]);
+                                        $refundTransaction->authenticatedUser()->associate($highestBidder);
+                                        $refundTransaction->save();
+                                
+                                        // Commit the transaction
+                                        DB::commit();
+                                    } catch (\Exception $e) {
+                                        // Rollback the transaction in case of an error
+                                        DB::rollback();
+                                
+                                        \Log::error($e->getMessage()); // Log the error for debugging
+                                        // Handle the exception (e.g., return an error response)
+                                    }
+                                }                                
                             } catch (\Exception $e) {
                                 // Handle exception for highest bidder not found
                                 return redirect()->back()->with('error', 'Error updating highest bidder: ' . $e->getMessage());
@@ -514,8 +570,33 @@ class AuthenticatedUserController extends Controller
                                 $highestBidder = AuthenticatedUser::find($highestBid->user);
     
                                 if ($highestBidder) {
-                                    $highestBidder->update(['balance' => $highestBidder->balance + $highestBid->value]);
-                                }
+                                    // Start a database transaction
+                                    DB::beginTransaction();
+                                
+                                    try {
+                                        // Update highest bidder's balance
+                                        $highestBidder->update(['balance' => $highestBidder->balance + $highestBid->value]);
+                                
+                                        // Create a new transaction record for the refund
+                                        $refundTransaction = new Transaction([
+                                            'value' => $highestBid->value, // The amount to be refunded
+                                            'transaction_date' => now(), // The current date and time
+                                            'description' => 'Refund because of deleted user',
+                                            // Make sure to associate the transaction with the user correctly
+                                        ]);
+                                        $refundTransaction->authenticatedUser()->associate($highestBidder);
+                                        $refundTransaction->save();
+                                
+                                        // Commit the transaction
+                                        DB::commit();
+                                    } catch (\Exception $e) {
+                                        // Rollback the transaction in case of an error
+                                        DB::rollback();
+                                
+                                        \Log::error($e->getMessage()); // Log the error for debugging
+                                        // Handle the exception (e.g., return an error response)
+                                    }
+                                }                                
                             } catch (\Exception $e) {
                                 // Handle exception for highest bidder not found
                                 throw new \Exception('Error updating highest bidder: ' . $e->getMessage());

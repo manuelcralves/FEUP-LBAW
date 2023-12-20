@@ -8,6 +8,7 @@ use App\Http\Controllers\BidController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ReportAuctionController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\TransactionController;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -100,4 +101,8 @@ Route::controller(ReviewController::class)->group(function (){
     Route::get('/review/{id}', 'create')->name('reviews.create');
     Route::post('/createReview', 'store')->name('reviews.store');
     Route::get('/all-reviews/{pageNr}', 'allReviews')->name('reviews.admin');
+});
+
+Route::controller(TransactionController::class)->group(function (){
+    Route::get('/profile/{id}/transactions/{pageNr}', 'index')->name('transactions.user');
 });

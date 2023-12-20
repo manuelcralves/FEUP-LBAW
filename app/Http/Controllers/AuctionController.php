@@ -6,6 +6,7 @@ use App\Models\Auction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\AuthenticatedUser;
+use App\Models\Transaction;
 use App\Models\Item;
 use App\Policies\AuctionPolicy;
 use App\Models\ReportAuction;
@@ -327,12 +328,34 @@ class AuctionController extends Controller
             if ($highestBid) {
                 $highestBidder = $highestBid->authenticatedUser;
                 $refundAmount = $highestBid->value;
-    
-                // Perform the refund action here, e.g., update user's balance
-                $highestBidder->update(['balance' => $highestBidder->balance + $refundAmount]);
-    
-                // You should implement the actual refund logic based on your application's requirements
-            }
+            
+                // Start a database transaction
+                DB::beginTransaction();
+            
+                try {
+                    // Update highest bidder's balance
+                    $highestBidder->update(['balance' => $highestBidder->balance + $refundAmount]);
+            
+                    // Create a new transaction record for the refund
+                    $refundTransaction = new Transaction([
+                        'value' => $refundAmount, // The amount to be refunded
+                        'transaction_date' => now(), // The current date and time
+                        'description' => 'Refund for deleted auction',
+                        // Make sure to associate the transaction with the user correctly
+                    ]);
+                    $refundTransaction->authenticatedUser()->associate($highestBidder);
+                    $refundTransaction->save();
+            
+                    // Commit the transaction
+                    DB::commit();
+                } catch (\Exception $e) {
+                    // Rollback the transaction in case of an error
+                    DB::rollback();
+            
+                    \Log::error($e->getMessage()); // Log the error for debugging
+                    // Handle the exception (e.g., return an error response)
+                }
+            }            
     
             // Delete all bids for the auction
             $auction->bids()->delete();

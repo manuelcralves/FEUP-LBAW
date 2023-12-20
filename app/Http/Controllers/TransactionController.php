@@ -4,16 +4,28 @@ namespace App\Http\Controllers;
 
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TransactionController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-    }
+        $userId = Auth::id();
+
+        $perPage = 5; // Number of transactions per page
+    
+        // Retrieve all transactions ordered by most recent transaction_date
+        $transactions = Transaction::where('user', $userId)
+        ->orderBy('transaction_date', 'desc')
+        ->paginate($perPage);
+
+        $pageNr = $request->query('pageNr', 1);
+    
+        return view('pages.transactions', compact('transactions', 'pageNr'));
+    }    
 
     /**
      * Show the form for creating a new resource.
