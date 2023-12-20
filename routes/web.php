@@ -66,7 +66,6 @@ Route::controller(AuctionController::class)->group(function () {
     Route::put('/auction/{id}/cancel', 'cancel')->name('auction.cancel');
     Route::get('/profile/{id}/auctions/{pageNr}', 'showOwnedAuctions')->name('owned.auctions');
     Route::get('/auction/{id}',  'show')->name('auction.show');
-    Route::get('/auction/{id}/reports', 'showReports')->name('auction.reports');
 
     //Route::get('/auctionReport', 'createReport')->name('report.create');
     //Route::post('/auctionReport', 'storeReport')->name('report.store');

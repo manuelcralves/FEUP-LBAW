@@ -54,7 +54,6 @@
         <!-- Back to Auctions button -->
         <a href="{{ route('auction.index', 1) }}" class="button">Back to Auctions</a>
         <a href="{{ url('/home') }}" class="button back-home">Back to Home Page</a>
-        <a href="{{ url('auction.reports') }}" class="button">View Reports</a>
         <!-- Table to display bid information -->
         <table id="bidTable">
             <thead>

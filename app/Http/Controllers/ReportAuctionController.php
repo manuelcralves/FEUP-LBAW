@@ -87,28 +87,7 @@ class ReportAuctionController extends Controller
      * Display the specified resource.
      */
     
-    public function show($id)
-{
-    try {
-        // Find the auction based on the provided ID
-        $auction = Auction::findOrFail($id);
-
-        // Use the authorize method to check if the user is authorized to view reports for the auction
-        $this->authorize('viewReports', $auction);
-
-        // Load the reports associated with the auction
-        $auction->load('reports');
-
-        return view('reports.show', ['auction' => $auction]);
-    } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $ex) {
-        // Handle the case where the auction is not found
-        return redirect()->back()->with('error', 'Auction not found.');
-    } catch (\Illuminate\Auth\Access\AuthorizationException $ex) {
-        // Handle the case where the user is not authorized to view reports
-        return redirect()->back()->with('error', 'You are not authorized to view reports for this auction.');
-    }
-}
-
+    
 
     /**
      * Show the form for editing the specified resource.
