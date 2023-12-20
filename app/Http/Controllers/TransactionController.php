@@ -10,10 +10,15 @@ class TransactionController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-    }
+        $perPage = 10; // Number of transactions per page
+    
+        // Retrieve all transactions ordered by most recent transaction_date
+        $transactions = Transaction::orderBy('transaction_date', 'desc')->paginate($perPage);
+    
+        return view('pages.transactions', compact('transactions'));
+    }    
 
     /**
      * Show the form for creating a new resource.

@@ -117,6 +117,7 @@
                     <a href="{{ route('balance', ['id' => Auth::user()->id]) }}" class="button add-funds">Add Funds</a>
                     <a href="{{ route('owned.auctions', ['id' => Auth::user()->id, 'pageNr' => 1]) }}" class="button my-auctions">My Auctions</a>
                     <a href="{{ route('myBids', ['id' => Auth::user()->id, 'pageNr' => 1]) }}" class="button my-bids">My Bids</a>
+                    <a href="{{ route('transactions.user', ['id' => Auth::user()->id, 'pageNr' => 1]) }}" class="button my-bids">Transaction History</a>
                 @endif
                 <a href="{{ route('show.users', ['pageNr' => 1]) }}" class="button back-users">Back to Users Page</a>
                 <a href="{{ url('/home') }}" class="button back-home">Back to Home Page</a>
