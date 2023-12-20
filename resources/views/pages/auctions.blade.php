@@ -17,7 +17,7 @@
             <form method="GET" action="{{ route('auction.index', ['pageNr' => 1]) }}" id="filter-form">
                 <div class="price-inputs">
                     <div class="input-group">
-                        <input type="number" name="min-price" id="min-price" value="{{ $minPrice }}" placeholder="Min price...">
+                        <input type="number" name="min-price" id="min-price" value="{{ $minPrice }}" placeholder="Min price..." min="0">
                     </div>
                     <div class="input-group">
                         <input type="number" name="max-price" id="max-price" value="{{ $maxPrice }}" placeholder="Max price...">

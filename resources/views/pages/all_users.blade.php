@@ -10,12 +10,6 @@
         <button type="submit" class="search-button">Search</button>
     </form> 
 
-    @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
-
     @if ($users->isEmpty())
         <p class="no-users-message">No users found.</p>
     @else
@@ -35,7 +29,7 @@
                         <p><strong>Last Name:</strong> {{ $user->last_name }}</p>
                         <p><strong>Email:</strong> {{ $user->email }}</p>
                         <p><strong>Rating:</strong> {{ $user->rating ?? 'No rating yet' }}</p>
-                        @if(Auth::user()->role === 'ADMIN')
+                        @if(Auth::user() && Auth::user()->role === 'ADMIN')
                         <p><strong>Role:</strong> {{ $user->role }}</p>
                         @endif
                     </div>

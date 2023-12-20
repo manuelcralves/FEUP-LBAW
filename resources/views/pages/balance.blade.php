@@ -11,7 +11,7 @@
 
             <div class="form-group">
                 <label for="amount" class="form-label">Amount to Add:</label>
-                <input id="amount" type="number" step="0.5" name="amount" min="1" required class="form-input">
+                <input id="amount" type="number" step="0.5" name="amount" min="1" max="1000000" required class="form-input">
                 @error('amount')
                 <span class="error">{{ $message }}</span>
                 @enderror

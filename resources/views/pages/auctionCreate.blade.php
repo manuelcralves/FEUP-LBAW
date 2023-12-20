@@ -31,10 +31,10 @@
             <input type="file" id="picture" name="picture" accept="image/*">
 
             <label for="end_date">End Date:</label>
-            <input type="datetime-local" id="end_date" name="end_date" value="{{ old('end_date') }}">
+            <input type="datetime-local" id="end_date" name="end_date" value="{{ old('end_date', now()->addDays(7)->addSeconds(1)->toDateTimeLocalString()) }}" min="{{ now()->addDays(7)->addSeconds(1)->toDateTimeLocalString() }}" max="{{ now()->addDays(30)->toDateTimeLocalString() }}">
 
             <label for="starting_price">Starting Price:</label>
-            <input type="number" id="starting_price" name="starting_price" placeholder="Starting Price" value="{{ old('starting_price') }}">
+            <input type="number" id="starting_price" name="starting_price" placeholder="Starting Price" value="{{ old('starting_price') }}" min="1" max="10000000">
 
             <!-- Item Fields -->
             <label for="name">Item Name:</label>

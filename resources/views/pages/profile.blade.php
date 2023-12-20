@@ -3,24 +3,6 @@
 @section('title', 'Profile')
 
 @section('content')
-    @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    @if (session('error'))
-        <div class="alert alert-danger">
-            {{ session('error') }}
-        </div>
-    @endif
-
-    @if (isset($customError))
-        <div class="alert alert-danger">
-            {{ $customError }}
-        </div>
-    @endif
-    
     <div class="profile-container">
         <h1 class="profile-header">User Information</h1>
         
@@ -37,7 +19,9 @@
             <p><strong>First Name:</strong> {{ $user->first_name }}</p>
             <p><strong>Last Name:</strong> {{ $user->last_name }}</p>
             <p><strong>Email:</strong> {{ $user->email }}</p>
-            <p><strong>Rating:</strong> {{ $user->rating ?: 'No rating yet' }}</p>
+            @if(Auth::user()->role != 'ADMIN')
+                <p><strong>Rating:</strong> {{ $user->rating ?: 'No rating yet' }}</p>
+            @endif
             
             @if(Auth::user()->role != 'ADMIN' && Auth::user()->id == $user->id)
                 <p><strong>Balance:</strong> {{ $user->balance }}€</p>
@@ -125,7 +109,7 @@
                 <a href="{{ route('show.users', ['pageNr' => 1]) }}" class="button back-users">Back to Users Page</a>
                 <a href="{{ url('/home') }}" class="button back-home">Back to Home Page</a>
             @endif
-            @if(Auth::user()->id == $user->id)
+            @if(Auth::user()->id == $user->id && Auth::user()->role !== 'ADMIN')
                 <form id="delete-form" method="POST" action="{{ route('delete.user', ['id' => $user->id]) }}">
                     @csrf   
                     <button type="button" class="button delete-button" onclick="confirmDelete()">Delete My Account</button>

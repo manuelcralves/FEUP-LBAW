@@ -4,23 +4,6 @@
 
 @section('content')
     <div class="auction-details-container">
-        @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
-
-        @if (session('error'))
-            <div class="alert alert-danger">
-                {{ session('error') }}
-            </div>
-        @endif
-
-        @if (isset($customError))
-            <div class="alert alert-danger">
-                {{ $customError }}
-            </div>
-        @endif
         
         <h2 class="details-title">Auction Details</h2>
 
@@ -121,6 +104,7 @@
             <h3>Report this auction here if you think something is wrong</h3>   
             <form id="reportForm" method="POST" action="/auction/{{ $auction->id }}/report">
                 @csrf
+                <input type="hidden" name="auction" value="{{ $auction->id }}"> 
                 <label for="reason">Reason:</label>
                 <input type="text" id="reason" name="reason" required>
                 <button type="submit" class="button">Report</button>
