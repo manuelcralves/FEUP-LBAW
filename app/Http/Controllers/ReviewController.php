@@ -69,6 +69,17 @@ class ReviewController extends Controller
         // Flash a success message to the session
         return redirect()->route('auction.show', ['id' => 9])->with('success', 'The review was made successfully!');
     }
+
+    public function allReviews($pageNr)
+    {
+        // Assuming you want to paginate the reviews with a certain number per page (e.g., 10 reviews per page)
+        $perPage = 10;
+    
+        // Retrieve the reviews for the specified page number
+        $reviews = Review::paginate($perPage, ['*'], 'page', $pageNr);
+    
+        return view('pages.reviews_admin', compact('reviews'));
+    }
     
 
     /**

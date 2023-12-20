@@ -99,4 +99,5 @@ Route::controller(ReviewController::class)->group(function (){
     Route::get('/reviews', 'index')->name('reviews.user');
     Route::get('/review/{id}', 'create')->name('reviews.create');
     Route::post('/createReview', 'store')->name('reviews.store');
+    Route::get('/all-reviews/{pageNr}', 'allReviews')->name('reviews.admin');
 });
