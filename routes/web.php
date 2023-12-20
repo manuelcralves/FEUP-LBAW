@@ -7,6 +7,7 @@ use App\Http\Controllers\AuctionController;
 use App\Http\Controllers\BidController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ReportAuctionController;
+use App\Http\Controllers\ReviewController;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -92,4 +93,11 @@ Route::controller(ReportAuctionController::class)->group(function (){
     //Route::post('/auctionReport/{id}', 'store')->name('report.store');
     //Route::get('/auction/{id}/reports', 'show')->name('reports.show');
     Route::get('/reports/{pageNr}', 'index')->name('reports.user');
+});
+
+Route::controller(ReviewController::class)->group(function (){
+    Route::get('/reviews', 'index')->name('reviews.user');
+    Route::get('/review/{id}', 'create')->name('reviews.create');
+    Route::post('/createReview', 'store')->name('reviews.store');
+    Route::get('/all-reviews/{pageNr}', 'allReviews')->name('reviews.admin');
 });
