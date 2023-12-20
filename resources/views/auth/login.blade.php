@@ -29,6 +29,12 @@
     Continue as Guest
 </button>
 
+@if (session('message'))
+    <p class="message">
+        {{ session('message') }}
+    </p>
+@endif
+
 <script>
     function redirectToHome() {
         window.location.href = "{{ route('home') }}";
