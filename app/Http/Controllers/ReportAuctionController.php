@@ -19,9 +19,18 @@ class ReportAuctionController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        // Retrieve reports and order them by most recent
+        // Assume you want to paginate reports for a specific user or all users
+        $reports = ReportAuction::with(['authenticatedUser', 'auctions'])
+            ->orderBy('creation_date', 'desc')
+            ->paginate(10); 
+
+        // Retrieve the current page number from the request
+        $pageNr = $request->query('pageNr', 1);
+
+        return view('pages.reports', compact('reports', 'pageNr'));
     }
 
     /**

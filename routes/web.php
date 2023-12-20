@@ -90,6 +90,6 @@ Route::controller(ReportAuctionController::class)->group(function (){
     //Route::get('/auctionReport', 'create')->name('report.create');
     Route::post('/auction/{auctionId}/report', 'store')->name('report.store');
     //Route::post('/auctionReport/{id}', 'store')->name('report.store');
-    Route::get('/auction/{id}/reports', 'show')->name('reports.show');
-
+    //Route::get('/auction/{id}/reports', 'show')->name('reports.show');
+    Route::get('/reports/{pageNr}', 'index')->name('reports.user');
 });

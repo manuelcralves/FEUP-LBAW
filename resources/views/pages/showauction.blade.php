@@ -117,7 +117,7 @@
                 <button type="submit" class="button delete-button" onclick="return confirm('Are you sure you want to delete this auction?')">Delete Auction</button>
             </form>
         @endif
-        @if(Auth::user() != $auction->authenticatedUser)
+        @if(Auth::user() != $auction->authenticatedUser && Auth::user()->role != 'ADMIN')
             <h3>Report this auction here if you think something is wrong</h3>   
             <form id="reportForm" method="POST" action="/auction/{{ $auction->id }}/report">
                 @csrf

@@ -1059,3 +1059,7 @@ tr.read-notification {
 td:first-child , th:first-child {
   padding: 10px;
 }
+
+.reports {
+  padding: 20px;
+}

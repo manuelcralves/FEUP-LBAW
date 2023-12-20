@@ -49,6 +49,9 @@
                     <a class="button" href="{{ route('following.auctions', ['pageNr' => 1]) }}">Following</a>
                 @endif
                 <a class="button" href="{{ route('notifications.user', ['id' => Auth::user()->id, 'pageNr' => 1])}}">Notifications</a>
+                @if(Auth::user()->role === 'ADMIN')
+                    <a class="button" href="{{ route('reports.user', ['pageNr' => 1])}}">Reports</a>
+                @endif
                 <a class="button" href="{{ url('/logout') }}">Logout</a>
             @endif
         </header>
