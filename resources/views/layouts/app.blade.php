@@ -47,6 +47,7 @@
                 @if(Auth::user()->role != 'ADMIN')
                     <a class="button" href="{{ route('auction.create') }}">Create Auction</a>
                     <a class="button" href="{{ route('following.auctions', ['pageNr' => 1]) }}">Following</a>
+                    <a class="button" href="{{ route('reviews.user')}}">Pending Reviews</a>
                 @endif
                 <a class="button" href="{{ route('notifications.user', ['id' => Auth::user()->id, 'pageNr' => 1])}}">Notifications</a>
                 @if(Auth::user()->role === 'ADMIN')

@@ -10,9 +10,13 @@ class Kernel extends ConsoleKernel
     /**
      * Define the application's command schedule.
      */
-    protected function schedule(Schedule $schedule): void
+    protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->call(function () {
+            \App\Models\Auction::where('end_date', '<=', now())
+                ->where('status', '=', 'ACTIVE')
+                ->update(['status' => 'CLOSED']);
+        })->everySecond(); // Update every second
     }
 
     /**
