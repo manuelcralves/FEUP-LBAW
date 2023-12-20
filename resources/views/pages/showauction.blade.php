@@ -36,7 +36,7 @@
             <p><strong>Current Price:</strong> {{ $auction->current_price }}</p>
             <p><strong>Start Date:</strong> {{ $auction->start_date->format('Y-m-d H:i:s') }}</p>
             <p><strong>End Date:</strong> {{ $auction->end_date->format('Y-m-d H:i:s') }}</p>
-            <p><strong>Status:</strong> {{ $auction->status }}</p>
+            <p><strong>Status: {{ $auction->status }}</strong></p>
             <p><strong>Category:</strong> {{ $item->category }}</p>
             <p><strong>Color:</strong> {{ $item->color }}</p>
             <p><strong>Condition:</strong> {{ $item->condition }}</p>
@@ -55,11 +55,12 @@
                 </form>
             </div>
         @endif
+        
+
 
         <!-- Back to Auctions button -->
         <a href="{{ route('auction.index', 1) }}" class="button">Back to Auctions</a>
         <a href="{{ url('/home') }}" class="button back-home">Back to Home Page</a>
-
         <!-- Table to display bid information -->
         <table id="bidTable">
             <thead>
@@ -116,5 +117,15 @@
                 <button type="submit" class="button delete-button" onclick="return confirm('Are you sure you want to delete this auction?')">Delete Auction</button>
             </form>
         @endif
+        @if(Auth::user() != $auction->authenticatedUser)
+            <h3>Report this auction here if you think something is wrong</h3>   
+            <form id="reportForm" method="POST" action="/auction/{{ $auction->id }}/report">
+                @csrf
+                <label for="reason">Reason:</label>
+                <input type="text" id="reason" name="reason" required>
+                <button type="submit" class="button">Report</button>
+            </form>
+        @endif
+
     </div>
 @endsection

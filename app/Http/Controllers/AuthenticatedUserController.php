@@ -274,7 +274,79 @@ class AuthenticatedUserController extends Controller
     
         return redirect()->route('show', ['id' => $id])->with('success', 'Funds added successfully');
     }
+/*
+    public function blockUser($id)
+    {
+        $user = AuthenticatedUser::find($id);
 
+        if (!$user) {
+            // Handle the case where the user is not found (e.g., show an error message)
+            return abort(404);
+        }
+
+        // Check if the authenticated user has permission to promote users to ADMIN
+        if (Auth::user()->role === 'ADMIN' && Auth::user()->id != $user->id) {
+            // Check if the user has any "ACTIVE" auctions
+            $hasActiveAuctions = $user->auctions()->where('status', 'ACTIVE')->exists();
+    
+            // Check if the user has any active bids
+            $hasActiveBids = $user->bids()->whereHas('auctions', function ($query) {
+                $query->where('status', 'ACTIVE');
+            })->exists();
+    
+            if (!$hasActiveAuctions && !$hasActiveBids) {
+                // User doesn't have active auctions or active bids, so promote them to ADMIN
+                $user->is_blocked = TRUE;
+                $user->save();
+    
+                return back()->with('success', 'User blocked successfully');
+            } else {
+                // Handle the case where the user has active auctions or active bids
+                return back()->with('error', 'User has active auctions or active bids and cannot be blocked.');
+            }
+        } else {
+            // Handle the case where the authenticated user doesn't have permission
+            return abort(403); // Return a 403 Forbidden response
+        }
+      
+    }*/
+
+    /*public function unblockUser($id)
+    {
+        $user = AuthenticatedUser::find($id);
+
+        if (!$user) {
+            // Handle the case where the user is not found (e.g., show an error message)
+            return abort(404);
+        }
+
+        // Check if the authenticated user has permission to promote users to ADMIN
+        if (Auth::user()->role === 'ADMIN' && Auth::user()->id != $user->id) {
+            // Check if the user has any "ACTIVE" auctions
+            $hasActiveAuctions = $user->auctions()->where('status', 'ACTIVE')->exists();
+    
+            // Check if the user has any active bids
+            $hasActiveBids = $user->bids()->whereHas('auctions', function ($query) {
+                $query->where('status', 'ACTIVE');
+            })->exists();
+    
+            if (!$hasActiveAuctions && !$hasActiveBids) {
+                // User doesn't have active auctions or active bids, so promote them to ADMIN
+                $user->is_blocked = FALSE;
+                $user->save();
+    
+                return back()->with('success', 'User blocked successfully');
+            } else {
+                // Handle the case where the user has active auctions or active bids
+                return back()->with('error', 'User has active auctions or active bids and cannot be blocked.');
+            }
+        } else {
+            // Handle the case where the authenticated user doesn't have permission
+            return abort(403); // Return a 403 Forbidden response
+        }
+      
+    }
+*/
     /**
      * Remove the specified resource from storage.
      */

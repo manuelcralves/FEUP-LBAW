@@ -13,7 +13,6 @@
                 @foreach ($bids as $bid)
                     <div class="bid-card">
                         <p><strong>Auction Title:</strong> {{ $bid->auctions->title }}</p>
-                        <p><strong>Auction ID:</strong> {{ $bid->auction }}</p>
                         <p><strong>Value:</strong> {{ $bid->value }}€</p>
                         <p><strong>Creation Date:</strong> {{ $bid->creation_date }}</p>
                     </div>

@@ -15,7 +15,7 @@
     <p><strong>Beatriz Cruz</strong></p>
     <p><strong>João Moura</strong></p>
     <p><strong>Luís Freitas</strong></p>
-    <p><strong>Manuel </strong></p>
+    <p><strong>Manuel Alves</strong></p>
 
 
 </div>

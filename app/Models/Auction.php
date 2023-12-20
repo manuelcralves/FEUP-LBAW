@@ -43,7 +43,7 @@ class Auction extends Model
         return $this->hasMany(Bid::class, 'auction');
     }
 
-    public function reportAuctions() {
+    public function reports() {
         return $this->hasMany(ReportAuction::class, 'auction');
     }
 
