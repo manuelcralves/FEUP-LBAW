@@ -22,9 +22,15 @@ class AuthenticatedUserController extends Controller
      */
     public function index()
     {
-        // Fetch auctions with the highest current price
-        $topAuctions = Auction::orderBy('current_price', 'desc')->take(5)->get();
-
+        // Fetch auctions with the highest current price and bid count of 0 or more
+        $topAuctions = Auction::where('status', 'ACTIVE')
+        ->whereHas('bids', function($query) {
+            $query->havingRaw('COUNT(*) > 0');
+        }, '>=', 0)
+        ->orderBy('current_price', 'desc')
+        ->take(5)
+        ->get();
+    
         // Fetch top bidders
         $topBidders = Bid::select('user', DB::raw('COUNT(*) as total_bids'), DB::raw('SUM(value) as total_bid_amount'))
         ->groupBy('user')
@@ -35,10 +41,10 @@ class AuthenticatedUserController extends Controller
         })
         ->with('authenticatedUser')
         ->get();    
-
+    
         return view('pages.home', compact('topAuctions', 'topBidders'));
     }
-
+    
     /**
      * Show the form for creating a new resource.
      */
