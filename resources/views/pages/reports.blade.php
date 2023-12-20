@@ -17,8 +17,8 @@
             <tbody>
                 @foreach ($reports as $report)
                     <tr>
-                        <td>{{ $report->authenticatedUser->username }}</td> <!-- Adjust according to your User model -->
-                        <td>{{ $report->auctions->title }}</td> <!-- Adjust according to your Auction model -->
+                        <td><a href="{{ route('show', ['id' => $report->authenticatedUser->id]) }}">{{ $report->authenticatedUser->username }}</a></td>
+                        <td><a href="{{ route('auction.show', ['id' => $report->auctions->id]) }}">{{ $report->auctions->title }}</a></td>
                         <td>{{ $report->creation_date }}</td>
                         <td>{{ $report->reason }}</td>
                     </tr>
