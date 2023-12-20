@@ -37,6 +37,7 @@
             <p><strong>First Name:</strong> {{ $user->first_name }}</p>
             <p><strong>Last Name:</strong> {{ $user->last_name }}</p>
             <p><strong>Email:</strong> {{ $user->email }}</p>
+            <p><strong>Rating:</strong> {{ $user->rating ?: 'No rating yet' }}</p>
             
             @if(Auth::user()->role != 'ADMIN' && Auth::user()->id == $user->id)
                 <p><strong>Balance:</strong> {{ $user->balance }}€</p>
@@ -59,6 +60,24 @@
                 @endforeach
             </div>
         @endif
+
+        <div class="profile-reviews">
+            @if ($user->reviewsReceived->count() > 0)
+            <h2>Recent Reviews for {{ $user->username }}</h2>
+                <ul class="review-list">
+                    @foreach ($user->reviewsReceived->take(3) as $review)
+                        <li class="review-item">
+                            <h3 class="review-title"><strong>{{ $review->title }}</strong></h3>
+                            <div class="review-header">
+                                <strong> {{ $review->reviewers->username }}</strong> given <strong>{{ $review->rating }}</strong> stars:
+                            </div>
+                            <p class="review-description">Description: {{ $review->description }}</p>
+                            <p class="review-date"><strong>Date:</strong> {{ $review->date }}</p>
+                        </li>
+                    @endforeach
+                </ul>
+            @endif
+        </div>
 
         <div class="action-buttons">
             @if(Auth::user()->role === 'ADMIN' && Auth::user()->id != $user->id && $user->role !== 'ADMIN')

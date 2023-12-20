@@ -1063,3 +1063,39 @@ td:first-child , th:first-child {
 .reports {
   padding: 20px;
 }
+
+.review-list {
+  list-style: none;
+  padding: 0;
+}
+
+.review-item {
+  background-color: #f7f7f7;
+  border-radius: 5px;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.review-header {
+  margin-bottom: 5px;
+}
+
+.rating {
+  color: #FFD700; /* Gold color for rating */
+}
+
+.review-title {
+  font-size: 16px;
+  margin-top: 5px;
+}
+
+.review-description {
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.review-date {
+  font-size: 12px;
+  color: #666;
+  margin-top: 5px;
+}
