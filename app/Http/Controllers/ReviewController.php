@@ -67,7 +67,7 @@ class ReviewController extends Controller
         $review->save();
     
         // Flash a success message to the session
-        return redirect()->route('auction.show', ['id' => 9])->with('success', 'The review was made successfully!');
+        return redirect()->route('auction.show', ['id' => $review->auction])->with('success', 'The review was made successfully!');
     }
 
     public function allReviews($pageNr)

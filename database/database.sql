@@ -853,15 +853,15 @@ INSERT INTO address (street, postal_code, city, country, "user") VALUES
 
 -- items
 INSERT INTO item (name, category, brand, color, picture, condition) VALUES
-('Floral Tee', 'T-Shirt', 'Brand1', 'White', 'pictures/floral_tee.jpg', 'NEW'),
-('Cotton Socks', 'Socks', 'Brand2', 'Black', 'pictures/cotton_socks.jpg', 'NEW'),
-('Denim Jacket', 'Jacket', 'Brand3', 'Blue', 'pictures/denim_jacket.jpg', 'LIKE NEW'),
-('Silk Scarf', 'Scarf', 'Brand4', 'Red', 'pictures/silk_scarf.jpg', 'NEW'),
-('Leather Belt', 'Belt', 'Brand5', 'Brown', 'pictures/leather_belt.jpg', 'GOOD'),
-('Running Shoes', 'Shoes', 'Brand1', 'Grey', 'pictures/running_shoes.jpg', 'EXCELLENT'),
-('Winter Gloves', 'Gloves', 'Brand2', 'Black', 'pictures/winter_gloves.jpg', 'NEW'),
-('Wool Hat', 'Hat', 'Brand3', 'Beige', 'pictures/wool_hat.jpg', 'LIKE NEW'),
-('Sunglasses', 'Sunglasses', 'Brand4', 'Black', 'pictures/sunglasses.jpg', 'NEW');
+('Floral Tee', 'T-Shirt', 'Bershka', 'White', 'pictures/floral_tee.jpg', 'NEW'),
+('Cotton Socks', 'Socks', 'Nike', 'Black', 'pictures/cotton_socks.jpg', 'NEW'),
+('Denim Jacket', 'Jacket', 'Pull & Bear', 'Blue', 'pictures/denim_jacket.jpg', 'LIKE NEW'),
+('Silk Scarf', 'Scarf', 'BOSS', 'Red', 'pictures/silk_scarf.jpg', 'NEW'),
+('Leather Belt', 'Belt', 'Diesel', 'Brown', 'pictures/leather_belt.jpg', 'GOOD'),
+('Running Shoes', 'Shoes', 'Asics', 'Grey', 'pictures/running_shoes.jpg', 'EXCELLENT'),
+('Winter Gloves', 'Gloves', 'Adidas', 'Black', 'pictures/winter_gloves.jpg', 'NEW'),
+('Wool Hat', 'Hat', 'The North Face', 'Beige', 'pictures/wool_hat.jpg', 'LIKE NEW'),
+('Sunglasses', 'Sunglasses', 'DICCI', 'Black', 'pictures/sunglasses.jpg', 'NEW');
 
 -- Create auctions for the 10 items and associate each with a user
 INSERT INTO auction (title, description, end_date, starting_price, current_price, "owner", "item")
@@ -881,10 +881,17 @@ VALUES
 
 INSERT INTO bid (value, "user", "auction", creation_date)
 VALUES 
-(30.00, 3, 9, NOW() - INTERVAL '1 hour');
-/*(30.00, 3, 4, NOW() + INTERVAL '1 hour'),
-(40.00, 3, 6, NOW() + INTERVAL '3 hours'),
-(35.00, 4, 5, NOW() + INTERVAL '1 hours'),
-(35.00, 8, 4, NOW() + INTERVAL '5 hours'),
-(28.00, 9, 1, NOW() + INTERVAL '1 hours'),
-(19.00, 10, 2, NOW() + INTERVAL '6 hours');*/
+(30.00, 3, 9, NOW() - INTERVAL '1 hour'),
+(35.00, 3, 4, NOW() + INTERVAL '1 hour'),
+(50.00, 3, 6, NOW() + INTERVAL '3 hours'),
+(45.00, 4, 5, NOW() + INTERVAL '1 hours'),
+(40.00, 8, 4, NOW() + INTERVAL '5 hours'),
+(29.00, 9, 1, NOW() + INTERVAL '1 hours'),
+(24.00, 10, 2, NOW() + INTERVAL '6 hours');
+
+INSERT INTO report_auction (reason, "user", "auction") VALUES
+('The auction listing appears to be fraudulent or misleading, with significant discrepancies between the description and the actual item.', 8, 2),
+('The auction is selling items that are illegal or prohibited by the platforms terms of service.', 7, 5),
+('he user is posting multiple identical or very similar auctions in a short period, which seems like spam or misuse of the platform.', 9, 9),
+('Fake item.', 1, 6),
+('The auction is selling counterfeit items.', 7, 7);
