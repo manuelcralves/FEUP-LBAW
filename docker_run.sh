@@ -5,6 +5,7 @@ cd /var/www
 env >> /var/www/.env
 php artisan clear-compiled
 php artisan config:clear
+php artisan storage:link
 
 # Add cron job into cronfile
 echo "* * * * * cd /var/www && php artisan schedule:run >> /dev/null 2>&1" >> cronfile
