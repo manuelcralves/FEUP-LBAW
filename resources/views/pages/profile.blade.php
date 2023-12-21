@@ -66,17 +66,6 @@
         <div class="action-buttons">
             @if(Auth::user()->role === 'ADMIN' && Auth::user()->id != $user->id && $user->role !== 'ADMIN')
             <a href="{{ route('edit', ['id' => $user->id]) }}" class="button edit-button">Edit User</a>
-            @if ($user->is_blocked)
-                <form method="POST" action="{{ route('unblock.user', ['id' => $user->id]) }}" class="admin-form">
-                    @csrf
-                    <button type="submit" class="button unblock-button">Unblock User</button>
-                </form>
-            @else
-                <form method="POST" action="{{ route('block.user', ['id' => $user->id]) }}" class="admin-form">
-                    @csrf
-                    <button type="submit" class="button block-button">Block User</button>
-                </form>
-            @endif
             <form method="POST" action="{{ route('delete.user', ['id' => $user->id]) }}" class="admin-form">
                 @csrf   
                 <button type="submit" class="button delete-button">Delete User</button>
