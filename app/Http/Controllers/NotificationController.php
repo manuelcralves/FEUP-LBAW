@@ -11,18 +11,17 @@ class NotificationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function showNotifications(Request $request)
+    public function showNotifications($id, $pageNr = 1)
     {
         // Get the authenticated user's ID
         $userId = Auth::id();
         
+        $perPage = 20; // Number of transactions per page
+
         // Retrieve notifications for the authenticated user and order them by most recent
         $notifications = Notification::where('user', $userId)
             ->orderBy('creation_date', 'desc')
-            ->paginate(20); // Display 20 notifications per page
-        
-        // Retrieve the current page number from the request
-        $pageNr = $request->query('pageNr', 1);
+            ->paginate($perPage, ['*'], 'page', $pageNr); 
     
         return view('pages.notifications', compact('notifications', 'pageNr'));
     }    

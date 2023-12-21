@@ -11,21 +11,19 @@ class TransactionController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index($id, $pageNr = 1)
     {
         $userId = Auth::id();
-
+    
         $perPage = 5; // Number of transactions per page
     
         // Retrieve all transactions ordered by most recent transaction_date
         $transactions = Transaction::where('user', $userId)
-        ->orderBy('transaction_date', 'desc')
-        ->paginate($perPage);
-
-        $pageNr = $request->query('pageNr', 1);
+            ->orderBy('transaction_date', 'desc')
+            ->paginate($perPage, ['*'], 'page', $pageNr);
     
         return view('pages.transactions', compact('transactions', 'pageNr'));
-    }    
+    } 
 
     /**
      * Show the form for creating a new resource.
